@@ -15,9 +15,10 @@ import { toast } from 'react-toastify'
 interface DeleteCategoryButtonProps {
   category: Category
   onDelete: (id: string) => void
+  fetchData: () => Promise<void>
 }
 
-export function DeleteCategoryButton({ category, onDelete }: DeleteCategoryButtonProps) {
+export function DeleteCategoryButton({ category, onDelete, fetchData }: DeleteCategoryButtonProps) {
   const [open, setOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const accessToken = localStorage.getItem('accessToken')
@@ -30,12 +31,14 @@ export function DeleteCategoryButton({ category, onDelete }: DeleteCategoryButto
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${accessToken}`
-        }
+        },
+        body: JSON.stringify({ id: category.id })
       })
       if (!response.ok) {
         throw new Error('Failed to delete category')
       }
       onDelete(category.id)
+      fetchData()
       toast(`${category.name} has been successfully deleted.`, {
         type: 'success',
         position: 'top-center',

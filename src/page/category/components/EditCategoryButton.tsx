@@ -11,9 +11,10 @@ import { toast } from 'react-toastify'
 interface EditCategoryButtonProps {
   category: Category
   onEdit: (category: Category) => void
+  fetchData: () => Promise<void>
 }
 
-export function EditCategoryButton({ category, onEdit }: EditCategoryButtonProps) {
+export function EditCategoryButton({ category, onEdit, fetchData }: EditCategoryButtonProps) {
   const [open, setOpen] = useState(false)
   const [editedCategory, setEditedCategory] = useState(category)
   const [isEditing, setIsEditing] = useState(false)
@@ -22,7 +23,7 @@ export function EditCategoryButton({ category, onEdit }: EditCategoryButtonProps
   const handleEdit = async () => {
     setIsEditing(true)
     try {
-      const response = await fetch(`https://192.168.12.210:7143/api/Category/${category.id}`, {
+      const response = await fetch(`https://192.168.12.210:7143/api/Category`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -35,6 +36,7 @@ export function EditCategoryButton({ category, onEdit }: EditCategoryButtonProps
       }
       const updatedCategory = await response.json()
       onEdit(updatedCategory)
+      fetchData()
       toast(`${updatedCategory.name} has been successfully updated.`, {
         type: 'success',
         position: 'top-center',

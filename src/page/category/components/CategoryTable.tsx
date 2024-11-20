@@ -16,19 +16,26 @@ export type Category = {
 export default function CategoryTable() {
   const [categories, setCategories] = useState<Category[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [pageNumber, setPageNumber] = useState(1)
+  const [pageSize] = useState(5) // Kích thước trang cố định
+  const [totalPages, setTotalPages] = useState(0)
 
   useEffect(() => {
     fetchCategories()
-  }, [])
+  }, [pageNumber])
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('https://192.168.12.210:7143/api/Category/')
+      setIsLoading(true)
+      const response = await fetch(
+        `https://192.168.12.210:7143/api/Category?PageNumber=${pageNumber}&PageSize=${pageSize}`
+      )
       if (!response.ok) {
         throw new Error('Failed to fetch categories')
       }
       const data = await response.json()
-      setCategories(data?.data)
+      setCategories(data?.data || [])
+      setTotalPages(data?.data?.length / pageSize)
     } catch (error) {
       console.error('Error fetching categories:', error)
       toast('Failed to load categories. Please refresh the page.', {
@@ -52,6 +59,14 @@ export default function CategoryTable() {
 
   const handleEdit = (editedCategory: Category) => {
     setCategories(categories.map((category) => (category.id === editedCategory.id ? editedCategory : category)))
+  }
+
+  const handlePreviousPage = () => {
+    if (pageNumber > 1) setPageNumber(pageNumber - 1)
+  }
+
+  const handleNextPage = () => {
+    if (pageNumber < totalPages) setPageNumber(pageNumber + 1)
   }
 
   if (isLoading) {
@@ -80,13 +95,32 @@ export default function CategoryTable() {
                 <Switch checked={category.inactive} />
               </TableCell>
               <TableCell className='text-right'>
-                <EditCategoryButton category={category} onEdit={handleEdit} />
-                <DeleteCategoryButton category={category} onDelete={handleDelete} />
+                <EditCategoryButton category={category} onEdit={handleEdit} fetchData={fetchCategories} />
+                <DeleteCategoryButton category={category} onDelete={handleDelete} fetchData={fetchCategories} />
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+      <div className='flex justify-between items-center mt-4'>
+        <button
+          className='px-4 py-2 bg-gray-200 rounded disabled:opacity-50'
+          disabled={pageNumber === 1}
+          onClick={handlePreviousPage}
+        >
+          Previous
+        </button>
+        <span>
+          Page {pageNumber} of {totalPages}
+        </span>
+        <button
+          className='px-4 py-2 bg-gray-200 rounded disabled:opacity-50'
+          disabled={pageNumber === totalPages}
+          onClick={handleNextPage}
+        >
+          Next
+        </button>
+      </div>
     </div>
   )
 }
