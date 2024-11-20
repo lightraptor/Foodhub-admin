@@ -1,0 +1,2 @@
+echo "Running pre-commit hooks"
+npm run check:all

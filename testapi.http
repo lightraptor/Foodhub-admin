@@ -1,0 +1,10 @@
+
+
+POST https://192.168.12.210:7143/api/Account/register HTTP/1.1
+content-type: application/json
+
+{
+  "email": "123api@gmail.com",
+  "password": "Lightraptor2310!",
+  "confirmPassword": "Lightraptor2310!"
+}
