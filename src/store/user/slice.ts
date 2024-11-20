@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { STORAGE } from 'defines'
+import { STORAGE } from '@/defines'
 import { State } from './type'
 
 const initialState: State = {

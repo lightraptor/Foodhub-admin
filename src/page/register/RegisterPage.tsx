@@ -1,8 +1,8 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { FormRegister } from 'types'
-import { useAuth } from 'hooks'
+import { FormRegister } from '@/types'
+import { useAuth } from '@/hooks'
 
 const signupSchema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),

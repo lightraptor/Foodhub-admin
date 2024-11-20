@@ -1,5 +1,5 @@
-import { MENU } from 'defines'
-import { useAuth } from 'hooks'
+import { MENU } from '@/defines'
+import { useAuth } from '@/hooks'
 import { Link } from 'react-router-dom'
 
 export const HomePage = () => {
@@ -7,7 +7,7 @@ export const HomePage = () => {
   return (
     <>
       <p>Home</p>
-      <Link to={MENU.About}>About</Link>
+      <Link to={MENU.Home.path}>About</Link>
       <button onClick={logout} type='button'>
         Logout
       </button>

@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { FormLogin } from 'types'
-import { useAuth } from 'hooks'
+import { FormLogin } from '@/types'
+import { useAuth } from '@/hooks'
 
 const schema = yup
   .object({
@@ -26,7 +26,7 @@ export const LoginPage = () => {
   }
 
   return (
-    <div className='flex items-center justify-center min-h-screen bg-gray-100'>
+    <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>
       <form onSubmit={handleSubmit(onSubmit)} className='bg-white p-6 rounded shadow-md w-full max-w-sm'>
         <h1 className='text-xl font-bold mb-4'>Login</h1>
 

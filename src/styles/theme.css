@@ -2,15 +2,18 @@
   :root {
     --primary: #000;
     --baseBackground: #fff;
+    --primaryBackground: #d5d5d5;
   }
 
   :root[data-theme='dark'] {
     --primary: #fff;
     --baseBackground: #000;
+    --primaryBackground: #242424;
   }
 
   :root[data-theme='light'] {
     --primary: #000;
     --baseBackground: #fff;
+    --primaryBackground: #d5d5d5;
   }
 }

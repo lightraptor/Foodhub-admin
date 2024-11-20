@@ -1,4 +1,4 @@
-import { Themes } from 'defines'
+import { Themes } from '@/defines'
 import { useState } from 'react'
 
 export const ThemeControl = () => {
