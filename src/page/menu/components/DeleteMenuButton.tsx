@@ -9,28 +9,28 @@ import {
   DialogTitle
 } from '@/components/ui/dialog'
 import { Trash2 } from 'lucide-react'
-import { Category } from './CategoryTable'
 import { toast } from 'react-toastify'
-import { deleteCategory } from '@/apis'
+import { deleteMenu } from '@/apis'
+import { Menu } from '@/types'
 
-interface DeleteCategoryButtonProps {
-  category: Category
+interface DeleteMenuButtonProps {
+  menu: Menu
   fetchData: () => Promise<void>
 }
 
-export function DeleteCategoryButton({ category, fetchData }: DeleteCategoryButtonProps) {
+export function DeleteMenuButton({ menu, fetchData }: DeleteMenuButtonProps) {
   const [open, setOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
 
   const handleDelete = async () => {
     setIsDeleting(true)
     try {
-      const response = await deleteCategory(category.id)
+      const response = await deleteMenu(menu.id)
       if (!response) {
-        throw new Error('Failed to delete category')
+        throw new Error('Failed to delete menu')
       }
       fetchData()
-      toast(`${category.name} has been successfully deleted.`, {
+      toast(`${menu.menuName} has been successfully deleted.`, {
         type: 'success',
         position: 'top-center',
         autoClose: 3000,
@@ -41,8 +41,8 @@ export function DeleteCategoryButton({ category, fetchData }: DeleteCategoryButt
         progress: undefined
       })
     } catch (error) {
-      console.error('Error deleting category:', error)
-      toast('Failed to delete category. Please try again.', {
+      console.error('Error deleting menu:', error)
+      toast('Failed to delete menu. Please try again.', {
         type: 'error',
         position: 'top-center',
         autoClose: 3000,
@@ -62,13 +62,13 @@ export function DeleteCategoryButton({ category, fetchData }: DeleteCategoryButt
     <>
       <Button variant='ghost' size='icon' onClick={() => setOpen(true)}>
         <Trash2 className='h-4 w-4' />
-        <span className='sr-only'>Delete {category.name}</span>
+        <span className='sr-only'>Delete {menu.menuName}</span>
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Xác nhận xóa</DialogTitle>
-            <DialogDescription>Bạn có chắc chắn muốn xóa category "{category.name}"?</DialogDescription>
+            <DialogDescription>Bạn có chắc chắn muốn xóa category "{menu.menuName}"?</DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant='outline' onClick={() => setOpen(false)} disabled={isDeleting}>

@@ -1,35 +1,28 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Switch } from '@/components/ui/switch'
 import { useEffect, useState } from 'react'
-import { DeleteCategoryButton } from './DeleteCategoryButton'
-import { EditCategoryButton } from './EditCategoryButton'
 import { toast } from 'react-toastify'
 import { Pagination } from '@/components'
-import { fetchCategory } from '@/apis'
+import { fetchMenu } from '@/apis'
+import { Menu } from '@/types'
+import { EditMenuButton } from './EditMenuButton'
+import { DeleteMenuButton } from './DeleteMenuButton'
 
-export type Category = {
-  id: string
-  name: string
-  code: string
-  description: string
-  inactive: boolean
-}
-
-export default function CategoryTable() {
-  const [categories, setCategories] = useState<Category[]>([])
+export default function MenuTable() {
+  const [menu, setMenu] = useState<Menu[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [totalItems, setTotalItems] = useState<number | undefined>(undefined)
 
   useEffect(() => {
-    fetchCategories()
+    fetchData()
   }, [currentPage, pageSize])
 
-  const fetchCategories = async () => {
+  const fetchData = async () => {
     try {
       setIsLoading(true)
-      const response = await fetchCategory({
+      const response = await fetchMenu({
         PageNumber: currentPage,
         PageSize: pageSize
       })
@@ -37,7 +30,7 @@ export default function CategoryTable() {
         throw new Error('Failed to fetch categories')
       }
       const data = await response.data
-      setCategories(data?.items || [])
+      setMenu(data?.items || [])
       setTotalItems(data?.totalRecord || undefined)
     } catch (error) {
       console.error('Error fetching categories:', error)
@@ -56,7 +49,7 @@ export default function CategoryTable() {
     }
   }
 
-  const isNextDisabled = categories.length < pageSize
+  const isNextDisabled = menu.length < pageSize
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -76,25 +69,29 @@ export default function CategoryTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className='w-[200px]'>Category Name</TableHead>
-            <TableHead>Code</TableHead>
+            <TableHead>Image</TableHead>
+            <TableHead className='w-[200px]'>Menu Name</TableHead>
+            <TableHead>Soft Order</TableHead>
             <TableHead>Description</TableHead>
             <TableHead className='text-center'>Inactive</TableHead>
             <TableHead className='text-right'>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categories.map((category) => (
-            <TableRow key={category.id}>
-              <TableCell className='font-medium'>{category.name}</TableCell>
-              <TableCell>{category.code}</TableCell>
-              <TableCell>{category.description}</TableCell>
+          {menu.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell>
+                <img src={item.imageUrl} alt={item.menuName} className='h-10 w-10 rounded-full' />
+              </TableCell>
+              <TableCell className='font-medium'>{item.menuName}</TableCell>
+              <TableCell>{item.sortOrder}</TableCell>
+              <TableCell>{item.description}</TableCell>
               <TableCell className='text-center'>
-                <Switch checked={category.inactive} />
+                <Switch checked={item.inactive} />
               </TableCell>
               <TableCell className='text-right'>
-                <EditCategoryButton category={category} fetchData={fetchCategories} />
-                <DeleteCategoryButton category={category} fetchData={fetchCategories} />
+                <EditMenuButton menu={item} fetchData={fetchData} />
+                <DeleteMenuButton menu={item} fetchData={fetchData} />
               </TableCell>
             </TableRow>
           ))}

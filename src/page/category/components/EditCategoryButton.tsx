@@ -7,37 +7,27 @@ import { Switch } from '@/components/ui/switch'
 import { Edit } from 'lucide-react'
 import { Category } from './CategoryTable'
 import { toast } from 'react-toastify'
+import { updateCategory } from '@/apis'
 
 interface EditCategoryButtonProps {
   category: Category
-  onEdit: (category: Category) => void
   fetchData: () => Promise<void>
 }
 
-export function EditCategoryButton({ category, onEdit, fetchData }: EditCategoryButtonProps) {
+export function EditCategoryButton({ category, fetchData }: EditCategoryButtonProps) {
   const [open, setOpen] = useState(false)
   const [editedCategory, setEditedCategory] = useState(category)
   const [isEditing, setIsEditing] = useState(false)
-  const accessToken = localStorage.getItem('accessToken')
 
   const handleEdit = async () => {
     setIsEditing(true)
     try {
-      const response = await fetch(`https://192.168.12.210:7143/api/Category`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`
-        },
-        body: JSON.stringify(editedCategory)
-      })
-      if (!response.ok) {
+      const response = await updateCategory(editedCategory)
+      if (!response.success) {
         throw new Error('Failed to update category')
       }
-      const updatedCategory = await response.json()
-      onEdit(updatedCategory)
       fetchData()
-      toast(`${updatedCategory.name} has been successfully updated.`, {
+      toast(`${editedCategory.name} has been successfully updated.`, {
         type: 'success',
         position: 'top-center',
         autoClose: 3000,

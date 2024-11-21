@@ -1,7 +1,7 @@
 import { Layout } from '@/components'
 import { ROUTES } from '@/defines'
 import { useRouteRender } from '@/hooks'
-import { HomePage, LoginPage } from '@/page'
+import { HomePage, LoginPage, MenuPage, ProductPage } from '@/page'
 import { CategoryPage } from '@/page'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
@@ -20,6 +20,22 @@ export const MainRouter = () => {
       element: useRouteRender(
         <Layout>
           <CategoryPage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.Product.path,
+      element: useRouteRender(
+        <Layout>
+          <ProductPage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.Menu.path,
+      element: useRouteRender(
+        <Layout>
+          <MenuPage />
         </Layout>
       )
     },
