@@ -1,4 +1,5 @@
 import React from 'react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
 interface PaginationProps {
   currentPage: number
@@ -20,8 +21,8 @@ export const Pagination: React.FC<PaginationProps> = ({
   const totalPages = totalItems ? Math.ceil(totalItems / pageSize) : 1
   const pageSizes = [5, 10, 20, 50]
 
-  const handlePageSizeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    onPageSizeChange(Number(event.target.value))
+  const handlePageSizeChange = (value: string) => {
+    onPageSizeChange(Number(value))
   }
 
   return (
@@ -30,18 +31,18 @@ export const Pagination: React.FC<PaginationProps> = ({
         <label htmlFor='pageSize' className='mr-2 text-sm font-medium'>
           Items per page:
         </label>
-        <select
-          id='pageSize'
-          value={pageSize}
-          onChange={handlePageSizeChange}
-          className='px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500'
-        >
-          {pageSizes.map((size) => (
-            <option key={size} value={size}>
-              {size}
-            </option>
-          ))}
-        </select>
+        <Select onValueChange={handlePageSizeChange}>
+          <SelectTrigger className='w-[100px]'>
+            <SelectValue placeholder={pageSize} />
+          </SelectTrigger>
+          <SelectContent>
+            {pageSizes.map((size) => (
+              <SelectItem key={size} value={`${size}`}>
+                {size}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Total Items Display */}

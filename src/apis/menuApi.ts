@@ -135,3 +135,13 @@ export const deleteMenu = async (id: string): Promise<ApiResponse<null>> => {
     throw error
   }
 }
+
+export const fetchActiveMenu = async (): Promise<ApiResponse<Menu[]>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<Menu[]>> = await instance.get(`/api/Menu/active`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}

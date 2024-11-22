@@ -72,7 +72,7 @@ export default function CategoryTable() {
   }
 
   return (
-    <div className='container mx-auto py-10'>
+    <div className='container mx-auto py-5'>
       <Table>
         <TableHeader>
           <TableRow>

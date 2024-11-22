@@ -76,3 +76,13 @@ export const deleteCategory = async (id: string): Promise<ApiResponse<null>> => 
     throw error
   }
 }
+
+export const fetchActiveCategory = async (): Promise<ApiResponse<Category[]>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<Category[]>> = await instance.get(`/api/Category/active`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}
