@@ -1,8 +1,9 @@
+import { BASE_URL } from '@/constants'
 import { Category } from '@/types'
 import axios, { AxiosResponse } from 'axios'
 
 const instance = axios.create({
-  baseURL: `https://192.168.12.210:7143`,
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     Authorization: `Bearer ${localStorage.getItem('accessToken')}`

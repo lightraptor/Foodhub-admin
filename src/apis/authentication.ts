@@ -1,7 +1,8 @@
 import { FormLogin, FormRegister } from '@/types'
 import { api, Api } from './api'
+import { BASE_URL } from '@/constants'
 
-const base_url = 'https://192.168.12.210:7143'
+const base_url = BASE_URL
 
 export class AuthenticationApi {
   instance: Api
