@@ -1,10 +1,11 @@
 export const AUTHENTICATION_ROUTES = {
   Home: { path: '/', label: 'Home' },
-  Account: { path: '/account', label: 'Account' },
+  //Account: { path: '/account', label: 'Account' },
   Category: { path: '/category', label: 'Category' },
   Menu: { path: '/menu', label: 'Menu' },
   Product: { path: '/product', label: 'Product' },
-  Table: { path: '/table', label: 'Table' }
+  Order: { path: '/order', label: 'Order' }
+  //Table: { path: '/table', label: 'Table' },
 }
 
 export const UN_AUTHENTICATION_ROUTES = {
