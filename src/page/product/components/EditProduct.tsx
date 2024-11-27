@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 import {
   Dialog,
   DialogContent,
@@ -34,6 +36,8 @@ export const EditProduct = ({
   const [error, setError] = useState<string | null>(null)
   const [listCategory, setListCategory] = useState<Category[]>([])
   const [listMenu, setListMenu] = useState<Menu[]>([])
+  const [previewImage, setPreviewImage] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const [editedProduct, setEditedProduct] = useState({
     id: product.id,
@@ -83,6 +87,17 @@ export const EditProduct = ({
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     setEditedProduct({ ...editedProduct, file: file as File | null })
+    if (file) {
+      const imageUrl = URL.createObjectURL(file)
+      setPreviewImage(imageUrl)
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setPreviewImage(null) // Xóa preview
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '' // Xóa tên file trong input
+    }
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -150,7 +165,7 @@ export const EditProduct = ({
             <span className='sr-only'>Edit</span>
           </Button>
         </DialogTrigger>
-        <DialogContent className='sm:max-w-[425px]'>
+        <DialogContent className='sm:max-w-[800px] max-h-[90vh] overflow-y-auto'>
           <DialogHeader>
             <DialogTitle>Chỉnh sửa Product</DialogTitle>
             <DialogDescription>Điền thông tin để chỉnh sửa Product. Nhấn Lưu khi hoàn tất.</DialogDescription>
@@ -158,109 +173,152 @@ export const EditProduct = ({
           {product && (
             <form onSubmit={handleSubmit}>
               <div className='grid gap-4 py-4'>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label htmlFor='name' className='text-right'>
-                    Tên
-                  </Label>
-                  <Input
-                    id='name'
-                    value={editedProduct.name}
-                    onChange={(e) => setEditedProduct({ ...editedProduct, name: e.target.value })}
-                    className='col-span-3'
-                  />
+                {/* Cột 1: Tên, Mã, Giá, Giá bán */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <div className='grid gap-4'>
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label htmlFor='name' className='text-left'>
+                        Tên
+                      </Label>
+                      <Input
+                        id='name'
+                        value={editedProduct.name}
+                        onChange={(e) => setEditedProduct({ ...editedProduct, name: e.target.value })}
+                        className='col-span-3'
+                      />
+                    </div>
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label htmlFor='code' className='text-left'>
+                        Mã
+                      </Label>
+                      <Input
+                        id='code'
+                        value={editedProduct.code}
+                        onChange={(e) => setEditedProduct({ ...editedProduct, code: e.target.value })}
+                        className='col-span-3'
+                      />
+                    </div>
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label htmlFor='price' className='text-left'>
+                        Giá
+                      </Label>
+                      <Input
+                        id='price'
+                        value={editedProduct.price}
+                        type='number'
+                        onChange={(e) => setEditedProduct({ ...editedProduct, price: Number(e.target.value) })}
+                        className='col-span-3'
+                      />
+                    </div>
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label htmlFor='sellingPrice' className='text-left'>
+                        Giá bán
+                      </Label>
+                      <Input
+                        id='sellingPrice'
+                        value={editedProduct.sellingPrice}
+                        type='number'
+                        onChange={(e) => setEditedProduct({ ...editedProduct, sellingPrice: Number(e.target.value) })}
+                        className='col-span-3'
+                      />
+                    </div>
+                  </div>
+
+                  {/* Cột 2: Đơn vị, Category, Menu, Thumbnail */}
+                  <div className='grid gap-4'>
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label htmlFor='unitName' className='text-left'>
+                        Đơn vị
+                      </Label>
+                      <Input
+                        id='unitName'
+                        value={editedProduct.unitName}
+                        onChange={(e) => setEditedProduct({ ...editedProduct, unitName: e.target.value })}
+                        className='col-span-3'
+                      />
+                    </div>
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label className='text-left'>Category</Label>
+                      <Select onValueChange={(e) => setEditedProduct({ ...editedProduct, categoryId: e })}>
+                        <SelectTrigger className='w-full col-span-3'>
+                          <SelectValue placeholder={product.categoryDto.name} defaultValue={product.categoryDto.id} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {listCategory.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label className='text-left'>Menu</Label>
+                      <Select onValueChange={(e) => setEditedProduct({ ...editedProduct, menuId: e })}>
+                        <SelectTrigger className='w-full col-span-3'>
+                          <SelectValue placeholder={product.menuDto.menuName} defaultValue={product.menuDto.id} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {listMenu.map((menu) => (
+                            <SelectItem key={menu.id} value={menu.id}>
+                              {menu.menuName}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className='grid grid-cols-4 items-center gap-4'>
+                      <Label htmlFor='file' className='text-left'>
+                        Thumbnail
+                      </Label>
+                      <Input
+                        id='file'
+                        type='file'
+                        accept='image/*'
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        className='col-span-3'
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label htmlFor='code' className='text-right'>
-                    Mã
-                  </Label>
-                  <Input
-                    id='code'
-                    value={editedProduct.code}
-                    onChange={(e) => setEditedProduct({ ...editedProduct, code: e.target.value })}
-                    className='col-span-3'
-                  />
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label htmlFor='price' className='text-right'>
-                    Giá
-                  </Label>
-                  <Input
-                    id='price'
-                    value={editedProduct.price}
-                    type='number'
-                    onChange={(e) => setEditedProduct({ ...editedProduct, price: Number(e.target.value) })}
-                    className='col-span-3'
-                  />
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label htmlFor='sellingPrice' className='text-right'>
-                    Giá bán
-                  </Label>
-                  <Input
-                    id='sellingPrice'
-                    value={editedProduct.sellingPrice}
-                    type='number'
-                    onChange={(e) => setEditedProduct({ ...editedProduct, sellingPrice: Number(e.target.value) })}
-                    className='col-span-3'
-                  />
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label htmlFor='unitName' className='text-right'>
-                    Đơn vị
-                  </Label>
-                  <Input
-                    id='unitName'
-                    value={editedProduct.unitName}
-                    onChange={(e) => setEditedProduct({ ...editedProduct, unitName: e.target.value })}
-                    className='col-span-3'
-                  />
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Select onValueChange={(e) => setEditedProduct({ ...editedProduct, categoryId: e })}>
-                    <SelectTrigger className='w-[180px]'>
-                      <SelectValue placeholder={product.categoryDto.name} defaultValue={product.categoryDto.id} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {listCategory.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Select onValueChange={(e) => setEditedProduct({ ...editedProduct, menuId: e })}>
-                    <SelectTrigger className='w-[180px]'>
-                      <SelectValue placeholder={product.menuDto.menuName} defaultValue={product.menuDto.id} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {listMenu.map((menu) => (
-                        <SelectItem key={menu.id} value={menu.id}>
-                          {menu.menuName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label htmlFor='file' className='text-right'>
-                    Thumbnail
-                  </Label>
-                  <Input id='file' type='file' accept='image/*' onChange={handleFileChange} className='col-span-3' />
-                </div>
-                <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label htmlFor='description' className='text-right'>
+                {/* Phần preview ảnh */}
+                {previewImage && (
+                  <div className='w-full flex justify-center items-center mt-6'>
+                    <div className='relative group w-full max-w-xs'>
+                      <img src={previewImage} alt='Preview' className='w-full h-auto max-w-xs rounded border' />
+                      <button
+                        onClick={handleRemoveImage}
+                        className='absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity'
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                )}
+                {/* Phần mô tả nằm dưới */}
+                <div className='grid grid-cols-4 items-center gap-4 mt-4'>
+                  <Label htmlFor='description' className='text-left'>
                     Mô tả
                   </Label>
-                  <Input
-                    id='description'
+                  <ReactQuill
+                    theme='snow'
                     value={editedProduct.description}
-                    onChange={(e) => setEditedProduct({ ...editedProduct, description: e.target.value })}
-                    className='col-span-3'
+                    onChange={(value) => setEditedProduct({ ...editedProduct, description: value })}
+                    modules={{
+                      toolbar: [
+                        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                        ['bold', 'italic', 'underline'],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        ['link', 'image']
+                      ]
+                    }}
+                    className='rounded-md border border-gray-300 w-full col-span-4 min-h-20'
                   />
                 </div>
-                <div className='flex items-center space-x-2'>
+
+                {/* Switch Inactive */}
+                <div className='flex items-center space-x-2 mt-4'>
                   <Switch
                     id='inactive'
                     checked={editedProduct.inactive}
@@ -269,6 +327,7 @@ export const EditProduct = ({
                   <Label htmlFor='inactive'>Inactive</Label>
                 </div>
               </div>
+
               <DialogFooter>
                 <Button type='submit' disabled={loading}>
                   {loading ? 'Đang lưu...' : 'Lưu'}

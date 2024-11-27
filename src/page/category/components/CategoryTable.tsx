@@ -56,8 +56,6 @@ export default function CategoryTable() {
     }
   }
 
-  const isNextDisabled = categories.length < pageSize
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   }
@@ -105,7 +103,6 @@ export default function CategoryTable() {
         pageSize={pageSize}
         totalItems={totalItems}
         onPageChange={handlePageChange}
-        isNextDisabled={isNextDisabled}
         onPageSizeChange={handlePageSizeChange}
       />
     </div>

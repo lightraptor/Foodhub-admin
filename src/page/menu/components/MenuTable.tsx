@@ -1,80 +1,41 @@
+import React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Switch } from '@/components/ui/switch'
-import { useEffect, useState } from 'react'
-import { toast } from 'react-toastify'
 import { Pagination } from '@/components'
-import { fetchMenu } from '@/apis'
 import { Menu } from '@/types'
 import { EditMenuButton } from './EditMenuButton'
 import { DeleteMenuButton } from './DeleteMenuButton'
+import { Switch } from '@/components/ui/switch'
 
-export default function MenuTable() {
-  const [menu, setMenu] = useState<Menu[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageSize, setPageSize] = useState(10)
-  const [totalItems, setTotalItems] = useState<number | undefined>(undefined)
+type MenuTableProps = {
+  menu: Menu[]
+  currentPage: number
+  pageSize: number
+  totalItems: number | undefined
+  onPageChange: (page: number) => void
+  onPageSizeChange: (size: number) => void
+  fetchData: () => Promise<void>
+}
 
-  useEffect(() => {
-    fetchData()
-  }, [currentPage, pageSize])
-
-  const fetchData = async () => {
-    try {
-      setIsLoading(true)
-      const response = await fetchMenu({
-        PageNumber: currentPage,
-        PageSize: pageSize
-      })
-      if (!response.success) {
-        throw new Error('Failed to fetch categories')
-      }
-      const data = await response.data
-      setMenu(data?.items || [])
-      setTotalItems(data?.totalRecord || undefined)
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-      toast('Failed to load categories. Please refresh the page.', {
-        type: 'error',
-        position: 'top-center',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const isNextDisabled = menu.length < pageSize
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-  }
-
-  const handlePageSizeChange = (size: number) => {
-    setPageSize(size)
-    setCurrentPage(1) // Reset to the first page when pageSize changes
-  }
-
-  if (isLoading) {
-    return <div>Loading categories...</div>
-  }
-
+export default function MenuTable({
+  menu,
+  currentPage,
+  pageSize,
+  totalItems,
+  onPageChange,
+  onPageSizeChange,
+  fetchData
+}: MenuTableProps) {
   return (
     <div className='container mx-auto py-10'>
-      <Table>
+      <Table className='mx-1'>
         <TableHeader>
           <TableRow>
             <TableHead>Image</TableHead>
             <TableHead className='w-[200px]'>Menu Name</TableHead>
-            <TableHead>Soft Order</TableHead>
+            <TableHead>Sort Order</TableHead>
             <TableHead>Description</TableHead>
             <TableHead className='text-center'>Inactive</TableHead>
-            <TableHead className='text-right'>Thao tác</TableHead>
+            <TableHead className='text-right'>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -101,9 +62,8 @@ export default function MenuTable() {
         currentPage={currentPage}
         pageSize={pageSize}
         totalItems={totalItems}
-        onPageChange={handlePageChange}
-        isNextDisabled={isNextDisabled}
-        onPageSizeChange={handlePageSizeChange}
+        onPageChange={onPageChange}
+        onPageSizeChange={onPageSizeChange}
       />
     </div>
   )

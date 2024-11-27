@@ -7,10 +7,12 @@ import { useNavigate } from 'react-router'
 import { FormLogin, FormRegister } from '@/types'
 import { userActions } from '@/store/user'
 import { toast } from 'react-toastify'
+import { useAuthContext } from '@/context'
 
 export const useAuth = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { setIsLoggedIn } = useAuthContext()
   const login = async (params: FormLogin) => {
     // call api to set
     try {
@@ -25,6 +27,7 @@ export const useAuth = () => {
         toast.success(res?.data?.message, { autoClose: 3000 })
         localStorage.setItem('user', decoded?.email)
         localStorage.setItem('role', decoded?.role)
+        setIsLoggedIn(true)
         navigate(ROUTES.Home.path)
       } else {
         toast.error('You are not allowed to access this page', { autoClose: 3000 })
@@ -58,6 +61,7 @@ export const useAuth = () => {
     localStorage.removeItem(STORAGE.REFRESH_TOKEN)
     localStorage.removeItem('user')
     localStorage.removeItem('role')
+    setIsLoggedIn(false)
     navigate(ROUTES.Login.path)
     dispatch(userActions.clearToken())
   }

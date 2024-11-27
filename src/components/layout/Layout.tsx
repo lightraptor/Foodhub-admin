@@ -1,14 +1,22 @@
-import { Navbar } from '@/components'
+import React from 'react'
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { AppSidebar } from '@/components/sidebar'
+import { useAuthContext } from '@/context'
 
 interface LayoutProps {
   children: React.ReactNode
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const { isLoggedIn } = useAuthContext()
+
   return (
-    <div className=' bg-[#f3f4f5] h-[100vh] w-[100vw]'>
-      <Navbar />
-      <main className='bg-[#f3f4f7]'>{children}</main>
-    </div>
+    <SidebarProvider>
+      {isLoggedIn && <AppSidebar />}
+      <div className='w-full'>
+        {isLoggedIn && <SidebarTrigger />}
+        {children}
+      </div>
+    </SidebarProvider>
   )
 }

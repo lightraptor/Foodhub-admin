@@ -13,3 +13,19 @@ export type Menu = {
   sortOrder: number
   imageUrl: string
 }
+
+export type Users = {
+  id: string
+  userName: string
+  email: string
+  phone: any
+}
+
+export type TableItem = {
+  id: string
+  name: string
+  maxCapacity: number
+  status: string
+  isAvailable: boolean
+  areaName: string
+}

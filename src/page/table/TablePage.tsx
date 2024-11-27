@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { fetchMenu } from '@/apis'
-import MenuTable from './components/MenuTable'
-import AddMenuButton from './components/AddMenuButton'
-import { Menu } from '@/types'
 
-export const MenuPage = () => {
-  const [menu, setMenu] = useState<Menu[]>([])
+import { TableItem } from '@/types'
+import TableList from './components/TableList'
+import { fetchGetAllTable } from '@/apis/tableApi'
+import AddTable from './components/AddTable'
+
+export const TablePage = () => {
+  const [tableList, setTableList] = useState<TableItem[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
   const [totalItems, setTotalItems] = useState<number | undefined>(undefined)
@@ -16,12 +17,12 @@ export const MenuPage = () => {
     try {
       setLoading(true)
       setError(null)
-      const response = await fetchMenu({ PageNumber: page, PageSize: size })
+      const response = await fetchGetAllTable({ PageNumber: page, PageSize: size })
       if (!response.success) {
         throw new Error('Failed to fetch menu')
       }
       const data = response.data
-      setMenu(data?.items || [])
+      setTableList(data?.items || [])
       setTotalItems(data?.totalRecord || undefined)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error occurred')
@@ -48,12 +49,12 @@ export const MenuPage = () => {
 
   return (
     <>
-      <p className='text-2xl font-semibold mx-10 text-center my-5'>Menu</p>
+      <p className='text-2xl font-semibold mx-10 text-center my-5'>Table list</p>
       <div className='flex justify-end mx-10 mb-5'>
-        <AddMenuButton fetchData={fetchData} />
+        <AddTable fetchData={fetchData} />
       </div>
-      <MenuTable
-        menu={menu}
+      <TableList
+        tableList={tableList}
         currentPage={currentPage}
         pageSize={pageSize}
         totalItems={totalItems}
