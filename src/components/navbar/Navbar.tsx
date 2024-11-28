@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 
 export const Navbar: React.FC = () => {
   const username = localStorage.getItem('user')
+
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { logout } = useAuth()
   const navigate = useNavigate()

@@ -21,15 +21,7 @@ import { Switch } from '@/components/ui/switch'
 import { Edit } from 'lucide-react'
 import { toast } from 'react-toastify'
 
-export const EditProduct = ({
-  product,
-  onClose,
-  fetchData
-}: {
-  product: ProductItem
-  onClose: () => void
-  fetchData: () => void
-}) => {
+export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetchData: () => void }) => {
   const [open, setOpen] = useState(false)
   //const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null)
   const [loading, setLoading] = useState(false)
@@ -38,7 +30,6 @@ export const EditProduct = ({
   const [listMenu, setListMenu] = useState<Menu[]>([])
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement | null>(null)
-
   const [editedProduct, setEditedProduct] = useState({
     id: product.id,
     code: product.code,
@@ -138,7 +129,6 @@ export const EditProduct = ({
       })
       // Đóng dialog và làm mới dữ liệu
       setOpen(false)
-      onClose()
       fetchData()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error')

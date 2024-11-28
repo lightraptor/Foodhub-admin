@@ -5,6 +5,7 @@ import { Menu } from '@/types'
 import { EditMenuButton } from './EditMenuButton'
 import { DeleteMenuButton } from './DeleteMenuButton'
 import { Switch } from '@/components/ui/switch'
+import ErrorResult from '@/components/error-result/ErrorResult'
 
 type MenuTableProps = {
   menu: Menu[]
@@ -39,23 +40,31 @@ export default function MenuTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {menu.map((item) => (
-            <TableRow key={item.id}>
-              <TableCell>
-                <img src={item.imageUrl} alt={item.menuName} className='h-10 w-10 rounded-full' />
-              </TableCell>
-              <TableCell className='font-medium'>{item.menuName}</TableCell>
-              <TableCell>{item.sortOrder}</TableCell>
-              <TableCell>{item.description}</TableCell>
-              <TableCell className='text-center'>
-                <Switch checked={item.inactive} />
-              </TableCell>
-              <TableCell className='text-right'>
-                <EditMenuButton menu={item} fetchData={fetchData} />
-                <DeleteMenuButton menu={item} fetchData={fetchData} />
+          {menu && menu.length > 0 ? (
+            menu.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>
+                  <img src={item.imageUrl} alt={item.menuName} className='h-10 w-10 rounded-full' />
+                </TableCell>
+                <TableCell className='font-medium'>{item.menuName}</TableCell>
+                <TableCell>{item.sortOrder}</TableCell>
+                <TableCell>{item.description}</TableCell>
+                <TableCell className='text-center'>
+                  <Switch checked={item.inactive} />
+                </TableCell>
+                <TableCell className='text-right'>
+                  <EditMenuButton menu={item} fetchData={fetchData} />
+                  <DeleteMenuButton menu={item} fetchData={fetchData} />
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={6} className='h-24 text-xl text-center'>
+                <ErrorResult />
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
       <Pagination

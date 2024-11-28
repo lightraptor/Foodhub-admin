@@ -11,12 +11,10 @@ export const TablePage = () => {
   const [pageSize, setPageSize] = useState(10)
   const [totalItems, setTotalItems] = useState<number | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
 
   const fetchData = async (page = currentPage, size = pageSize) => {
     try {
       setLoading(true)
-      setError(null)
       const response = await fetchGetAllTable({ PageNumber: page, PageSize: size })
       if (!response.success) {
         throw new Error('Failed to fetch menu')
@@ -25,7 +23,7 @@ export const TablePage = () => {
       setTableList(data?.items || [])
       setTotalItems(data?.totalRecord || undefined)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error occurred')
+      console.error('Error fetching menu:', err)
     } finally {
       setLoading(false)
     }
@@ -45,8 +43,6 @@ export const TablePage = () => {
   }
 
   if (loading) return <p className='text-center text-lg'>Loading...</p>
-  if (error) return <p className='text-center text-lg text-red-500'>Error: {error}</p>
-
   return (
     <>
       <p className='text-2xl font-semibold mx-10 text-center my-5'>Table list</p>

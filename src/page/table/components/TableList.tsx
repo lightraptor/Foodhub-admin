@@ -7,6 +7,7 @@ import { putTableStatus } from '@/apis'
 import { toast } from 'react-toastify'
 import { EditTable } from './EditTable'
 import { DeleteTable } from './DeleteTable'
+import ErrorResult from '@/components/error-result/ErrorResult'
 
 type TableListProps = {
   tableList: TableItem[]
@@ -59,75 +60,83 @@ export default function TableList({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tableList.map((item, index) => (
-            <TableRow key={item.id}>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>{item.name}</TableCell>
-              <TableCell>{item.areaName}</TableCell>
-              <TableCell>{item.maxCapacity}</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <Badge
-                      className={`border-${
-                        item.status == 'Có thể đặt bàn'
-                          ? '[#008000]'
-                          : item.status == 'Bàn đã được khách đặt trước'
-                            ? '[#db3944]'
-                            : item.status == 'Bàn đăng có khách ngồi'
-                              ? '[#ddaf0b]'
-                              : item.status == 'Khác'
-                                ? '[#1eb00db]'
-                                : '[#000]'
-                      } text-${
-                        item.status == 'Có thể đặt bàn'
-                          ? '[#008000]'
-                          : item.status == 'Bàn đã được khách đặt trước'
-                            ? '[#db3944]'
-                            : item.status == 'Bàn đăng có khách ngồi'
-                              ? '[#ddaf0b]'
-                              : item.status == 'Khác'
-                                ? '[#1eb00db]'
-                                : '[#000]'
-                      }`}
-                      variant='default'
-                    >
-                      {item.status}
+          {tableList && tableList.length > 0 ? (
+            tableList.map((item, index) => (
+              <TableRow key={item.id}>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{item.name}</TableCell>
+                <TableCell>{item.areaName}</TableCell>
+                <TableCell>{item.maxCapacity}</TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <Badge
+                        className={`border-${
+                          item.status == 'Có thể đặt bàn'
+                            ? '[#008000]'
+                            : item.status == 'Bàn đã được khách đặt trước'
+                              ? '[#db3944]'
+                              : item.status == 'Bàn đăng có khách ngồi'
+                                ? '[#ddaf0b]'
+                                : item.status == 'Khác'
+                                  ? '[#1eb00db]'
+                                  : '[#000]'
+                        } text-${
+                          item.status == 'Có thể đặt bàn'
+                            ? '[#008000]'
+                            : item.status == 'Bàn đã được khách đặt trước'
+                              ? '[#db3944]'
+                              : item.status == 'Bàn đăng có khách ngồi'
+                                ? '[#ddaf0b]'
+                                : item.status == 'Khác'
+                                  ? '[#1eb00db]'
+                                  : '[#000]'
+                        }`}
+                        variant='default'
+                      >
+                        {item.status}
+                      </Badge>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem onClick={() => handleStatusChange(item.id, 'Free', item.status)}>
+                        Có thể đặt bàn
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleStatusChange(item.id, 'Reverved', item.status)}>
+                        Bàn đã được khách đặt trước
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleStatusChange(item.id, 'Occupied', item.status)}>
+                        Bàn đang có khách ngồi
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleStatusChange(item.id, 'Other', item.status)}>
+                        Khác
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+                <TableCell>
+                  {item.isAvailable ? (
+                    <Badge className='border-[#008000] text-[#008000]' variant='default'>
+                      On
                     </Badge>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => handleStatusChange(item.id, 'Free', item.status)}>
-                      Có thể đặt bàn
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleStatusChange(item.id, 'Reverved', item.status)}>
-                      Bàn đã được khách đặt trước
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleStatusChange(item.id, 'Occupied', item.status)}>
-                      Bàn đang có khách ngồi
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleStatusChange(item.id, 'Other', item.status)}>
-                      Khác
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-              <TableCell>
-                {item.isAvailable ? (
-                  <Badge className='border-[#008000] text-[#008000]' variant='default'>
-                    On
-                  </Badge>
-                ) : (
-                  <Badge className='border-[#ff0000] text-[#ff0000]' variant='default'>
-                    Off
-                  </Badge>
-                )}
-              </TableCell>
-              <TableCell className='text-right'>
-                <EditTable tableItem={item} fetchData={fetchData} />
-                <DeleteTable tableItem={item} fetchData={fetchData} />
+                  ) : (
+                    <Badge className='border-[#ff0000] text-[#ff0000]' variant='default'>
+                      Off
+                    </Badge>
+                  )}
+                </TableCell>
+                <TableCell className='text-right'>
+                  <EditTable tableItem={item} fetchData={fetchData} />
+                  <DeleteTable tableItem={item} fetchData={fetchData} />
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={7} className='h-24 text-xl text-center'>
+                <ErrorResult />
               </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
       <Pagination

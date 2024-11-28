@@ -11,12 +11,14 @@ import {
 import { AUTHENTICATION_ROUTES, AUTHENTICATION_MENUS, ROUTES, STORAGE, UN_AUTHENTICATION_ROUTES } from '@/defines'
 import { LayoutDashboard, LogOut, Settings, User } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks'
 
 export function AppSidebar() {
   const navigate = useNavigate()
   const { logout } = useAuth()
+  const location = useLocation()
+
   const access_token = localStorage.getItem(STORAGE.ACCESS_TOKEN)
   const username = localStorage.getItem('user')
   const handleNavigation = (path: string) => {
@@ -61,9 +63,12 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarMenu>
           {Object.entries(AUTHENTICATION_MENUS).map(([key, item]) => (
-            <SidebarMenuItem key={key} className=''>
+            <SidebarMenuItem key={key} className='p-2'>
               <SidebarMenuButton asChild tooltip={item.label} size='lg'>
-                <a onClick={() => handleNavigation(item.path)} className='flex items-center gap-2'>
+                <a
+                  onClick={() => handleNavigation(item.path)}
+                  className={`flex items-center gap-2 ${location.pathname === item.path ? 'bg-[#0765ff] text-[#fff]' : ''} hover:bg-[#0765ff] hover:text-[#fff] duration-300`}
+                >
                   <item.icon className=' h-10 w-10 ml-2' style={{ width: '1.2rem', height: '1.2rem' }} />
                   <span className='ml-2'>{item.label}</span>
                 </a>

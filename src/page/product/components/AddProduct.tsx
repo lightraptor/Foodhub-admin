@@ -118,7 +118,7 @@ const AddProduct = ({ fetchData }: { fetchData: () => void }) => {
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Thêm mới Category</DialogTitle>
+          <DialogTitle>Thêm mới Rroduct</DialogTitle>
           <DialogDescription>Điền thông tin để thêm mới Product. Nhấn Lưu khi hoàn tất.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>

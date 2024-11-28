@@ -2,7 +2,6 @@ import { Home, LayoutGrid, ShoppingBasket, SquareMenu, Users, Utensils } from 'l
 
 export const AUTHENTICATION_MENUS = {
   Home: { path: '/', label: 'Home', icon: Home },
-  Account: { path: '/account', label: 'Account', icon: Users },
   Category: { path: '/category', label: 'Category', icon: LayoutGrid },
   Menu: { path: '/menu', label: 'Menu', icon: SquareMenu },
   Product: { path: '/product', label: 'Product', icon: ShoppingBasket },

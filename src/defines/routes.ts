@@ -1,6 +1,5 @@
 export const AUTHENTICATION_ROUTES = {
   Home: { path: '/', label: 'Home' },
-  Account: { path: '/account', label: 'Account' },
   Category: { path: '/category', label: 'Category' },
   Menu: { path: '/menu', label: 'Menu' },
   Product: { path: '/product', label: 'Product' },

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { columns, ProductTable } from './components'
+import { ProductTable } from './components'
 import { fetchProduct } from '@/apis'
 import AddProduct from './components/AddProduct'
-// import { useEffect, useState } from 'react'
 
 interface ProductItem {
   id: string
@@ -34,23 +33,26 @@ export interface CategoryDto {
 
 export const ProductPage = () => {
   const [product, setProduct] = useState<ProductItem[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
+  const [totalItems, setTotalItems] = useState<number | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string | null>(null)
 
   const fetchData = async () => {
     try {
       setLoading(true)
       const response = await fetchProduct({
-        PageNumber: 1,
-        PageSize: 10
+        PageNumber: currentPage,
+        PageSize: pageSize
       })
       if (!response.success) {
-        throw new Error('Failed to fetch categories')
+        throw new Error(response.message || 'Failed to fetch categories')
       }
       const data = await response.data
       setProduct(data?.items || [])
+      setTotalItems(data?.totalRecord || undefined)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error')
+      console.error('Error fetching categories:', err)
     } finally {
       setLoading(false)
     }
@@ -58,19 +60,34 @@ export const ProductPage = () => {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [currentPage, pageSize])
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
+
+  const handlePageSizeChange = (size: number) => {
+    setPageSize(size)
+    setCurrentPage(1) // Reset to page 1
+  }
 
   if (loading) return <p className='text-center text-lg'>Loading...</p>
-  if (error) return <p className='text-center text-lg text-red-500'>Error: {error}</p>
+
   return (
     <>
-      <>
-        <p className='text-2xl font-semibold mx-10 text-center my-5'>Product page</p>
-        <AddProduct fetchData={fetchData} />
-        <div className='container mx-auto py-5'>
-          <ProductTable data={product} columns={columns(fetchData)} />
-        </div>
-      </>
+      <p className='text-2xl font-semibold mx-10 text-center my-5'>Product page</p>
+      <AddProduct fetchData={fetchData} />
+      <div className='container mx-auto py-5'>
+        <ProductTable
+          data={product}
+          currentPage={currentPage}
+          pageSize={pageSize}
+          totalItems={totalItems}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          fetchData={fetchData}
+        />
+      </div>
     </>
   )
 }
