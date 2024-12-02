@@ -4,18 +4,24 @@ import TableSelection from './components/TableSelection'
 import BookingForm from './components/BookingForm'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
-import { postBookingStaff } from '@/apis'
+import { postBookingStaff, putTableStatus } from '@/apis'
 import { postOrderStaff } from '@/apis/orderApi'
 
 export default function NewBookingPage() {
   const [selectedTables, setSelectedTables] = useState<TableItem[]>([])
   const navigate = useNavigate()
 
-  const handleTableSelect = (table: TableItem) => {
+  const handleTableSelect = async (table: TableItem) => {
     if (selectedTables.some((t) => t.id === table.id)) {
       setSelectedTables(selectedTables.filter((t) => t.id !== table.id))
+      const response = await putTableStatus({ tableId: table.id, status: 'Free' })
+      const data = response.data
+      console.log(data)
     } else {
       setSelectedTables([...selectedTables, table])
+      const response = await putTableStatus({ tableId: table.id, status: 'Reverved' })
+      const dataFalse = response.data
+      console.log(dataFalse)
     }
   }
 
