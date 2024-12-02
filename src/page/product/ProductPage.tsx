@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ProductTable } from './components'
 import { fetchProduct } from '@/apis'
 import AddProduct from './components/AddProduct'
+import ImportButton from './components/ImportButton'
 
 interface ProductItem {
   id: string
@@ -76,7 +77,10 @@ export const ProductPage = () => {
   return (
     <>
       <p className='text-2xl font-semibold mx-10 text-center my-5'>Product page</p>
-      <AddProduct fetchData={fetchData} />
+      <div className='flex flex-row justify-end'>
+        <AddProduct fetchData={fetchData} />
+        <ImportButton fetchData={fetchData} />
+      </div>
       <div className='container mx-auto py-5'>
         <ProductTable
           data={product}
