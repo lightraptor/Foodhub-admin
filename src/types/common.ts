@@ -29,3 +29,41 @@ export type TableItem = {
   isAvailable: boolean
   areaName: string
 }
+
+export type BookingItem = {
+  id: string
+  peopleCount: number
+  status: string
+  notes: string
+  bookingDate: string
+  checkinTime: string
+  customerId: any
+  customerName: string
+  phone: string
+  tables: Table[]
+}
+
+export type Table = {
+  tableId: string
+  name: string
+  areaName: string
+}
+
+export type OrderItem = {
+  id: string
+  bookingId: any
+  orderType: number
+  orderTypeName: string
+  orderStatus: string
+  createdDate: string
+  shippingDate: string
+  customerId: string
+  customerName: string
+  customerPhone: string
+  shippingAddress: string
+  deliveryAmount: number
+  depositAmount: number
+  discountAmount: number
+  totalAmount: number
+  orderDetails: any[]
+}

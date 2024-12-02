@@ -45,6 +45,27 @@ export const fetchGetAllTable = async ({
   }
 }
 
+export const fetchGetTable = async ({
+  PageNumber = 1,
+  PageSize = 10
+}: {
+  PageNumber?: number
+  PageSize?: number
+}): Promise<ApiResponse<TableResponse>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<TableResponse>> = await instance.get(`api/Table`, {
+      params: {
+        PageNumber,
+        PageSize
+      }
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}
+
 export const putTableStatus = async ({
   tableId,
   status
