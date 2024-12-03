@@ -1,14 +1,13 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import check from '@/assets/check.png'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
-import { changeStatusOrder, fetchOrder } from '@/apis/orderApi'
-import { BookingItem, OrderItem } from '@/types'
+import { useEffect } from 'react'
+import { changeStatusOrder } from '@/apis/orderApi'
 
 export const PaymentPage = () => {
   const [searchParams] = useSearchParams()
-  const [booking, setBooking] = useState<BookingItem | null>()
-  const [orderItems, setOrderItems] = useState<OrderItem | null>()
+  // const [booking, setBooking] = useState<BookingItem | null>()
+  // const [orderItems, setOrderItems] = useState<OrderItem | null>()
   // Lấy các giá trị từ query parameters
   const paymentId = searchParams.get('PaymentId')
   const paymentStatus = searchParams.get('PaymentStatus')
@@ -17,24 +16,24 @@ export const PaymentPage = () => {
   const amount = searchParams.get('Amount')
   const orderId = localStorage.getItem('orderId') || ''
 
-  const fetchOrderComplete = async () => {
-    try {
-      const response = await fetchOrder({
-        orderId: orderId
-      })
-      if (response.success) {
-        console.log(response.data)
-        const data = await response.data
-        setOrderItems(data)
-      }
-    } catch (err) {
-      console.error('Error fetching menu:', err)
-    }
-  }
+  // const fetchOrderComplete = async () => {
+  //   try {
+  //     const response = await fetchOrder({
+  //       orderId: orderId
+  //     })
+  //     if (response.success) {
+  //       console.log(response.data)
+  //       const data = await response.data
+  //       setOrderItems(data)
+  //     }
+  //   } catch (err) {
+  //     console.error('Error fetching menu:', err)
+  //   }
+  // }
 
-  useEffect(() => {
-    fetchOrderComplete()
-  }, [orderId])
+  // useEffect(() => {
+  //   fetchOrderComplete()
+  // }, [orderId])
 
   const changeStatus = async () => {
     try {
