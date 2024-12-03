@@ -130,7 +130,7 @@ export const editBooking = async ({
 
 export const deleteBooking = async ({ id }: { id: string }): Promise<ApiResponse<null>> => {
   try {
-    const response: AxiosResponse<ApiResponse<null>> = await instance.delete(`/api/booking/id:${id}?id=${id}`)
+    const response: AxiosResponse<ApiResponse<null>> = await instance.delete(`/api/booking/${id}`)
     console.log(response.data)
     return response.data
   } catch (error) {

@@ -54,7 +54,10 @@ export default function TableList({ onSelectTable, selectedTables }: Props) {
         {tables.map((table) => (
           <button
             key={table.id}
-            onClick={() => table.status === 'Có thể đặt bàn' && onSelectTable(table)}
+            onClick={() =>
+              (table.status === 'Có thể đặt bàn' || selectedTables.some((t) => t.id === table.id)) &&
+              onSelectTable(table)
+            }
             className={`w-full text-left rounded-lg shadow-md transition-all duration-300 ${
               selectedTables.some((t) => t.id === table.id)
                 ? 'bg-[#2563eb] text-[#fff] transform scale-105'

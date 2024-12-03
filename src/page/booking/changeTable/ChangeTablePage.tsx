@@ -44,17 +44,17 @@ export const ChangeTablePage = () => {
   useEffect(() => {
     setSelectedTables(allTables.filter((table) => selectedTableIds.includes(table.id)))
   }, [selectedTableIds])
-  const handleTableSelect = async (table: TableItem) => {
+  const handleTableSelect = (table: TableItem) => {
     if (selectedTables.some((t) => t.id === table.id)) {
       setSelectedTables(selectedTables.filter((t) => t.id !== table.id))
-      const response = await putTableStatus({ tableId: table.id, status: 'Free' })
-      const data = response.data
-      console.log(data)
+      // const response = await putTableStatus({ tableId: table.id, status: 'Free' })
+      // const data = response.data
+      // console.log(data)
     } else {
       setSelectedTables([...selectedTables, table])
-      const response = await putTableStatus({ tableId: table.id, status: 'Reverved' })
-      const dataFalse = response.data
-      console.log(dataFalse)
+      //   const response = await putTableStatus({ tableId: table.id, status: 'Reverved' })
+      //   const dataFalse = response.data
+      //   console.log(dataFalse)
     }
   }
 
@@ -84,6 +84,13 @@ export const ChangeTablePage = () => {
     try {
       const response = await changeTableBooking({ bookingId: id ?? '', tableIds: handleIds })
       const data = await response.data
+      if (response.success) {
+        for (const tableId of handleIds) {
+          const responseTable = await putTableStatus({ tableId: tableId, status: 'Reverved' })
+          const responseTableData = await responseTable.data
+          console.log(responseTableData)
+        }
+      }
       console.log(data)
       fetchBookingData()
     } catch (err) {
