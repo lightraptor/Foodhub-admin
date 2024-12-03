@@ -138,3 +138,22 @@ export const deleteBooking = async ({ id }: { id: string }): Promise<ApiResponse
     throw error
   }
 }
+
+export const changeTableBooking = async ({
+  bookingId,
+  tableIds
+}: {
+  bookingId: string
+  tableIds: string[]
+}): Promise<ApiResponse<BookingResponse>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<BookingResponse>> = await instance.put(`/api/booking/change-table`, {
+      bookingId,
+      tableIds
+    })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}

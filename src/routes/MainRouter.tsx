@@ -4,6 +4,7 @@ import { useRouteRender } from '@/hooks'
 import {
   BookingDetailPage,
   BookingPage,
+  ChangeTablePage,
   HomePage,
   LoginPage,
   MenuPage,
@@ -133,6 +134,22 @@ export const MainRouter = () => {
           element: useRouteRender(
             <Layout>
               <BookingDetailPage />
+            </Layout>
+          )
+        }
+      ]
+    },
+    {
+      path: ROUTES.ChangeTable.path,
+      children: [
+        {
+          index: false
+        },
+        {
+          path: ':id',
+          element: useRouteRender(
+            <Layout>
+              <ChangeTablePage />
             </Layout>
           )
         }

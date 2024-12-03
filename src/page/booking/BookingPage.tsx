@@ -114,6 +114,7 @@ export const BookingPage = () => {
   const handleChangeTable = (id: string) => {
     console.log(`Changing table for booking ID: ${id}`)
     // Implement change table logic
+    navigate(`/change-table/${id}`)
   }
 
   const handleDelete = async (id: string) => {
@@ -152,7 +153,7 @@ export const BookingPage = () => {
               onComplete={() => handleStatus(booking.id, 'Complete')}
               onCancel={() => handleStatus(booking.id, 'Cancel')}
               onViewDetails={() => handleViewDetails(booking)}
-              onChangeTable={handleChangeTable}
+              onChangeTable={() => handleChangeTable(booking.id)}
               onEdit={() => handleEdit(booking)}
               onDelete={() => openDeleteDialog(booking.id)}
             />

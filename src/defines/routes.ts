@@ -8,6 +8,7 @@ export const AUTHENTICATION_ROUTES = {
   Users: { path: '/users', label: 'Users' },
   Booking: { path: '/booking', detail: (id: string) => `/product/${id}`, label: 'Booking' },
   NewBooking: { path: '/new-booking', label: 'New Booking' },
+  ChangeTable: { path: '/change-table', label: 'Change Table' },
   NewOrder: { path: '/new-order', detail: (id: string) => `/new-order/${id}`, label: 'New Order' },
   BookingDetail: { path: '/booking-detail', detail: (id: string) => `/booking-detail/${id}`, label: 'Booking Detail' },
   PaymentConfirm: {
