@@ -4,7 +4,18 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { CalendarClock, Users, Phone, User, MoreHorizontal, Eye, TableIcon, Edit, Trash2 } from 'lucide-react'
+import {
+  CalendarClock,
+  Users,
+  Phone,
+  User,
+  MoreHorizontal,
+  Eye,
+  TableIcon,
+  Edit,
+  Trash2,
+  MapPinCheckInside
+} from 'lucide-react'
 import { BookingItem } from '@/types'
 
 interface BookingCardProps {
@@ -59,6 +70,14 @@ export function BookingCard({
               <CalendarClock className='mr-2 h-5 w-5 text-gray-400' />
               <span>{new Date(booking.checkinTime).toLocaleString()}</span>
             </div>
+          </div>
+          <div className='flex'>
+            <MapPinCheckInside className='mr-2 h-5 w-5 text-[#9ca3af]' />
+            {booking.tables.map((table, index) => (
+              <span key={index} className='mr-2'>
+                {table.name}
+              </span>
+            ))}
           </div>
         </div>
       </CardContent>

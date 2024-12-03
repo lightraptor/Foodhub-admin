@@ -44,6 +44,7 @@ export const BookingPage = () => {
       }
       const data = response.data
       setBookingList(data?.items || [])
+      console.log(data?.items)
       setTotalItems(data?.totalRecord || undefined)
     } catch (error) {
       console.error('Error fetching bookings:', error)
