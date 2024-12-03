@@ -44,7 +44,7 @@ export const BookingDetailPage = () => {
       <h1 className='text-3xl font-bold my-4 text-center'>Booking Detail</h1>
       {booking && (
         <>
-          <div className='mx-auto'>
+          <div className=' max-w-4xl mx-auto bg-gray-100 rounded-lg'>
             <div className='flex flex-row justify-around'>
               <div className='flex flex-col w-1/2 pl-10'>
                 <p className='font-semibold text-xl mb-1'>Customer Name</p>

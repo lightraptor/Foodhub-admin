@@ -1,10 +1,21 @@
-import React from 'react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { MoreHorizontal, ShoppingBag, User, Phone, Calendar } from 'lucide-react'
+import {
+  MoreHorizontal,
+  ShoppingBag,
+  User,
+  Phone,
+  Calendar,
+  ShoppingCart,
+  CircleDollarSign,
+  Check,
+  CircleCheckBig,
+  CircleX
+} from 'lucide-react'
 import { OrderItem } from '@/types'
+import { useNavigate } from 'react-router'
 
 interface OrderCardProps {
   order: OrderItem
@@ -14,6 +25,7 @@ interface OrderCardProps {
 }
 
 export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder }: OrderCardProps) {
+  const navigate = useNavigate()
   return (
     <Card className='w-full max-w-md hover:shadow-lg transition-shadow duration-300'>
       <CardContent className='p-6'>
@@ -72,18 +84,26 @@ export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder
               {order.orderStatus === 'Processing' && (
                 <>
                   <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Completed')}>
+                    <Check className='mr-1 h-5 w-5' />
                     Hoàn thành đơn hàng
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => onPaymentOrder(order.id)}>Thanh toán đơn hàng</DropdownMenuItem>
-                  <DropdownMenuItem>Chọn thêm món</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onPaymentOrder(order.id)}>
+                    <CircleDollarSign className='mr-1 h-5 w-5' /> Thanh toán đơn hàng
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate(`/new-order/${order.id}`)}>
+                    <ShoppingCart className='mr-1 h-5 w-5' />
+                    Chọn thêm món
+                  </DropdownMenuItem>
                 </>
               )}
               {order.orderStatus === 'Pending' && (
                 <>
                   <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Processing')}>
+                    <CircleCheckBig className='mr-1 h-5 w-5' />
                     Chấp nhận đơn hàng
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Cancelled')}>
+                    <CircleX className='mr-1 h-5 w-5' />
                     Hủy đơn hàng
                   </DropdownMenuItem>
                 </>

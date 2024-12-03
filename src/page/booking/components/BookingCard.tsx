@@ -13,8 +13,8 @@ import {
   Eye,
   TableIcon,
   Edit,
-  Trash2,
-  MapPinCheckInside
+  MapPinCheckInside,
+  ShoppingCart
 } from 'lucide-react'
 import { BookingItem } from '@/types'
 
@@ -26,7 +26,8 @@ interface BookingCardProps {
   onViewDetails: (id: string) => void
   onChangeTable: (id: string) => void
   onEdit: (id: string) => void
-  onDelete: (id: string) => void
+  onMoreOrder: (id: string) => void
+  //onDelete: (id: string) => void
 }
 
 export function BookingCard({
@@ -36,8 +37,9 @@ export function BookingCard({
   onCancel,
   onViewDetails,
   onChangeTable,
-  onEdit,
-  onDelete
+  onMoreOrder,
+  onEdit
+  //onDelete
 }: BookingCardProps) {
   const [isOpen, setIsOpen] = useState(false)
   return (
@@ -114,14 +116,25 @@ export function BookingCard({
               </>
             )}
             {booking.status === 'Accept' && (
-              <DropdownMenuItem
-                onClick={() => {
-                  onComplete(booking.id)
-                  setIsOpen(false)
-                }}
-              >
-                Hoàn thành
-              </DropdownMenuItem>
+              <>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onComplete(booking.id)
+                    setIsOpen(false)
+                  }}
+                >
+                  Hoàn thành
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onMoreOrder(booking.id)
+                    setIsOpen(false)
+                  }}
+                >
+                  <ShoppingCart className='mr-2 h-4 w-4' />
+                  Chọn thêm món
+                </DropdownMenuItem>
+              </>
             )}
             {['Pending', 'Accept'].includes(booking.status) && (
               <DropdownMenuItem
@@ -143,7 +156,8 @@ export function BookingCard({
               <Edit className='mr-2 h-4 w-4' />
               Chỉnh sửa
             </DropdownMenuItem>
-            <DropdownMenuItem
+
+            {/* <DropdownMenuItem
               onClick={() => {
                 onDelete(booking.id)
                 setIsOpen(false)
@@ -151,7 +165,7 @@ export function BookingCard({
             >
               <Trash2 className='mr-2 h-4 w-4' />
               Xóa
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       </CardFooter>

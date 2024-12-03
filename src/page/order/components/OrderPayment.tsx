@@ -72,7 +72,7 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
     <div className='flex justify-center items-center'>
       <Dialog>
         <DialogTrigger>
-          <Button className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'>Thanh toán</Button>
+          <Button className='bg-[#0765ff] text-[#fff] hover:bg-[#0765ff]/90 px-4 py-2 rounded'>Thanh toán</Button>
         </DialogTrigger>
         <DialogContent className='w-[90%] max-w-md p-6 bg-[#fff] rounded-md'>
           <h2 className='text-lg font-bold mb-4'>Transfer Details</h2>
@@ -107,7 +107,7 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
 
           {/* Submit Button */}
           <Button
-            className='bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full'
+            className='bg-[#22c55e] text-[#fff] px-4 py-2 rounded hover:bg-[#22c55e]/90 w-full'
             onClick={handlePayment}
           >
             Submit

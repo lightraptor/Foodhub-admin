@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
-import { changeStatusBooking, deleteBooking, editBooking, fetchBooking } from '@/apis'
+import { changeStatusBooking, editBooking, fetchBooking, putTableStatus } from '@/apis'
 import { BookingItem } from '@/types'
 import { BookingCard } from './components/BookingCard'
 import { Pagination } from '@/components'
 import { useNavigate } from 'react-router'
 import { EditBookingDialog } from './components'
 import { toast } from 'react-toastify'
-import DeleteBookingDialog from './components/DeleteBookingDialog'
+// import DeleteBookingDialog from './components/DeleteBookingDialog'
 import ErrorResult from '@/components/error-result/ErrorResult'
 import { Button } from '@/components/ui/button'
+import { fetchOrderStaff } from '@/apis/orderApi'
 
 export const BookingPage = () => {
   const [bookingList, setBookingList] = useState<BookingItem[]>([])
@@ -18,19 +19,19 @@ export const BookingPage = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [selectedBooking, setSelectedBooking] = useState<BookingItem | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
-  const [bookingToDelete, setBookingToDelete] = useState<string>('')
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  // const [bookingToDelete, setBookingToDelete] = useState<string>('')
+  // const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
-  const openDeleteDialog = (id: string) => {
-    setBookingToDelete(id)
-    setDeleteDialogOpen(true)
-  }
+  // const openDeleteDialog = (id: string) => {
+  //   setBookingToDelete(id)
+  //   setDeleteDialogOpen(true)
+  // }
 
-  const closeDeleteDialog = () => {
-    setDeleteDialogOpen(false)
-    setBookingToDelete('')
-    fetchData()
-  }
+  // const closeDeleteDialog = () => {
+  //   setDeleteDialogOpen(false)
+  //   setBookingToDelete('')
+  //   fetchData()
+  // }
 
   const navigate = useNavigate()
 
@@ -60,6 +61,38 @@ export const BookingPage = () => {
   const handleEdit = (booking: BookingItem) => {
     setSelectedBooking(booking)
     setDialogOpen(true)
+  }
+
+  const handleComplete = async (booking: BookingItem) => {
+    try {
+      const response = await changeStatusBooking({ bookingId: booking.id, status: 'Complete' })
+      if (response.success) {
+        const tableIds = booking.tables.map((table) => table.tableId)
+        for (const tableId of tableIds) {
+          const responseTable = await putTableStatus({ tableId: tableId, status: 'Free' })
+          const responseTableData = await responseTable.data
+          console.log(responseTableData)
+        }
+        toast.success('Booking completed successfully', { autoClose: 2000 })
+        fetchData()
+      } else {
+        throw new Error('Failed to change status')
+      }
+    } catch (error) {
+      console.error('Error changing status:', error)
+    }
+  }
+
+  const handleMoreOrder = async (booking: BookingItem) => {
+    try {
+      const response = await fetchOrderStaff({ bookingId: booking.id })
+      if (response.success) {
+        const data = await response.data
+        navigate(`/new-order/${data?.id}`)
+      }
+    } catch (error) {
+      console.error('Error fetching menu:', error)
+    }
   }
 
   const handleDialogClose = () => {
@@ -117,22 +150,22 @@ export const BookingPage = () => {
     navigate(`/change-table/${id}`)
   }
 
-  const handleDelete = async (id: string) => {
-    console.log(`Deleting booking with ID: ${id}`)
-    try {
-      const response = await deleteBooking({ id })
-      if (response) {
-        toast.success('Booking deleted successfully', { autoClose: 2000 })
-        setBookingList((prevList) => prevList.filter((item) => item.id !== id)) // Xóa cục bộ
-        await fetchData()
-      } else {
-        await fetchData()
-        throw new Error('Failed to delete booking')
-      }
-    } catch (error) {
-      console.error('Error deleting booking:', error)
-    }
-  }
+  // const handleDelete = async (id: string) => {
+  //   console.log(`Deleting booking with ID: ${id}`)
+  //   try {
+  //     const response = await deleteBooking({ id })
+  //     if (response) {
+  //       toast.success('Booking deleted successfully', { autoClose: 2000 })
+  //       setBookingList((prevList) => prevList.filter((item) => item.id !== id)) // Xóa cục bộ
+  //       await fetchData()
+  //     } else {
+  //       await fetchData()
+  //       throw new Error('Failed to delete booking')
+  //     }
+  //   } catch (error) {
+  //     console.error('Error deleting booking:', error)
+  //   }
+  // }
   // Implement delete booking logic
 
   if (loading) return <p className='text-center text-lg'>Loading...</p>
@@ -150,12 +183,13 @@ export const BookingPage = () => {
               key={booking.id}
               booking={booking}
               onAccept={() => handleStatus(booking.id, 'Accept')}
-              onComplete={() => handleStatus(booking.id, 'Complete')}
+              onComplete={() => handleComplete(booking)}
               onCancel={() => handleStatus(booking.id, 'Cancel')}
               onViewDetails={() => handleViewDetails(booking)}
               onChangeTable={() => handleChangeTable(booking.id)}
               onEdit={() => handleEdit(booking)}
-              onDelete={() => openDeleteDialog(booking.id)}
+              onMoreOrder={() => handleMoreOrder(booking)}
+              // onDelete={() => openDeleteDialog(booking.id)}
             />
           ))}
         </div>
@@ -180,12 +214,12 @@ export const BookingPage = () => {
         onSave={handleEditSave}
       />
 
-      <DeleteBookingDialog
+      {/* <DeleteBookingDialog
         bookingId={bookingToDelete}
         open={deleteDialogOpen}
         onClose={closeDeleteDialog}
         onSave={handleDelete}
-      />
+      /> */}
     </>
   )
 }

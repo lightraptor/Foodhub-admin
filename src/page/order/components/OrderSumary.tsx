@@ -2,6 +2,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { formatToVND } from '@/constants/common'
 import { OrderItem } from '@/types'
 import { OrderPayment } from './OrderPayment'
+import { Button } from '@/components/ui/button'
 
 interface OrderSummaryProps {
   orderItems: OrderItem
@@ -60,6 +61,9 @@ export default function OrderSummary({ orderItems }: OrderSummaryProps) {
         </div>
         <div className='flex flex-row mt-3'>
           <OrderPayment orderItems={orderItems} />
+          <Button className='ml-2 border-[#0765ff] text-[#0765ff]' onClick={() => window.history.back()}>
+            Quay lại
+          </Button>
         </div>
       </CardFooter>
     </Card>
