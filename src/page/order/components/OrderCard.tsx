@@ -10,10 +10,10 @@ interface OrderCardProps {
   order: OrderItem
   onViewDetails: (id: string) => void
   onUpdateStatus: (id: string, status: string) => void
-  onDeleteOrder: (id: string) => void
+  onPaymentOrder: (id: string) => void
 }
 
-export function OrderCard({ order, onViewDetails, onUpdateStatus, onDeleteOrder }: OrderCardProps) {
+export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder }: OrderCardProps) {
   return (
     <Card className='w-full max-w-md hover:shadow-lg transition-shadow duration-300'>
       <CardContent className='p-6'>
@@ -61,22 +61,36 @@ export function OrderCard({ order, onViewDetails, onUpdateStatus, onDeleteOrder 
         <Button variant='outline' size='sm' onClick={() => onViewDetails(order.id)}>
           Xem chi tiết
         </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant='ghost' size='sm'>
-              <MoreHorizontal className='h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align='end'>
-            {order.orderStatus === 'Pending' && (
-              <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Completed')}>
-                Hoàn thành đơn hàng
-              </DropdownMenuItem>
-            )}
-            <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Cancelled')}>Hủy đơn hàng</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onDeleteOrder(order.id)}>Xóa đơn hàng</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {(order.orderStatus === 'Pending' || order.orderStatus === 'Processing') && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='ghost' size='sm'>
+                <MoreHorizontal className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              {order.orderStatus === 'Processing' && (
+                <>
+                  <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Completed')}>
+                    Hoàn thành đơn hàng
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onPaymentOrder(order.id)}>Thanh toán đơn hàng</DropdownMenuItem>
+                  <DropdownMenuItem>Chọn thêm món</DropdownMenuItem>
+                </>
+              )}
+              {order.orderStatus === 'Pending' && (
+                <>
+                  <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Processing')}>
+                    Chấp nhận đơn hàng
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Cancelled')}>
+                    Hủy đơn hàng
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </CardFooter>
     </Card>
   )

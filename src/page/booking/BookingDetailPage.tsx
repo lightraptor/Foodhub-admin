@@ -46,21 +46,21 @@ export const BookingDetailPage = () => {
         <>
           <div className='mx-auto'>
             <div className='flex flex-row justify-around'>
-              <div className='flex flex-col w-1/2'>
+              <div className='flex flex-col w-1/2 pl-10'>
                 <p className='font-semibold text-xl mb-1'>Customer Name</p>
                 <p>{booking.customerName}</p>
               </div>
-              <div className='flex flex-col w-1/2'>
+              <div className='flex flex-col w-1/2 pl-10'>
                 <p className='font-semibold text-xl mb-1'>Phone Number</p>
                 <p>{booking.phone}</p>
               </div>
             </div>
             <div className='flex flex-row justify-around my-5'>
-              <div className='flex flex-col w-1/2'>
+              <div className='flex flex-col w-1/2 pl-10'>
                 <p className='font-semibold text-xl mb-1'>People</p>
                 <p>{booking.peopleCount}</p>
               </div>
-              <div className='flex flex-col w-1/2'>
+              <div className='flex flex-col w-1/2 pl-10'>
                 <p className='font-semibold text-xl mb-1'>Checkin Time</p>
                 <p>
                   {' '}
@@ -68,7 +68,7 @@ export const BookingDetailPage = () => {
                 </p>
               </div>
             </div>
-            <div className='flex flex-row justify-start gap-3 my-5'>
+            <div className='flex flex-row justify-start gap-3 my-5 pl-10'>
               <p className='font-semibold text-xl mb-1'>Status</p>
               {booking.status === 'Pending' && (
                 <Badge className='text-[#facc15] border-[#facc15]'>{booking.status}</Badge>

@@ -1,10 +1,12 @@
-import { fetchPagingOrder } from '@/apis/orderApi'
+import { changeStatusOrder, fetchPagingOrder } from '@/apis/orderApi'
 import { OrderItem } from '@/types'
 import { useEffect, useState } from 'react'
 import { OrderCard } from './components/OrderCard'
 import { Pagination } from '@/components'
+import { useNavigate } from 'react-router'
 
 export const OrderPage = () => {
+  const navigate = useNavigate()
   const [orders, setOrders] = useState<OrderItem[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
@@ -32,27 +34,26 @@ export const OrderPage = () => {
   const handleViewDetails = (id: string) => {
     console.log(`Viewing details for order: ${id}`)
     // Implement view details logic here
+    navigate(`/order/${id}`)
   }
 
-  const handleUpdateStatus = (id: string, newStatus: string) => {
-    setOrders(orders.map((order) => (order.id === id ? { ...order, orderStatus: newStatus } : order)))
+  const handleUpdateStatus = async (id: string, newStatus: string) => {
+    console.log(`Updating status for order: ${id} to ${newStatus}`)
+    // Implement update status logic here
+    const response = await changeStatusOrder({ id, status: newStatus })
+    if (response.success) {
+      fetchData()
+    }
   }
 
-  const handleDeleteOrder = (id: string) => {
-    setOrders(orders.filter((order) => order.id !== id))
+  const handlePaymentOrder = (id: string) => {
+    navigate(`/new-order/${id}`)
   }
 
   useEffect(() => {
     fetchData()
   }, [currentPage, pageSize])
 
-  /*************  ✨ Codeium Command ⭐  *************/
-  /**
-   * Updates the current page state to the specified page number.
-   *
-   * @param page - The new page number to set as the current page.
-   */
-  /******  84dcf72c-98db-4c8d-93cf-926d1fdb8515  *******/
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   }
@@ -74,7 +75,7 @@ export const OrderPage = () => {
             order={order}
             onViewDetails={handleViewDetails}
             onUpdateStatus={handleUpdateStatus}
-            onDeleteOrder={handleDeleteOrder}
+            onPaymentOrder={handlePaymentOrder}
           />
         ))}
       </div>

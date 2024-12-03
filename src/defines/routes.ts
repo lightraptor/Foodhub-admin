@@ -9,7 +9,11 @@ export const AUTHENTICATION_ROUTES = {
   Booking: { path: '/booking', detail: (id: string) => `/product/${id}`, label: 'Booking' },
   NewBooking: { path: '/new-booking', label: 'New Booking' },
   NewOrder: { path: '/new-order', detail: (id: string) => `/new-order/${id}`, label: 'New Order' },
-  BookingDetail: { path: '/booking-detail', detail: (id: string) => `/booking-detail/${id}`, label: 'Booking Detail' }
+  BookingDetail: { path: '/booking-detail', detail: (id: string) => `/booking-detail/${id}`, label: 'Booking Detail' },
+  PaymentConfirm: {
+    path: '/payment/confirm',
+    label: 'PaymentConfirm'
+  }
 }
 
 export const UN_AUTHENTICATION_ROUTES = {

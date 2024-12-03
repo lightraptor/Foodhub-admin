@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatToVND } from '@/constants/common'
 import { OrderItem } from '@/types'
+import { OrderPayment } from './OrderPayment'
 
 interface OrderSummaryProps {
   orderItems: OrderItem
@@ -58,8 +58,8 @@ export default function OrderSummary({ orderItems }: OrderSummaryProps) {
         <div className='flex flex-row justify-end'>
           <p className='font-semibold mt-2 text-2xl'>Tổng cộng: {orderItems.totalAmount.toLocaleString('vi-VN')} ₫</p>
         </div>
-        <div className='flex flex-row'>
-          <Button className='bg-[#0765ff] hover:bg-[#0765ff]/90'>Thanh toán</Button>
+        <div className='flex flex-row mt-3'>
+          <OrderPayment orderItems={orderItems} />
         </div>
       </CardFooter>
     </Card>

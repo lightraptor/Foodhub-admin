@@ -1,4 +1,4 @@
-import { fetchOrderStaff, postOrderDetail } from '@/apis/orderApi'
+import { fetchOrder, postOrderDetail } from '@/apis/orderApi'
 import { OrderItem } from '@/types'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
@@ -14,10 +14,10 @@ export const NewOrderPage = () => {
   const [loading, setLoading] = React.useState(false)
   const [order, setOrder] = useState<OrderItem>()
   const fetchData = async () => {
-    const bookingId = id ?? ''
+    const orderId = id ?? ''
     try {
       setLoading(true)
-      const response = await fetchOrderStaff({ bookingId })
+      const response = await fetchOrder({ orderId })
       if (!response.success) {
         throw new Error('Failed to fetch bookings')
       }

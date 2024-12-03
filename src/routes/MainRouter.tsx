@@ -8,7 +8,9 @@ import {
   LoginPage,
   MenuPage,
   NewOrderPage,
+  OrderDetailPage,
   OrderPage,
+  PaymentPage,
   ProductPage
 } from '@/page'
 import { CategoryPage } from '@/page'
@@ -60,14 +62,6 @@ export const MainRouter = () => {
       )
     },
     {
-      path: ROUTES.Order.path,
-      element: useRouteRender(
-        <Layout>
-          <OrderPage />
-        </Layout>
-      )
-    },
-    {
       path: ROUTES.Users.path,
       element: useRouteRender(
         <Layout>
@@ -93,11 +87,24 @@ export const MainRouter = () => {
     },
     {
       path: ROUTES.Order.path,
-      element: useRouteRender(
-        <Layout>
-          <OrderPage />
-        </Layout>
-      )
+      children: [
+        {
+          index: true,
+          element: useRouteRender(
+            <Layout>
+              <OrderPage />
+            </Layout>
+          )
+        },
+        {
+          path: ':id',
+          element: useRouteRender(
+            <Layout>
+              <OrderDetailPage />
+            </Layout>
+          )
+        }
+      ]
     },
     {
       path: ROUTES.NewOrder.path,
@@ -130,6 +137,14 @@ export const MainRouter = () => {
           )
         }
       ]
+    },
+    {
+      path: ROUTES.PaymentConfirm.path,
+      element: useRouteRender(
+        <Layout>
+          <PaymentPage />
+        </Layout>
+      )
     },
     {
       path: ROUTES.Booking.path,
