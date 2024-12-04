@@ -27,6 +27,7 @@ interface BookingCardProps {
   onChangeTable: (id: string) => void
   onEdit: (id: string) => void
   onMoreOrder: (id: string) => void
+  onCheckin: (booking: BookingItem) => void
   //onDelete: (id: string) => void
 }
 
@@ -38,7 +39,8 @@ export function BookingCard({
   onViewDetails,
   onChangeTable,
   onMoreOrder,
-  onEdit
+  onEdit,
+  onCheckin
   //onDelete
 }: BookingCardProps) {
   const [isOpen, setIsOpen] = useState(false)
@@ -117,6 +119,14 @@ export function BookingCard({
             )}
             {booking.status === 'Accept' && (
               <>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onCheckin(booking)
+                    setIsOpen(false)
+                  }}
+                >
+                  Khách nhận bàn
+                </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
                     onComplete(booking.id)

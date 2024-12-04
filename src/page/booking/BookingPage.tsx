@@ -63,6 +63,19 @@ export const BookingPage = () => {
     setDialogOpen(true)
   }
 
+  const handleCheckin = async (booking: BookingItem) => {
+    try {
+      const tableIds = booking.tables.map((table) => table.tableId)
+      for (const tableId of tableIds) {
+        const responseTable = await putTableStatus({ tableId: tableId, status: 'Occupied' })
+        const responseTableData = await responseTable.data
+        console.log(responseTableData)
+      }
+    } catch (error) {
+      console.error('Error changing status:', error)
+    }
+  }
+
   const handleComplete = async (booking: BookingItem) => {
     try {
       const response = await changeStatusBooking({ bookingId: booking.id, status: 'Complete' })
@@ -125,6 +138,21 @@ export const BookingPage = () => {
     setCurrentPage(1) // Reset to page 1
   }
 
+  const handleAccept = async (booking: BookingItem) => {
+    console.log(`Accepted booking with ID: ${booking.id}`)
+    // Implement accept booking logic
+    const response = await changeStatusBooking({ bookingId: booking.id, status: 'Accepted' })
+    if (response.success) {
+      toast.success('Booking accepted successfully', { autoClose: 2000 })
+      const tableIds = booking.tables.map((table) => table.tableId)
+      for (const tableId of tableIds) {
+        const responseTable = await putTableStatus({ tableId: tableId, status: 'Reverved' })
+        const responseTableData = await responseTable.data
+        console.log(responseTableData)
+      }
+    }
+  }
+
   const handleStatus = async (id: string, status: string) => {
     console.log(`Accepted booking with ID: ${id}`)
     // Implement accept booking logic
@@ -182,13 +210,14 @@ export const BookingPage = () => {
             <BookingCard
               key={booking.id}
               booking={booking}
-              onAccept={() => handleStatus(booking.id, 'Accept')}
+              onAccept={() => handleAccept(booking)}
               onComplete={() => handleComplete(booking)}
               onCancel={() => handleStatus(booking.id, 'Cancel')}
               onViewDetails={() => handleViewDetails(booking)}
               onChangeTable={() => handleChangeTable(booking.id)}
               onEdit={() => handleEdit(booking)}
               onMoreOrder={() => handleMoreOrder(booking)}
+              onCheckin={() => handleCheckin(booking)}
               // onDelete={() => openDeleteDialog(booking.id)}
             />
           ))}
