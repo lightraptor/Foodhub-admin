@@ -21,7 +21,7 @@ import { BookingItem } from '@/types'
 interface BookingCardProps {
   booking: BookingItem
   onAccept: (id: string) => void
-  onComplete: (id: string) => void
+  onComplete: (booking: BookingItem) => void
   onCancel: (id: string) => void
   onViewDetails: (id: string) => void
   onChangeTable: (id: string) => void
@@ -129,7 +129,7 @@ export function BookingCard({
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
-                    onComplete(booking.id)
+                    onComplete(booking)
                     setIsOpen(false)
                   }}
                 >

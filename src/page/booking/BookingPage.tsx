@@ -141,7 +141,7 @@ export const BookingPage = () => {
   const handleAccept = async (booking: BookingItem) => {
     console.log(`Accepted booking with ID: ${booking.id}`)
     // Implement accept booking logic
-    const response = await changeStatusBooking({ bookingId: booking.id, status: 'Accepted' })
+    const response = await changeStatusBooking({ bookingId: booking.id, status: 'Accept' })
     if (response.success) {
       toast.success('Booking accepted successfully', { autoClose: 2000 })
       const tableIds = booking.tables.map((table) => table.tableId)
@@ -150,6 +150,7 @@ export const BookingPage = () => {
         const responseTableData = await responseTable.data
         console.log(responseTableData)
       }
+      fetchData()
     }
   }
 
