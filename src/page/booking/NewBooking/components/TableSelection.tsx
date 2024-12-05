@@ -37,6 +37,7 @@ export default function TableSelection({ onSelectTable, selectedTables }: Props)
 
   useEffect(() => {
     fetchData()
+    console.log(tables)
   }, [currentPage, pageSize])
 
   const handlePageChange = (page: number) => {
@@ -84,7 +85,7 @@ export default function TableSelection({ onSelectTable, selectedTables }: Props)
                       {table.status}
                     </Badge>
                   )}
-                  {table.status === 'Bàn đăng có khách ngồi' && (
+                  {table.status === 'Bàn đang có khách ngồi' && (
                     <Badge className='text-[#ef4444] border-[#ef4444]'>{table.status}</Badge>
                   )}
                   {table.status === 'Khác' && <Badge className='text-[#f8b4b4] border-[#f8b4b4]'>{table.status}</Badge>}

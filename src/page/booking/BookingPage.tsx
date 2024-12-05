@@ -65,12 +65,16 @@ export const BookingPage = () => {
 
   const handleCheckin = async (booking: BookingItem) => {
     try {
-      const tableIds = booking.tables.map((table) => table.tableId)
-      for (const tableId of tableIds) {
-        const responseTable = await putTableStatus({ tableId: tableId, status: 'Occupied' })
-        const responseTableData = await responseTable.data
-        console.log(responseTableData)
+      const response = await changeStatusBooking({ bookingId: booking.id, status: 'Processing' })
+      if (response.success) {
+        const tableIds = booking.tables.map((table) => table.tableId)
+        for (const tableId of tableIds) {
+          const responseTable = await putTableStatus({ tableId: tableId, status: 'Occupied' })
+          const responseTableData = await responseTable.data
+          console.log(responseTableData)
+        }
       }
+      fetchData()
     } catch (error) {
       console.error('Error changing status:', error)
     }
@@ -154,12 +158,18 @@ export const BookingPage = () => {
     }
   }
 
-  const handleStatus = async (id: string, status: string) => {
-    console.log(`Accepted booking with ID: ${id}`)
-    // Implement accept booking logic
+  const handleStatus = async (booking: BookingItem, status: string) => {
     try {
-      const response = await changeStatusBooking({ bookingId: id, status: status })
+      const response = await changeStatusBooking({ bookingId: booking.id, status: status })
       if (response.success) {
+        if (status === 'Cancel') {
+          const tableIds = booking.tables.map((table) => table.tableId)
+          for (const tableId of tableIds) {
+            const responseTable = await putTableStatus({ tableId: tableId, status: 'Free' })
+            const responseTableData = await responseTable.data
+            console.log(responseTableData)
+          }
+        }
         fetchData()
       } else {
         throw new Error('Failed to change status')
@@ -213,7 +223,7 @@ export const BookingPage = () => {
               booking={booking}
               onAccept={() => handleAccept(booking)}
               onComplete={() => handleComplete(booking)}
-              onCancel={() => handleStatus(booking.id, 'Cancel')}
+              onCancel={() => handleStatus(booking, 'Cancel')}
               onViewDetails={() => handleViewDetails(booking)}
               onChangeTable={() => handleChangeTable(booking.id)}
               onEdit={() => handleEdit(booking)}

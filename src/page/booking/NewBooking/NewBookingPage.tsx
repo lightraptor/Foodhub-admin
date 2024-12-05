@@ -40,7 +40,7 @@ export default function NewBookingPage() {
       const orderData = await makeOrderId.data
       console.log(data)
       console.log('orderData', orderData)
-      navigate(`/new-order/${orderData.id}`)
+      navigate(`/booking`)
     } catch (error) {
       console.error('Error sending booking data:', error)
     }

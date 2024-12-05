@@ -50,6 +50,9 @@ export function BookingCard({
         <div className='flex justify-between items-center mb-4'>
           {booking.status === 'Pending' && <Badge className='text-[#facc15] border-[#facc15]'>{booking.status}</Badge>}
           {booking.status === 'Accept' && <Badge className='text-[#22c55e] border-[#22c55e]'>{booking.status}</Badge>}
+          {booking.status === 'Processing' && (
+            <Badge className='text-[#1fafb7] border-[#1fafb7]'>{booking.status}</Badge>
+          )}
           {booking.status === 'Complete' && <Badge className='text-[#3b82f6] border-[#3b82f6]'>{booking.status}</Badge>}
           {booking.status === 'Cancel' && <Badge className='text-[#ef4444] border-[#ef4444]'>{booking.status}</Badge>}
           {booking.status === 'Fail' && <Badge className='text-[#f8b4b4] border-[#f8b4b4]'>{booking.status}</Badge>}
@@ -117,16 +120,8 @@ export function BookingCard({
                 </DropdownMenuItem>
               </>
             )}
-            {booking.status === 'Accept' && (
+            {booking.status === 'Processing' && (
               <>
-                <DropdownMenuItem
-                  onClick={() => {
-                    onCheckin(booking)
-                    setIsOpen(false)
-                  }}
-                >
-                  Khách nhận bàn
-                </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => {
                     onComplete(booking)
@@ -146,7 +141,28 @@ export function BookingCard({
                 </DropdownMenuItem>
               </>
             )}
-            {['Pending', 'Accept'].includes(booking.status) && (
+
+            {booking.status === 'Accept' && (
+              <>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onCheckin(booking)
+                    setIsOpen(false)
+                  }}
+                >
+                  Khách nhận bàn
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    onCancel(booking.id)
+                    setIsOpen(false)
+                  }}
+                >
+                  Hủy bỏ
+                </DropdownMenuItem>
+              </>
+            )}
+            {['Processing', 'Accept'].includes(booking.status) && (
               <DropdownMenuItem
                 onClick={() => {
                   onChangeTable(booking.id)
@@ -166,7 +182,6 @@ export function BookingCard({
               <Edit className='mr-2 h-4 w-4' />
               Chỉnh sửa
             </DropdownMenuItem>
-
             {/* <DropdownMenuItem
               onClick={() => {
                 onDelete(booking.id)
