@@ -39,7 +39,7 @@ export const PaymentPage = () => {
     try {
       const response = await changeStatusOrder({
         id: orderId,
-        status: 'Completed'
+        status: 'Complete'
       })
       if (response.success) {
         console.log(response.message)

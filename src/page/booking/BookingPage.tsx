@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 // import DeleteBookingDialog from './components/DeleteBookingDialog'
 import ErrorResult from '@/components/error-result/ErrorResult'
 import { Button } from '@/components/ui/button'
-import { fetchOrderStaff } from '@/apis/orderApi'
+import { fetchOrderStaff, postOrderStaff } from '@/apis/orderApi'
 
 export const BookingPage = () => {
   const [bookingList, setBookingList] = useState<BookingItem[]>([])
@@ -102,9 +102,9 @@ export const BookingPage = () => {
 
   const handleMoreOrder = async (booking: BookingItem) => {
     try {
-      const response = await fetchOrderStaff({ bookingId: booking.id })
-      if (response.success) {
-        const data = await response.data
+      const responseOrder = await fetchOrderStaff({ bookingId: booking.id })
+      if (responseOrder.success) {
+        const data = await responseOrder.data
         navigate(`/new-order/${data?.id}`)
       }
     } catch (error) {
@@ -144,6 +144,9 @@ export const BookingPage = () => {
 
   const handleAccept = async (booking: BookingItem) => {
     console.log(`Accepted booking with ID: ${booking.id}`)
+    const responseOrder = await postOrderStaff({ BookingId: booking.id })
+    const orderData = await responseOrder.data
+    console.log(orderData)
     // Implement accept booking logic
     const response = await changeStatusBooking({ bookingId: booking.id, status: 'Accept' })
     if (response.success) {
