@@ -6,7 +6,7 @@ import FoodCard from './FoodCard'
 import { FilterOrderList } from './FilterOrderList'
 
 interface OrderListProps {
-  addToOrder: (productId: string, quantity: number) => void
+  addToOrder: (item: ProductItem) => void
 }
 
 export const OrderList = ({ addToOrder }: OrderListProps) => {
@@ -98,11 +98,9 @@ export const OrderList = ({ addToOrder }: OrderListProps) => {
           <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4'>
             {isFiltered
               ? filterOrderList.map((item) => (
-                  <FoodCard key={item.id} item={item} onAddToCart={(quantity) => addToOrder(item.id, quantity)} />
+                  <FoodCard key={item.id} item={item} onAddToCart={() => addToOrder(item)} />
                 ))
-              : orderList.map((item) => (
-                  <FoodCard key={item.id} item={item} onAddToCart={(quantity) => addToOrder(item.id, quantity)} />
-                ))}
+              : orderList.map((item) => <FoodCard key={item.id} item={item} onAddToCart={() => addToOrder(item)} />)}
           </div>
         </div>
         <Pagination

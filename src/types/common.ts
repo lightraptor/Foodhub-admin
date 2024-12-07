@@ -65,5 +65,17 @@ export type OrderItem = {
   depositAmount: number
   discountAmount: number
   totalAmount: number
-  orderDetails: any[]
+  orderDetails: OrderDetailItem[]
+}
+
+export type OrderDetailItem = {
+  id: string
+  orderId: string
+  productId: string
+  productName: string
+  unitName: string
+  price: number
+  quantity: number
+  totalPrice: number
+  createdAt: string
 }
