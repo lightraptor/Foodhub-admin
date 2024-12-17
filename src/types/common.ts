@@ -30,6 +30,15 @@ export type TableItem = {
   areaName: string
 }
 
+export type CouponItem = {
+  id: string
+  couponCode: string
+  discountPercent: number
+  discountAmount: number
+  quantity: number
+  inactive: boolean
+}
+
 export type BookingItem = {
   id: string
   peopleCount: number

@@ -5,6 +5,7 @@ import {
   BookingDetailPage,
   BookingPage,
   ChangeTablePage,
+  CouponPage,
   HomePage,
   LoginPage,
   MenuPage,
@@ -12,12 +13,13 @@ import {
   OrderDetailPage,
   OrderPage,
   PaymentPage,
-  ProductPage
+  ProductPage,
+  TablePage,
+  UserPage
 } from '@/page'
 import { CategoryPage } from '@/page'
 import NewBookingPage from '@/page/booking/NewBooking/NewBookingPage'
-import { TablePage } from '@/page/table'
-import { UserPage } from '@/page/user'
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 export const MainRouter = () => {
@@ -75,6 +77,14 @@ export const MainRouter = () => {
       element: useRouteRender(
         <Layout>
           <TablePage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.Coupon.path,
+      element: useRouteRender(
+        <Layout>
+          <CouponPage />
         </Layout>
       )
     },
