@@ -70,7 +70,7 @@ export default function TableSelection({ onSelectTable, selectedTables }: Props)
                 <h3 className='text-lg font-semibold'>{table.name}</h3>
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    table.isAvailable ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+                    table.isAvailable ? '' : 'bg-red-200 text-red-800'
                   }`}
                 >
                   {table.status === 'Có thể đặt bàn' && (

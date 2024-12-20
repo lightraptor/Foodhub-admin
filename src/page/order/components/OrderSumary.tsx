@@ -63,9 +63,12 @@ export default function OrderSummary({
             <>
               {orderItems.orderDetails.map((item) => (
                 <li key={item.id} className='flex justify-between items-center'>
-                  <span>
-                    {item.productName} x <span className='text-sm font-extralight'>{item.quantity}</span>
-                  </span>
+                  <div className='flex flex-col'>
+                    <span>
+                      {item.productName} x <span className='text-sm font-extralight'>{item.quantity}</span>
+                    </span>
+                    <span className='text-xs text-gray-400'>{new Date(item.createdAt).toLocaleString()}</span>
+                  </div>
                   <div>
                     <span className='mr-2 font-semibold'>{formatToVND(item.price * item.quantity)}</span>
                   </div>

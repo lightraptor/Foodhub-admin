@@ -88,3 +88,22 @@ export type OrderDetailItem = {
   totalPrice: number
   createdAt: string
 }
+
+export interface DashboardData {
+  totalUsers: number
+  totalOrder: number
+  totalRevenueAdmount: number
+  totalRevenue: any[]
+  productsGroupedByCategory: ProductsGroupedByCategory[]
+  productsGroupedByMenu: ProductsGroupedByMenu[]
+}
+
+export interface ProductsGroupedByCategory {
+  label: string
+  value: number
+}
+
+export interface ProductsGroupedByMenu {
+  label: string
+  value: number
+}
