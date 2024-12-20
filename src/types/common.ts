@@ -107,3 +107,21 @@ export interface ProductsGroupedByMenu {
   label: string
   value: number
 }
+
+export interface Merchant {
+  items: MerchantItem[]
+  pageNumber: number
+  pageSize: number
+  totalRecord: number
+  pageCount: number
+}
+
+export interface MerchantItem {
+  id: string
+  merchantName: string
+  merchantWebLink: string
+  merchantIpnUrl: string
+  merchantReturnUrl: string
+  secretKey: any
+  isActive: boolean
+}

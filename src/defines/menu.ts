@@ -2,6 +2,7 @@ import {
   Home,
   LayoutGrid,
   ListOrderedIcon,
+  SettingsIcon,
   ShoppingBasket,
   ShoppingCart,
   SquareMenu,
@@ -19,7 +20,8 @@ export const AUTHENTICATION_MENUS = {
   Menu: { path: '/menu', label: 'Menu', icon: SquareMenu },
   Product: { path: '/product', label: 'Product', icon: ShoppingBasket },
   Table: { path: '/table', label: 'Table', icon: Utensils },
-  Users: { path: '/users', label: 'Users', icon: Users }
+  Users: { path: '/users', label: 'Users', icon: Users },
+  Merchant: { path: '/merchant', label: 'Merchant', icon: SettingsIcon }
 }
 
 export const UN_AUTHENTICATION_MENUS = {

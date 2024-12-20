@@ -9,6 +9,7 @@ import {
   HomePage,
   LoginPage,
   MenuPage,
+  MerchantPage,
   NewOrderPage,
   OrderDetailPage,
   OrderPage,
@@ -170,6 +171,14 @@ export const MainRouter = () => {
       element: useRouteRender(
         <Layout>
           <PaymentPage />
+        </Layout>
+      )
+    },
+    {
+      path: ROUTES.Merchant.path,
+      element: useRouteRender(
+        <Layout>
+          <MerchantPage />
         </Layout>
       )
     },
