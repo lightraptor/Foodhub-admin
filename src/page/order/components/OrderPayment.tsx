@@ -12,30 +12,36 @@ interface OrderPaymentProps {
 }
 
 export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
-  const [listMethod, setListMethod] = React.useState<paymentItem[]>([])
-  const [payMentMethod, setPayMentMethod] = React.useState<string>('')
-  const [merchantId, setMerchantId] = React.useState<string>('')
+  const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
+  const [listMethod, setListMethod] = useState<paymentItem[]>([])
+  const [payMentMethod, setPayMentMethod] = useState<string>('')
+  const [merchantId, setMerchantId] = useState<string>('')
   const [transferNote, setTransferNote] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   const fetchListMethod = async () => {
     try {
       const response = await fetchPaymentDestination()
-      const data = await response.data
-      if (!data) return
-      setListMethod(data?.items)
+      const data = response.data
+      if (data?.items) setListMethod(data.items)
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('Error fetching payment methods:', error)
+      setErrorMessage('Failed to load payment methods.')
     }
   }
 
   const fetchMerchantId = async () => {
     try {
-      const response = await fetchMerchantPaging()
-      const data = await response.data
-      if (!data) return
-      setMerchantId(data?.items[0].id)
+      const response = await fetchMerchantPaging({ PageNumber: 1, PageSize: 10 })
+      const data = response.data
+      if (data?.items) {
+        const merchant = data.items.find((item) => item.merchantReturnUrl.includes(baseUrl))
+        if (merchant) setMerchantId(merchant.id)
+      }
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('Error fetching merchant ID:', error)
+      setErrorMessage('Failed to load merchant information.')
     }
   }
 
@@ -45,8 +51,15 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
   }, [])
 
   const handlePayment = async () => {
-    localStorage.setItem('orderId', orderItems.id)
+    if (!payMentMethod || !merchantId) {
+      setErrorMessage('Please select a payment method and ensure merchant ID is available.')
+      return
+    }
+
+    setLoading(true)
+    setErrorMessage('')
     try {
+      localStorage.setItem('orderId', orderItems.id)
       const response = await fetchPayment({
         paymentContent: transferNote,
         paymentCurrency: 'VND',
@@ -57,14 +70,17 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
         paymentDestinationId: payMentMethod,
         paymentDesname: listMethod.find((item) => item.id === payMentMethod)?.desName || ''
       })
-      const data = await response.data
-      const paymentData = await data
-      console.log(paymentData)
-      window.location.href = paymentData.paymentUrl
-      if (!data) return
-      console.log(data)
+      const paymentData = response.data
+      if (paymentData?.paymentUrl) {
+        window.location.href = paymentData.paymentUrl
+      } else {
+        setErrorMessage('Failed to generate payment URL.')
+      }
     } catch (error) {
-      console.error('Error fetching data:', error)
+      console.error('Error during payment processing:', error)
+      setErrorMessage('Payment processing failed. Please try again later.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -76,7 +92,7 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
         </DialogTrigger>
         <DialogContent className='w-[90%] max-w-md p-6 bg-[#fff] rounded-md'>
           <h2 className='text-lg font-bold mb-4'>Transfer Details</h2>
-
+          {errorMessage && <div className='text-red-500 text-sm mb-4'>{errorMessage}</div>}
           {/* Select Transfer Method */}
           <div className='mb-4'>
             <label className='block text-sm font-medium mb-2'>Transfer Method</label>
@@ -93,7 +109,6 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
               </SelectContent>
             </Select>
           </div>
-
           {/* Input Transfer Note */}
           <div className='mb-4'>
             <label className='block text-sm font-medium mb-2'>Transfer Note</label>
@@ -104,13 +119,13 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
               className='w-full border-gray-300 rounded-md'
             />
           </div>
-
           {/* Submit Button */}
           <Button
-            className='bg-[#22c55e] text-[#fff] px-4 py-2 rounded hover:bg-[#22c55e]/90 w-full'
+            className={`bg-[#22c55e] text-[#fff] px-4 py-2 rounded hover:bg-[#22c55e]/90 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={handlePayment}
+            disabled={loading}
           >
-            Submit
+            {loading ? 'Processing...' : 'Submit'}
           </Button>
         </DialogContent>
       </Dialog>
