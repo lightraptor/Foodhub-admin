@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import { Select, SelectItem, SelectTrigger, SelectContent, SelectValue } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { OrderItem } from '@/types'
 import { fetchMerchantPaging, fetchPaymentDestination, paymentItem } from '@/apis'
@@ -16,7 +15,6 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
   const [listMethod, setListMethod] = useState<paymentItem[]>([])
   const [payMentMethod, setPayMentMethod] = useState<string>('')
   const [merchantId, setMerchantId] = useState<string>('')
-  const [transferNote, setTransferNote] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
 
@@ -61,7 +59,7 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
     try {
       localStorage.setItem('orderId', orderItems.id)
       const response = await fetchPayment({
-        paymentContent: transferNote,
+        paymentContent: 'admin',
         paymentCurrency: 'VND',
         requiredAmount: orderItems.totalAmount,
         paymentLanguage: 'VN',
@@ -109,17 +107,6 @@ export const OrderPayment: React.FC<OrderPaymentProps> = ({ orderItems }) => {
               </SelectContent>
             </Select>
           </div>
-          {/* Input Transfer Note */}
-          <div className='mb-4'>
-            <label className='block text-sm font-medium mb-2'>Transfer Note</label>
-            <Input
-              value={transferNote}
-              onChange={(e) => setTransferNote(e.target.value)}
-              placeholder='Enter transfer details'
-              className='w-full border-gray-300 rounded-md'
-            />
-          </div>
-          {/* Submit Button */}
           <Button
             className={`bg-[#22c55e] text-[#fff] px-4 py-2 rounded hover:bg-[#22c55e]/90 w-full ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={handlePayment}

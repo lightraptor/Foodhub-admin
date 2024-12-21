@@ -36,7 +36,7 @@ export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder
           {order.orderStatus === 'Processing' && (
             <Badge className='text-[#22c55e] border-[#22c55e]'>{order.orderStatus}</Badge>
           )}
-          {order.orderStatus === 'Completed' && (
+          {order.orderStatus === 'Complete' && (
             <Badge className='text-[#3b82f6] border-[#3b82f6]'>{order.orderStatus}</Badge>
           )}
           {order.orderStatus === 'Cancel' && (
@@ -83,7 +83,7 @@ export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder
             <DropdownMenuContent align='end'>
               {order.orderStatus === 'Processing' && (
                 <>
-                  <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Completed')}>
+                  <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Complete')}>
                     <Check className='mr-1 h-5 w-5' />
                     Hoàn thành đơn hàng
                   </DropdownMenuItem>

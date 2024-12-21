@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/constants'
-import { Users } from '@/types'
+import { Users, UserItem } from '@/types'
 import axios, { AxiosResponse } from 'axios'
 
 const instance = axios.create({
@@ -38,6 +38,16 @@ export const fetchUsers = async ({
         PageSize
       }
     })
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}
+
+export const postUsers = async (payload: UserItem): Promise<ApiResponse<null>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<null>> = await instance.post('/api/user', payload)
     return response.data
   } catch (error) {
     console.error('Error fetching menus:', error)

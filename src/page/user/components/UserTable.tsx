@@ -21,6 +21,7 @@ export default function UserTable({
   onPageChange,
   onPageSizeChange
 }: MenuTableProps) {
+  console.log(user)
   return (
     <div className='container mx-auto py-10'>
       <Table className='mx-3'>
@@ -29,7 +30,7 @@ export default function UserTable({
             <TableHead>STT</TableHead>
             <TableHead>Tên tài khoản</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Số điện thoại</TableHead>
+            <TableHead>Role</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -38,7 +39,7 @@ export default function UserTable({
               <TableCell>{index}</TableCell>
               <TableCell>{item.userName}</TableCell>
               <TableCell>{item.email}</TableCell>
-              <TableCell>{item.phone}</TableCell>
+              <TableCell>{item.roleName}</TableCell>
             </TableRow>
           ))}
         </TableBody>

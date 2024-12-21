@@ -19,6 +19,8 @@ export type Users = {
   userName: string
   email: string
   phone: any
+  roleName: 'Customer' | 'Staff' | 'Admin'
+  isBanned: boolean
 }
 
 export type TableItem = {
@@ -124,4 +126,19 @@ export interface MerchantItem {
   merchantReturnUrl: string
   secretKey: any
   isActive: boolean
+}
+
+export interface UserItem {
+  email: string
+  password: string
+  roleName: string
+  firstName: string
+  lastName: string
+  gender: string
+  birthday: string
+  phoneNumber: string
+  address: string
+  bank: string
+  bankBranch: string
+  bankNumber: string
 }

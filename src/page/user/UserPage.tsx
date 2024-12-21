@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Users } from '@/types'
 import { fetchUsers } from '@/apis/userApi'
 import UserTable from './components/UserTable'
+import CreateUser from './components/CreateUser'
 
 export const UserPage = () => {
   const [user, setUser] = useState<Users[]>([])
@@ -48,7 +49,9 @@ export const UserPage = () => {
   return (
     <>
       <p className='text-2xl font-semibold mx-10 text-center my-5'>User list</p>
-      <div className='flex justify-end mx-10 mb-5'>{/* <AddMenuButton fetchData={fetchData} /> */}</div>
+      <div className='flex justify-end mx-10 mb-5'>
+        <CreateUser fetchData={fetchData} />
+      </div>
       <UserTable
         user={user}
         currentPage={currentPage}
