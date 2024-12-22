@@ -1,6 +1,7 @@
+import connection from '@/constants/signalRConnection'
 import { AUTHENTICATION_ROUTES, ROUTES, STORAGE, UN_AUTHENTICATION_ROUTES } from '@/defines'
 import { useAuth } from '@/hooks'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export const Navbar: React.FC = () => {
@@ -10,6 +11,33 @@ export const Navbar: React.FC = () => {
   const { logout } = useAuth()
   const navigate = useNavigate()
   const access_token = localStorage.getItem(STORAGE.ACCESS_TOKEN)
+
+  useEffect(() => {
+    // Kết nối đến SignalR
+    console.log('before signalR')
+    const startConnection = async () => {
+      try {
+        await connection.start()
+        console.log('SignalR connected!')
+      } catch (error) {
+        console.error('Error connecting to SignalR:', error)
+        setTimeout(startConnection, 5000) // Thử kết nối lại nếu thất bại
+      }
+    }
+
+    startConnection()
+
+    // Lắng nghe sự kiện "NotificationBooking"
+    connection.on('NotificationBooking', (data: any) => {
+      console.log('Received notification:', data)
+    })
+
+    // Cleanup khi component bị unmount
+    return () => {
+      connection.off('NotificationBooking')
+      connection.stop()
+    }
+  }, [])
 
   const handleNavigation = (path: string) => {
     const stayInAuth = Object.values(AUTHENTICATION_ROUTES).some((route) => route.path === path)

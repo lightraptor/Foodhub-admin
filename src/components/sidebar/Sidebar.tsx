@@ -9,18 +9,58 @@ import {
   SidebarRail
 } from '@/components/ui/sidebar'
 import { AUTHENTICATION_ROUTES, AUTHENTICATION_MENUS, ROUTES, STORAGE, UN_AUTHENTICATION_ROUTES } from '@/defines'
-import { LayoutDashboard, LogOut, Settings, User } from 'lucide-react'
+import { Bell, LayoutDashboard, LogOut, Settings, User } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks'
+import { useEffect, useState } from 'react'
+import connection from '@/constants/signalRConnection'
+import { toast } from 'react-toastify'
 
 export function AppSidebar() {
   const navigate = useNavigate()
   const { logout } = useAuth()
   const location = useLocation()
+  const [notifications, setNotifications] = useState<any[]>([]) // Danh sách thông báo
+  const [hasUnread, setHasUnread] = useState(false) // Trạng thái có thông báo chưa đọc
+  const [isNotificationDialogOpen, setIsNotificationDialogOpen] = useState(false) // Trạng thái mở dialog thông báo
+
+  useEffect(() => {
+    // Kết nối đến SignalR
+    console.log('before signalR')
+    const startConnection = async () => {
+      try {
+        await connection.start()
+        console.log('SignalR connected!')
+      } catch (error) {
+        console.error('Error connecting to SignalR:', error)
+        setTimeout(startConnection, 5000) // Thử kết nối lại nếu thất bại
+      }
+    }
+
+    startConnection()
+
+    // Lắng nghe sự kiện "NotificationBooking"
+    connection.on('NotificationBooking', (data: any) => {
+      console.log('Received notification:', data)
+      setNotifications((prev) => [...prev, data]) // Thêm thông báo mới vào danh sách
+      setHasUnread(true) // Đánh dấu có thông báo chưa đọc
+      toast.success('Có đơn hàng mới', {
+        autoClose: 5000
+      })
+    })
+
+    // Cleanup khi component bị unmount
+    return () => {
+      connection.off('NotificationBooking')
+      connection.stop()
+    }
+  }, [])
 
   const access_token = localStorage.getItem(STORAGE.ACCESS_TOKEN)
   const username = localStorage.getItem('user')
+
   const handleNavigation = (path: string) => {
     const stayInAuth = Object.values(AUTHENTICATION_ROUTES).some((route) => route.path === path)
     const unStayInAuth = Object.values(UN_AUTHENTICATION_ROUTES).some((route) => route.path === path)
@@ -35,6 +75,16 @@ export function AppSidebar() {
     }
     navigate(path) // Điều hướng đến path nếu hợp lệ
   }
+
+  const handleNotificationClick = () => {
+    setHasUnread(false) // Xóa trạng thái thông báo chưa đọc
+    setIsNotificationDialogOpen(true) // Mở dialog thông báo
+  }
+
+  const closeNotificationDialog = () => {
+    setIsNotificationDialogOpen(false) // Đóng dialog thông báo
+  }
+
   return (
     <Sidebar>
       <SidebarHeader>
@@ -62,6 +112,16 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
+          <SidebarMenuItem className='p-2'>
+            <SidebarMenuButton size='lg' className='flex items-center gap-2 relative' onClick={handleNotificationClick}>
+              <Bell className=' h-10 w-10 ml-2' style={{ width: '1.2rem', height: '1.2rem' }} />
+              {hasUnread && (
+                <span className='absolute text-xs rounded-full bg-red-500 w-[10px] h-[10px] top-0 right-0'></span>
+              )}
+              <span className=' ml-2'>Notifications</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem className='mx-auto'></SidebarMenuItem>
           {Object.entries(AUTHENTICATION_MENUS).map(([key, item]) => (
             <SidebarMenuItem key={key} className='p-2'>
               <SidebarMenuButton asChild tooltip={item.label} size='lg'>
@@ -102,6 +162,37 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarFooter>
       <SidebarRail />
+
+      {/* Dialog hiển thị thông báo */}
+      <Dialog open={isNotificationDialogOpen} onOpenChange={closeNotificationDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Thông báo</DialogTitle>
+            <DialogClose />
+          </DialogHeader>
+          <div className='flex flex-col gap-2'>
+            {notifications.length === 0 ? (
+              <p className='text-gray-500'>Không có thông báo nào.</p>
+            ) : (
+              notifications.map((notification, index) => (
+                <div key={index} className='p-2 border rounded-lg shadow-sm' onClick={() => navigate(`/booking`)}>
+                  <p className='text-base my-3'>Nhận Booking từ {notification.customerName}</p>
+                  <div className='flex gap-3'>
+                    <span className='text-sm text-gray-400'>
+                      <span className='font-semibold text-black'>Thời gian checkin:</span>{' '}
+                      {new Date(notification.checkinTime).toLocaleString('vi-VN') || 'Không xác định'}
+                    </span>
+                    <span className='text-sm text-gray-400'>
+                      <span className='font-semibold text-black'>Số lượng:</span>{' '}
+                      {notification.peopleCount || 'Không xác định'}
+                    </span>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </Sidebar>
   )
 }

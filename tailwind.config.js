@@ -63,6 +63,8 @@ export default {
           4: 'hsl(var(--chart-4))',
           5: 'hsl(var(--chart-5))'
         },
+        white: '#fff',
+        black: '#000',
         slate: {
           50: '#f8fafc',
           100: '#f1f5f9',
