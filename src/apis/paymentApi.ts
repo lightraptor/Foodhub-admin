@@ -70,7 +70,9 @@ export const fetchPayment = async ({
 
 export const getListPayment = async ({
   PageNumber,
-  PageSize
+  PageSize,
+  From,
+  To
 }: {
   From?: string
   To?: string
@@ -81,7 +83,9 @@ export const getListPayment = async ({
     const response: AxiosResponse<ApiResponse<getDataResponse>> = await instance.get(`/api/payment/paging`, {
       params: {
         PageNumber,
-        PageSize
+        PageSize,
+        From,
+        To
       }
     })
     return response.data
