@@ -22,6 +22,7 @@ export const OrderPage = () => {
         throw new Error('Failed to fetch menu')
       }
       const data = response.data
+      console.log(data)
       setOrders(data?.items || [])
       setTotalItems(data?.totalRecord || undefined)
     } catch (err) {

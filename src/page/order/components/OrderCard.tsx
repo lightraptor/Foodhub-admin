@@ -39,6 +39,7 @@ export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder
           {order.orderStatus === 'Complete' && (
             <Badge className='text-[#3b82f6] border-[#3b82f6]'>{order.orderStatus}</Badge>
           )}
+          {order.orderStatus === 'Completed' && <Badge className='text-[#3b82f6] border-[#3b82f6]'>Complete</Badge>}
           {order.orderStatus === 'Cancel' && (
             <Badge className='text-[#ef4444] border-[#ef4444]'>{order.orderStatus}</Badge>
           )}
