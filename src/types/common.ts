@@ -142,3 +142,14 @@ export interface UserItem {
   bankBranch: string
   bankNumber: string
 }
+
+export interface PaymentItem {
+  id: string
+  paymentContent: string
+  paymentCurrency: string
+  paymentDes: string
+  requiredAmount: number
+  paymentDate: string
+  paymentStatus: string
+  paymentLastMessage: any
+}

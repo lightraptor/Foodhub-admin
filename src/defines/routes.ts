@@ -16,7 +16,8 @@ export const AUTHENTICATION_ROUTES = {
     label: 'PaymentConfirm'
   },
   Coupon: { path: '/coupon', label: 'Coupon' },
-  Merchant: { path: '/merchant', label: 'Merchant' }
+  Merchant: { path: '/merchant', label: 'Merchant' },
+  Payment: { path: '/payment', label: 'Payment' }
 }
 
 export const UN_AUTHENTICATION_ROUTES = {

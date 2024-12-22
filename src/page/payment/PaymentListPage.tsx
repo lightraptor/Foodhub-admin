@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { getListPayment } from '@/apis/paymentApi'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import Pagination from '@/components/Pagination' // Import Pagination component
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table' // Import Pagination component
 import 'tailwindcss/tailwind.css'
 import { PaymentItem } from '@/types'
 import { formatToVND } from '@/constants/common'
+import { Pagination } from '@/components'
 
 export const PaymentListPage: React.FC = () => {
   const [payments, setPayments] = useState<PaymentItem[]>([])
@@ -24,7 +24,7 @@ export const PaymentListPage: React.FC = () => {
       }
       const data = await response.data
       setPayments(data.items)
-      setTotalItems(data.totalCount || 0) // Lấy tổng số mục từ API
+      setTotalItems(data.totalRecord || 0) // Lấy tổng số mục từ API
     } catch (error) {
       console.error(error)
     } finally {
@@ -46,7 +46,7 @@ export const PaymentListPage: React.FC = () => {
   }, [currentPage, pageSize]) // Gọi lại API khi currentPage hoặc pageSize thay đổi
 
   return (
-    <div className='p-6 bg-gray-100 min-h-screen'>
+    <div className='p-6 min-h-screen'>
       <h1 className='text-3xl font-bold text-gray-800 mb-6 text-center'>Payment List</h1>
 
       {loading ? (
@@ -89,15 +89,14 @@ export const PaymentListPage: React.FC = () => {
               </TableBody>
             </Table>
           </div>
-          <div className='mt-4 flex justify-end'>
-            <Pagination
-              currentPage={currentPage}
-              pageSize={pageSize}
-              totalItems={totalItems}
-              onPageChange={onPageChange}
-              onPageSizeChange={onPageSizeChange}
-            />
-          </div>
+
+          <Pagination
+            currentPage={currentPage}
+            pageSize={pageSize}
+            totalItems={totalItems}
+            onPageChange={onPageChange}
+            onPageSizeChange={onPageSizeChange}
+          />
         </>
       )}
     </div>

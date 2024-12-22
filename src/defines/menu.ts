@@ -21,7 +21,8 @@ export const AUTHENTICATION_MENUS = {
   Product: { path: '/product', label: 'Product', icon: ShoppingBasket },
   Table: { path: '/table', label: 'Table', icon: Utensils },
   Users: { path: '/users', label: 'Users', icon: Users },
-  Merchant: { path: '/merchant', label: 'Merchant', icon: SettingsIcon }
+  Merchant: { path: '/merchant', label: 'Merchant', icon: SettingsIcon },
+  Payment: { path: '/payment', label: 'Payment', icon: ShoppingBasket }
 }
 
 export const UN_AUTHENTICATION_MENUS = {

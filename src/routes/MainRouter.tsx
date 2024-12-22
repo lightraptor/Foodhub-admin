@@ -13,6 +13,7 @@ import {
   NewOrderPage,
   OrderDetailPage,
   OrderPage,
+  PaymentListPage,
   PaymentPage,
   ProductPage,
   TablePage,
@@ -25,6 +26,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 export const MainRouter = () => {
   const router = createBrowserRouter([
+    {
+      path: ROUTES.Payment.path,
+      element: useRouteRender(
+        <Layout>
+          <PaymentListPage />
+        </Layout>
+      )
+    },
     {
       path: ROUTES.Home.path,
       element: useRouteRender(
