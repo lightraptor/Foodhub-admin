@@ -1,5 +1,6 @@
 import { Pie, PieChart } from 'recharts'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
 import {
   ChartContainer,
   ChartTooltip,
@@ -58,6 +59,14 @@ export const Charts = ({ criteria }: ChartProps) => {
     value: item.value,
     fill: COLORS[index % COLORS.length] // Dùng màu từ mảng COLORS
   }))
+
+  const chartConfigLine = {
+    value: {
+      label: 'Value',
+      color: 'hsl(var(--chart-1))'
+    }
+  }
+
   return (
     <>
       <div className='p-20'>
@@ -87,6 +96,44 @@ export const Charts = ({ criteria }: ChartProps) => {
             </CardContent>
           </Card>
         </div>
+        <Card className='mt-8'>
+          <CardHeader>
+            <CardTitle>Line Chart</CardTitle>
+          </CardHeader>
+          <CardContent className='px-2 sm:p-6'>
+            <ChartContainer config={chartConfigLine} className='aspect-auto h-[300px] w-full'>
+              <LineChart
+                data={data?.totalRevenue}
+                margin={{
+                  top: 5,
+                  right: 10,
+                  left: 10,
+                  bottom: 0
+                }}
+              >
+                <CartesianGrid strokeDasharray='3 3' vertical={false} />
+                <XAxis dataKey='label' tickLine={false} axisLine={false} tickMargin={8} minTickGap={32} />
+                <YAxis
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={3}
+                  tickFormatter={(value) => `${value.toLocaleString()}`}
+                />
+                <ChartTooltip
+                  content={
+                    <ChartTooltipContent
+                      className='w-[150px]'
+                      nameKey='value'
+                      labelFormatter={(label) => label}
+                      valueFormatter={(value) => value.toLocaleString()}
+                    />
+                  }
+                />
+                <Line type='monotone' dataKey='value' stroke={`var(--color-value)`} strokeWidth={2} dot={false} />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
+        </Card>
         <div className='flex flex-row gap-4 p-10 justify-around'>
           {/* Biểu đồ cho danh mục sản phẩm */}
           <Card className='flex flex-col min-w-[400px]'>

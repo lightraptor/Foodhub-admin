@@ -16,7 +16,7 @@ export const HomePage = () => {
           <Charts criteria='Month' />
         </TabsContent>
         <TabsContent value='Week'>
-          <Charts criteria='Weak' />
+          <Charts criteria='Week' />
         </TabsContent>
       </Tabs>
       <button onClick={logout} type='button'>

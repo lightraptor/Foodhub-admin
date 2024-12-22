@@ -94,7 +94,7 @@ export type OrderDetailItem = {
 export interface DashboardData {
   totalUsers: number
   totalOrder: number
-  totalRevenueAdmount: number
+  totalRevenueAdmount: ProductsGroupedByCategory[]
   totalRevenue: any[]
   productsGroupedByCategory: ProductsGroupedByCategory[]
   productsGroupedByMenu: ProductsGroupedByMenu[]
