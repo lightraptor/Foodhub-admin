@@ -56,29 +56,19 @@ export const OrderDetailPage = () => {
                 <div>
                   <h2 className='text-lg font-semibold'>Trạng thái đơn</h2>
                   {orders.orderStatus === 'Pending' && (
-                    <Badge className='text-[#facc15] border-[#facc15] bg-white hover:bg-white'>
-                      {orders.orderStatus}
-                    </Badge>
+                    <Badge className='text-[#facc15] border-[#facc15] bg-white hover:bg-white'>Chờ xử lý</Badge>
                   )}
                   {orders.orderStatus === 'Processing' && (
-                    <Badge className='text-[#22c55e] border-[#22c55e]  bg-white hover:bg-white'>
-                      {orders.orderStatus}
-                    </Badge>
+                    <Badge className='text-[#22c55e] border-[#22c55e]  bg-white hover:bg-white'>Đang xử lý</Badge>
                   )}
                   {orders.orderStatus === 'Completed' && (
-                    <Badge className='text-[#3b82f6] border-[#3b82f6]  bg-white hover:bg-white'>
-                      {orders.orderStatus}
-                    </Badge>
+                    <Badge className='text-[#3b82f6] border-[#3b82f6]  bg-white hover:bg-white'>Hoàn thành</Badge>
                   )}
                   {orders.orderStatus === 'Cancel' && (
-                    <Badge className='text-[#ef4444] border-[#ef4444]  bg-white hover:bg-white'>
-                      {orders.orderStatus}
-                    </Badge>
+                    <Badge className='text-[#ef4444] border-[#ef4444]  bg-white hover:bg-white'>Đã hủy</Badge>
                   )}
                   {orders.orderStatus === 'Fail' && (
-                    <Badge className='text-[#f8b4b4] border-[#f8b4b4]  bg-white hover:bg-white'>
-                      {orders.orderStatus}
-                    </Badge>
+                    <Badge className='text-[#f8b4b4] border-[#f8b4b4]  bg-white hover:bg-white'>Thất bại</Badge>
                   )}
                 </div>
               </div>
