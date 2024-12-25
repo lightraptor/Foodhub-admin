@@ -56,19 +56,29 @@ export const OrderDetailPage = () => {
                 <div>
                   <h2 className='text-lg font-semibold'>Trạng thái đơn</h2>
                   {orders.orderStatus === 'Pending' && (
-                    <Badge className='text-[#facc15] border-[#facc15]'>{orders.orderStatus}</Badge>
+                    <Badge className='text-[#facc15] border-[#facc15] bg-white hover:bg-white'>
+                      {orders.orderStatus}
+                    </Badge>
                   )}
                   {orders.orderStatus === 'Processing' && (
-                    <Badge className='text-[#22c55e] border-[#22c55e]'>{orders.orderStatus}</Badge>
+                    <Badge className='text-[#22c55e] border-[#22c55e]  bg-white hover:bg-white'>
+                      {orders.orderStatus}
+                    </Badge>
                   )}
                   {orders.orderStatus === 'Completed' && (
-                    <Badge className='text-[#3b82f6] border-[#3b82f6]'>{orders.orderStatus}</Badge>
+                    <Badge className='text-[#3b82f6] border-[#3b82f6]  bg-white hover:bg-white'>
+                      {orders.orderStatus}
+                    </Badge>
                   )}
                   {orders.orderStatus === 'Cancel' && (
-                    <Badge className='text-[#ef4444] border-[#ef4444]'>{orders.orderStatus}</Badge>
+                    <Badge className='text-[#ef4444] border-[#ef4444]  bg-white hover:bg-white'>
+                      {orders.orderStatus}
+                    </Badge>
                   )}
                   {orders.orderStatus === 'Fail' && (
-                    <Badge className='text-[#f8b4b4] border-[#f8b4b4]'>{orders.orderStatus}</Badge>
+                    <Badge className='text-[#f8b4b4] border-[#f8b4b4]  bg-white hover:bg-white'>
+                      {orders.orderStatus}
+                    </Badge>
                   )}
                 </div>
               </div>
@@ -96,7 +106,14 @@ export const OrderDetailPage = () => {
                 {orders.orderDetails.map((item) => (
                   <div key={item.id} className='flex justify-between items-center border-b py-2'>
                     <div>
-                      <p className='font-medium text-[#1f2937]'>{item.productName}</p>
+                      <div className='flex flex-row gap-4'>
+                        <p className='font-medium text-[#1f2937]'>{item.productName}</p>
+                        <p className='font-light text-sm text-gray-500'>
+                          {new Date(item.createdAt).toDateString()}
+                          {` `}
+                          {new Date(item.createdAt).toLocaleTimeString()}
+                        </p>
+                      </div>
                       <p className='text-sm text-[#6b7280]'>
                         {item.unitName} x {item.quantity} - {item.price.toLocaleString()} VND
                       </p>

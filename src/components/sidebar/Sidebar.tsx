@@ -9,7 +9,7 @@ import {
   SidebarRail
 } from '@/components/ui/sidebar'
 import { AUTHENTICATION_ROUTES, AUTHENTICATION_MENUS, ROUTES, STORAGE, UN_AUTHENTICATION_ROUTES } from '@/defines'
-import { Bell, LayoutDashboard, LogOut, Settings, User } from 'lucide-react'
+import { LayoutDashboard, LogOut, Settings, User } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -31,6 +31,7 @@ export function AppSidebar() {
   const location = useLocation()
   const [notifications, setNotifications] = useState<any[]>([]) // Danh sách thông báo
   const [hasUnread, setHasUnread] = useState(false) // Trạng thái có thông báo chưa đọc
+  console.log(hasUnread)
   const [isNotificationDialogOpen, setIsNotificationDialogOpen] = useState(false) // Trạng thái mở dialog thông báo
 
   useEffect(() => {
@@ -69,6 +70,13 @@ export function AppSidebar() {
   useEffect(() => {
     localStorage.setItem('Noti', JSON.stringify(notifications))
   }, [notifications])
+
+  useEffect(() => {
+    if (location.pathname === ROUTES.Booking.path) {
+      setHasUnread(false) // Đánh dấu đã đọc khi ở trang Booking
+    }
+  }, [location.pathname])
+
   const access_token = localStorage.getItem(STORAGE.ACCESS_TOKEN)
   const username = localStorage.getItem('user')
 
@@ -85,11 +93,6 @@ export function AppSidebar() {
       return
     }
     navigate(path) // Điều hướng đến path nếu hợp lệ
-  }
-
-  const handleNotificationClick = () => {
-    setHasUnread(false) // Xóa trạng thái thông báo chưa đọc
-    setIsNotificationDialogOpen(true) // Mở dialog thông báo
   }
 
   const closeNotificationDialog = () => {
@@ -123,15 +126,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
-          <SidebarMenuItem className='p-2'>
-            <SidebarMenuButton size='lg' className='flex items-center gap-2 relative' onClick={handleNotificationClick}>
-              <Bell className=' h-10 w-10 ml-2' style={{ width: '1.2rem', height: '1.2rem' }} />
-              {hasUnread && (
-                <span className='absolute text-xs rounded-full bg-red-500 w-[10px] h-[10px] top-0 right-0'></span>
-              )}
-              <span className=' ml-2'>Thông báo mới</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+          <SidebarMenuItem className='p-2'></SidebarMenuItem>
           <SidebarMenuItem className='mx-auto'></SidebarMenuItem>
           {Object.entries(AUTHENTICATION_MENUS).map(([key, item]) => (
             <SidebarMenuItem key={key} className='p-2'>
@@ -142,7 +137,7 @@ export function AppSidebar() {
                 >
                   <item.icon className=' h-10 w-10 ml-2' style={{ width: '1.2rem', height: '1.2rem' }} />
                   <span className='ml-2'>{item.label}</span>{' '}
-                  {item.label === 'Booking' && item.path !== location.pathname && notifications.length > 0 && (
+                  {item.label === 'Đặt bàn' && notifications.length > 0 && location.pathname !== item.path && (
                     <div className='p-1 px-3 rounded-full text-xs bg-red-500 text-white'>{notifications.length}</div>
                   )}
                 </a>

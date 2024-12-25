@@ -52,6 +52,7 @@ export type BookingItem = {
   customerName: string
   phone: string
   tables: Table[]
+  isHighlight?: boolean // Add this line
 }
 
 export type Table = {
