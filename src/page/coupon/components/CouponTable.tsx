@@ -30,17 +30,17 @@ export default function CouponTable({
   fetchData
 }: CouponTableProps) {
   return (
-    <div className='container mx-auto py-10'>
-      <Table className='mx-1'>
+    <div className='container mx-auto py-10 px-3'>
+      <Table className=''>
         <TableHeader>
           <TableRow>
-            <TableHead>STT</TableHead>
-            <TableHead className='w-[200px]'>Code</TableHead>
-            <TableHead>Discount Amount</TableHead>
-            <TableHead>Discount Percent</TableHead>
-            <TableHead>quantity</TableHead>
-            <TableHead className='text-center'>Inactive</TableHead>
-            <TableHead className='text-right'>Actions</TableHead>
+            <TableHead>Số thứ tự</TableHead>
+            <TableHead>Mã giảm</TableHead>
+            <TableHead>Giá trị giảm giá</TableHead>
+            <TableHead>Phần trăm giảm giá</TableHead>
+            <TableHead>Số lượng</TableHead>
+            <TableHead>Trạng thái</TableHead>
+            <TableHead>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -52,10 +52,10 @@ export default function CouponTable({
                 <TableCell>{formatToVND(item.discountAmount)}</TableCell>
                 <TableCell>{item.discountPercent}</TableCell>
                 <TableCell>{item.quantity}</TableCell>
-                <TableCell className='text-center'>
+                <TableCell>
                   <Switch checked={item.inactive} />
                 </TableCell>
-                <TableCell className='text-right'>
+                <TableCell>
                   <EditCoupon coupon={item} fetchData={fetchData} />
                   <DeleteCoupon coupon={item} fetchData={fetchData} />
                 </TableCell>

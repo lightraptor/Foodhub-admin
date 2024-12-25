@@ -157,8 +157,8 @@ export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetc
         </DialogTrigger>
         <DialogContent className='sm:max-w-[800px] max-h-[90vh] overflow-y-auto'>
           <DialogHeader>
-            <DialogTitle>Chỉnh sửa Product</DialogTitle>
-            <DialogDescription>Điền thông tin để chỉnh sửa Product. Nhấn Lưu khi hoàn tất.</DialogDescription>
+            <DialogTitle>Chỉnh sửa sản phẩm</DialogTitle>
+            <DialogDescription>Điền thông tin để chỉnh sửa sản phẩm. Nhấn Lưu khi hoàn tất.</DialogDescription>
           </DialogHeader>
           {product && (
             <form onSubmit={handleSubmit}>
@@ -228,7 +228,7 @@ export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetc
                       />
                     </div>
                     <div className='grid grid-cols-4 items-center gap-4'>
-                      <Label className='text-left'>Category</Label>
+                      <Label className='text-left'>Danh mục</Label>
                       <Select onValueChange={(e) => setEditedProduct({ ...editedProduct, categoryId: e })}>
                         <SelectTrigger className='w-full col-span-3'>
                           <SelectValue placeholder={product.categoryDto.name} defaultValue={product.categoryDto.id} />
@@ -243,7 +243,7 @@ export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetc
                       </Select>
                     </div>
                     <div className='grid grid-cols-4 items-center gap-4'>
-                      <Label className='text-left'>Menu</Label>
+                      <Label className='text-left'>Thực đơn</Label>
                       <Select onValueChange={(e) => setEditedProduct({ ...editedProduct, menuId: e })}>
                         <SelectTrigger className='w-full col-span-3'>
                           <SelectValue placeholder={product.menuDto.menuName} defaultValue={product.menuDto.id} />
@@ -259,7 +259,7 @@ export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetc
                     </div>
                     <div className='grid grid-cols-4 items-center gap-4'>
                       <Label htmlFor='file' className='text-left'>
-                        Thumbnail
+                        Hình đại diện
                       </Label>
                       <Input
                         id='file'
@@ -309,12 +309,12 @@ export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetc
 
                 {/* Switch Inactive */}
                 <div className='flex items-center space-x-2 mt-4'>
+                  <Label htmlFor='inactive'>Trạng thái</Label>
                   <Switch
                     id='inactive'
                     checked={editedProduct.inactive}
                     onCheckedChange={(checked) => setEditedProduct({ ...editedProduct, inactive: checked })}
                   />
-                  <Label htmlFor='inactive'>Inactive</Label>
                 </div>
               </div>
 

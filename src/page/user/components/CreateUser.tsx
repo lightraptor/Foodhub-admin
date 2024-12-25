@@ -72,11 +72,11 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant='outline'>Register New User</Button>
+        <Button variant='outline'>Tạo tài khoản mới</Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[800px] w-11/12'>
         <DialogHeader>
-          <DialogTitle>User Registration</DialogTitle>
+          <DialogTitle>Tạo tài khoản</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='grid grid-cols-2 gap-4'>
@@ -98,7 +98,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='password'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>Mật khẩu</FormLabel>
                   <FormControl>
                     <Input type='password' {...field} />
                   </FormControl>
@@ -111,7 +111,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='roleName'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel>Vai trò</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -133,7 +133,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='firstName'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>Tên</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -146,7 +146,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='lastName'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel>Họ</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -159,7 +159,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='gender'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gender</FormLabel>
+                  <FormLabel>Giới tính</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -167,9 +167,9 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value='male'>Male</SelectItem>
-                      <SelectItem value='female'>Female</SelectItem>
-                      <SelectItem value='other'>Other</SelectItem>
+                      <SelectItem value='male'>Nam</SelectItem>
+                      <SelectItem value='female'>Nữ</SelectItem>
+                      <SelectItem value='other'>Khác</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -181,7 +181,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='birthday'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Birthday</FormLabel>
+                  <FormLabel>Ngày sinh</FormLabel>
                   <FormControl>
                     <Input type='date' {...field} />
                   </FormControl>
@@ -194,7 +194,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='phoneNumber'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel>Số điện thoại</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -207,7 +207,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='address'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>Địa chỉ</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -220,7 +220,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='bank'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bank</FormLabel>
+                  <FormLabel>Tên ngân hàng</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -233,7 +233,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='bankBranch'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bank Branch</FormLabel>
+                  <FormLabel>Chi nhánh ngân hàng</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -246,7 +246,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               name='bankNumber'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bank Number</FormLabel>
+                  <FormLabel>Số tài khoản</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -259,7 +259,7 @@ export default function CreateUser({ fetchData }: CreateUserProps) {
               className='bg-blue-600 hover:bg-blue-600/9
              col-span-2 mt-4'
             >
-              Submit
+              Tạo tài khoản
             </Button>
           </form>
         </Form>

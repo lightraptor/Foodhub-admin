@@ -49,7 +49,7 @@ export const CouponPage = () => {
 
   return (
     <>
-      <p className='text-2xl font-semibold mx-10 text-center my-5'>Menu</p>
+      <p className='text-2xl font-semibold mx-10 text-center my-5'>Quản lý mã giảm giá</p>
       <div className='flex justify-end mx-10 mb-5'>
         <AddCoupon fetchData={fetchData} />
       </div>

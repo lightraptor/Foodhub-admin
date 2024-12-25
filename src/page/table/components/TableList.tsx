@@ -56,7 +56,7 @@ export default function TableList({
             <TableHead>Số người</TableHead>
             <TableHead>Trạng thái</TableHead>
             <TableHead>Tình trạng</TableHead>
-            <TableHead className='text-right'>Actions</TableHead>
+            <TableHead>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -92,7 +92,7 @@ export default function TableList({
                                   ? '[#1eb00db]'
                                   : '[#000]'
                         }`}
-                        variant='default'
+                        variant='outline'
                       >
                         {item.status}
                       </Badge>
@@ -115,16 +115,16 @@ export default function TableList({
                 </TableCell>
                 <TableCell>
                   {item.isAvailable ? (
-                    <Badge className='border-[#008000] text-[#008000]' variant='default'>
+                    <Badge className='border-[#008000] text-[#008000]' variant='outline'>
                       On
                     </Badge>
                   ) : (
-                    <Badge className='border-[#ff0000] text-[#ff0000]' variant='default'>
+                    <Badge className='border-[#ff0000] text-[#ff0000]' variant='outline'>
                       Off
                     </Badge>
                   )}
                 </TableCell>
-                <TableCell className='text-right'>
+                <TableCell>
                   <EditTable tableItem={item} fetchData={fetchData} />
                   <DeleteTable tableItem={item} fetchData={fetchData} />
                 </TableCell>

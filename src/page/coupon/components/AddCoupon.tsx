@@ -72,7 +72,7 @@ export default function AddCoupon({ fetchData }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='text-white bg-black'>Add Coupon</Button>
+        <Button className='text-white'>Thêm mã giảm giá</Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[700px]'>
         <DialogHeader>
@@ -82,9 +82,7 @@ export default function AddCoupon({ fetchData }: Props) {
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='couponCode' className='text-right'>
-                Tên Coupon
-              </Label>
+              <Label htmlFor='couponCode'>Tên Coupon</Label>
               <Input
                 id='couponCode'
                 value={couponCode}
@@ -93,9 +91,7 @@ export default function AddCoupon({ fetchData }: Props) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='discountPercent' className='text-right'>
-                Phần trăm giảm giá
-              </Label>
+              <Label htmlFor='discountPercent'>Phần trăm giảm giá</Label>
               <Input
                 id='discountPercent'
                 value={discountPercent}
@@ -104,9 +100,7 @@ export default function AddCoupon({ fetchData }: Props) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='discountAmount' className='text-right'>
-                Số tiền giảm giá
-              </Label>
+              <Label htmlFor='discountAmount'>Số tiền giảm giá</Label>
               <Input
                 id='discountAmount'
                 type='number'
@@ -116,9 +110,7 @@ export default function AddCoupon({ fetchData }: Props) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='quantity' className='text-right'>
-                Số lượng
-              </Label>
+              <Label htmlFor='quantity'>Số lượng</Label>
               <Input
                 id='quantity'
                 type='number'
@@ -127,13 +119,13 @@ export default function AddCoupon({ fetchData }: Props) {
                 className='col-span-3'
               />
             </div>
-            <div className='flex items-center space-x-2'>
+            <div className='grid grid-cols-4 items-center space-x-2'>
+              <Label htmlFor='inactive'>Trạng thái</Label>
               <Switch id='inactive' checked={inactive} onCheckedChange={setInactive} />
-              <Label htmlFor='inactive'>Inactive</Label>
             </div>
           </div>
           <DialogFooter>
-            <Button type='submit' disabled={loading}>
+            <Button type='submit' className='text-white' disabled={loading}>
               {loading ? 'Đang lưu...' : 'Lưu'}
             </Button>
             {error && <p className='text-red-500 text-center mt-2'>{error}</p>}

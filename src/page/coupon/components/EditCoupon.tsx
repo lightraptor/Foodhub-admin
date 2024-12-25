@@ -70,7 +70,7 @@ export function EditCoupon({ coupon, fetchData }: EditCouponProps) {
           <span className='sr-only'>Edit {coupon.couponCode}</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className='sm:max-w-[600px]'>
         <DialogHeader>
           <DialogTitle>Chỉnh sửa Coupon</DialogTitle>
           <DialogDescription>Chỉnh sửa thông tin coupon. Nhấn lưu để cập nhật.</DialogDescription>
@@ -78,9 +78,7 @@ export function EditCoupon({ coupon, fetchData }: EditCouponProps) {
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='couponCode' className='text-right'>
-                Mã coupon
-              </Label>
+              <Label htmlFor='couponCode'>Mã coupon</Label>
               <Input
                 id='couponCode'
                 value={editedCoupon.couponCode}
@@ -89,9 +87,7 @@ export function EditCoupon({ coupon, fetchData }: EditCouponProps) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='discountPercent' className='text-right'>
-                Phần trăm giảm giá
-              </Label>
+              <Label htmlFor='discountPercent'>Phần trăm giảm giá</Label>
               <Input
                 id='discountPercent'
                 value={editedCoupon.discountPercent}
@@ -100,9 +96,7 @@ export function EditCoupon({ coupon, fetchData }: EditCouponProps) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='discountAmount' className='text-right'>
-                Phần trăm giá trị
-              </Label>
+              <Label htmlFor='discountAmount'>Phần trăm giá trị</Label>
               <Input
                 id='discountAmount'
                 type='number'
@@ -112,9 +106,7 @@ export function EditCoupon({ coupon, fetchData }: EditCouponProps) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='quantity' className='text-right'>
-                Số lượng
-              </Label>
+              <Label htmlFor='quantity'>Số lượng</Label>
               <Input
                 id='quantity'
                 type='number'
@@ -123,20 +115,20 @@ export function EditCoupon({ coupon, fetchData }: EditCouponProps) {
                 className='col-span-3'
               />
             </div>
-            <div className='flex items-center space-x-2'>
+            <div className='grid grid-cols-4 items-center space-x-2'>
+              <Label htmlFor='inactive'>Trạng thái</Label>
               <Switch
                 id='inactive'
                 checked={editedCoupon.inactive}
                 onCheckedChange={(checked) => setEditedCoupon({ ...editedCoupon, inactive: checked })}
               />
-              <Label htmlFor='inactive'>Inactive</Label>
             </div>
           </div>
           <DialogFooter>
             <Button type='button' variant='outline' onClick={() => setOpen(false)} disabled={loading}>
               Hủy
             </Button>
-            <Button type='submit' disabled={loading}>
+            <Button className='text-white' type='submit' disabled={loading}>
               {loading ? 'Đang lưu...' : 'Lưu'}
             </Button>
           </DialogFooter>

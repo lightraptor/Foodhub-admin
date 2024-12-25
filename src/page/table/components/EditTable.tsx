@@ -70,15 +70,13 @@ export function EditTable({ tableItem, fetchData }: EditMenuButtonProps) {
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Chỉnh sửa Table</DialogTitle>
-          <DialogDescription>Chỉnh sửa thông tin table. Nhấn lưu để cập nhật.</DialogDescription>
+          <DialogTitle>Chỉnh sửa bàn</DialogTitle>
+          <DialogDescription>Chỉnh sửa thông tin bàn ăn. Nhấn lưu để cập nhật.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='name' className='text-right'>
-                Tên
-              </Label>
+              <Label htmlFor='name'>Tên</Label>
               <Input
                 id='name'
                 value={editedTable.name}
@@ -87,9 +85,7 @@ export function EditTable({ tableItem, fetchData }: EditMenuButtonProps) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='maxCapacity' className='text-right'>
-                Số người
-              </Label>
+              <Label htmlFor='maxCapacity'>Số người</Label>
               <Input
                 id='maxCapacity'
                 value={editedTable.maxCapacity}
@@ -98,9 +94,7 @@ export function EditTable({ tableItem, fetchData }: EditMenuButtonProps) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='areaName' className='text-right'>
-                Khu vực
-              </Label>
+              <Label htmlFor='areaName'>Khu vực</Label>
               <Input
                 id='areaName'
                 value={editedTable.areaName}
@@ -108,13 +102,13 @@ export function EditTable({ tableItem, fetchData }: EditMenuButtonProps) {
                 className='col-span-3'
               />
             </div>
-            <div className='flex items-center space-x-2'>
+            <div className='grid grid-cols-4 items-center space-x-2'>
+              <Label htmlFor='inactive'>Trạng thái</Label>
               <Switch
                 id='inactive'
                 checked={editedTable.isAvailable}
                 onCheckedChange={(checked) => setEditedTable({ ...editedTable, isAvailable: checked })}
               />
-              <Label htmlFor='inactive'>Is Available</Label>
             </div>
           </div>
           <DialogFooter>

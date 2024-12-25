@@ -78,13 +78,13 @@ export const PaymentListPage: React.FC = () => {
 
   return (
     <div className='p-6 min-h-screen'>
-      <h1 className='text-3xl font-bold text-gray-800 mb-6 text-center'>Payment List</h1>
+      <h1 className='text-3xl font-bold text-gray-800 mb-6 text-center'>Danh sách thanh toán</h1>
 
       {/* Bộ lọc */}
       <div className='mb-6 flex flex-col md:flex-row items-center gap-4'>
         <div className='flex items-center gap-2'>
           <label htmlFor='fromDate' className='text-gray-700'>
-            From:
+            Từ ngày:
           </label>
           <input
             type='date'
@@ -96,7 +96,7 @@ export const PaymentListPage: React.FC = () => {
         </div>
         <div className='flex items-center gap-2'>
           <label htmlFor='toDate' className='text-gray-700'>
-            To:
+            Đến ngày:
           </label>
           <input
             type='date'
@@ -110,7 +110,7 @@ export const PaymentListPage: React.FC = () => {
           onClick={handleFilter}
           className='bg-blue-500 text-[#fff] px-4 py-2 rounded-lg hover:bg-blue-600 transition'
         >
-          Apply Filter
+          Lọc danh sách
         </button>
       </div>
 
@@ -128,11 +128,11 @@ export const PaymentListPage: React.FC = () => {
                 <Table className='w-full border border-gray-200 shadow-lg rounded-lg bg-white'>
                   <TableHeader>
                     <TableRow className='bg-gray-200'>
-                      <TableHead className='py-3 px-6 text-gray-700'>Amount</TableHead>
-                      <TableHead className='py-3 px-6 text-gray-700'>Description</TableHead>
-                      <TableHead className='py-3 px-6 text-gray-700'>Date</TableHead>
-                      <TableHead className='py-3 px-6 text-gray-700'>Status</TableHead>
-                      <TableHead className='py-3 px-6 text-gray-700'>Action</TableHead>
+                      <TableHead className='py-3 px-6 text-gray-700'>Giá tiền</TableHead>
+                      <TableHead className='py-3 px-6 text-gray-700'>Mô tả</TableHead>
+                      <TableHead className='py-3 px-6 text-gray-700'>Ngày thanh toán</TableHead>
+                      <TableHead className='py-3 px-6 text-gray-700'>Trạng thái</TableHead>
+                      <TableHead className='py-3 px-6 text-gray-700'>Thao tác</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -155,7 +155,7 @@ export const PaymentListPage: React.FC = () => {
                             className='bg-blue-600 text-[#fff] hover:bg-blue-700'
                             onClick={() => handleDetailClick(payment)}
                           >
-                            Detail
+                            Chi tiết
                           </Button>
                         </TableCell>
                       </TableRow>
@@ -182,7 +182,7 @@ export const PaymentListPage: React.FC = () => {
             <DialogTitle className='text-center'>Payment Detail</DialogTitle>
             <DialogDescription>
               {selectedPayment ? (
-                <div>
+                <div className='space-y-2'>
                   <p>
                     <strong>Id:</strong> {selectedPayment.id}
                   </p>

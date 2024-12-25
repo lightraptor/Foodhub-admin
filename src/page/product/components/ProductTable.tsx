@@ -56,15 +56,15 @@ export function ProductTable({
 }: DataTableProps) {
   return (
     <div className='container mx-auto py-10'>
-      <Table className='mx-1'>
+      <Table className='px-3'>
         <TableHeader>
           <TableRow>
             <TableHead>STT</TableHead>
-            <TableHead className='w-[200px]'>Product Name</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Unit</TableHead>
-            <TableHead className='text-center'>Inactive</TableHead>
-            <TableHead className='text-right'>Actions</TableHead>
+            <TableHead>Tên sản phẩm</TableHead>
+            <TableHead>Giá</TableHead>
+            <TableHead>Đơn vị</TableHead>
+            <TableHead>Trạng thái</TableHead>
+            <TableHead>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -78,18 +78,18 @@ export function ProductTable({
                 </TableCell>
                 <TableCell>{formatToVND(item.price)}</TableCell>
                 <TableCell>{item.unitName}</TableCell>
-                <TableCell className='text-center'>
+                <TableCell>
                   {item.inactive ? (
-                    <Badge className='border-[#008000] text-[#008000]' variant='default'>
-                      Available
+                    <Badge className='border-[#008000] text-[#008000]' variant='outline'>
+                      Có sẵn
                     </Badge>
                   ) : (
-                    <Badge className='border-[#ff0000] text-[#ff0000]' variant='default'>
-                      Unavailable
+                    <Badge className='border-[#ff0000] text-[#ff0000]' variant='outline'>
+                      Ngừng phục vụ
                     </Badge>
                   )}
                 </TableCell>
-                <TableCell className='text-right'>
+                <TableCell>
                   <EditProduct product={item} fetchData={fetchData} />
                   <DeleteProduct product={item} fetchData={fetchData} />
                 </TableCell>

@@ -69,11 +69,11 @@ export const Charts = ({ criteria }: ChartProps) => {
 
   return (
     <>
-      <div className='p-20'>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+      <div className='p-20 pt-5'>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
           <Card>
             <CardHeader>
-              <CardTitle>Total Users</CardTitle>
+              <CardTitle>Tổng người dùng</CardTitle>
             </CardHeader>
             <CardContent>
               <p className='text-3xl font-bold'>{data?.totalUsers}</p>
@@ -81,7 +81,7 @@ export const Charts = ({ criteria }: ChartProps) => {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Total Orders</CardTitle>
+              <CardTitle>Tổng đơn hàng</CardTitle>
             </CardHeader>
             <CardContent>
               <p className='text-3xl font-bold'>{data?.totalOrder}</p>
@@ -89,16 +89,16 @@ export const Charts = ({ criteria }: ChartProps) => {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Total Revenue</CardTitle>
+              <CardTitle>Tổng lợi nhuận</CardTitle>
             </CardHeader>
             <CardContent>
               <p className='text-3xl font-bold'>{data?.totalRevenueAdmount.toLocaleString()} VND</p>
             </CardContent>
           </Card>
         </div>
-        <Card className='mt-8'>
+        <Card className='mt-5'>
           <CardHeader>
-            <CardTitle>Line Chart</CardTitle>
+            <CardTitle>Biểu đồ doanh thu</CardTitle>
           </CardHeader>
           <CardContent className='px-2 sm:p-6'>
             <ChartContainer config={chartConfigLine} className='aspect-auto h-[300px] w-full'>
@@ -134,52 +134,41 @@ export const Charts = ({ criteria }: ChartProps) => {
             </ChartContainer>
           </CardContent>
         </Card>
-        <div className='flex flex-row gap-4 p-10 justify-around'>
-          {/* Biểu đồ cho danh mục sản phẩm */}
-          <Card className='flex flex-col min-w-[400px]'>
-            <CardHeader className='items-center pb-0'>
-              <CardTitle>Biểu đồ - Danh mục sản phẩm</CardTitle>
-              <CardDescription>Theo nhóm danh mục</CardDescription>
-            </CardHeader>
-            <CardContent className='flex-1 pb-0'>
-              <ChartContainer config={chartConfig} className='mx-auto aspect-square max-h-[250px]'>
-                <PieChart>
-                  <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                  <Pie data={chartDataCategory} dataKey='value' nameKey='name' innerRadius={60} />
-                  {/* Chart Legend */}
-                  <ChartLegend
-                    content={chartDataCategory?.map((entry, index) => (
-                      <ChartLegendContent key={index} nameKey={entry.name} color={entry.fill} />
-                    ))}
-                    className='-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center'
-                  />
-                </PieChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-
-          {/* Biểu đồ cho thực đơn */}
-          <Card className='flex flex-col min-w-[400px]'>
-            <CardHeader className='items-center pb-0'>
-              <CardTitle>Biểu đồ - Thực đơn</CardTitle>
-              <CardDescription>Theo nhóm thực đơn</CardDescription>
-            </CardHeader>
-            <CardContent className='flex-1 pb-0'>
-              <ChartContainer config={chartConfig} className='mx-auto aspect-square max-h-[250px]'>
-                <PieChart>
-                  <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-                  <Pie data={chartDataMenu} dataKey='value' nameKey='name' innerRadius={60} />
-                  {/* Chart Legend */}
-                  <ChartLegend
-                    content={chartDataMenu?.map((entry, index) => (
-                      <ChartLegendContent key={index} nameKey={entry.name} color={entry.fill} />
-                    ))}
-                    className='-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center'
-                  />
-                </PieChart>
-              </ChartContainer>
-            </CardContent>
-          </Card>
+        <div className='flex flex-row mt-5 justify-center gap-5'>
+          {/* Card chung */}
+          {[
+            {
+              title: 'Biểu đồ - Danh mục sản phẩm',
+              description: 'Theo nhóm danh mục',
+              data: chartDataCategory
+            },
+            {
+              title: 'Biểu đồ - Thực đơn',
+              description: 'Theo nhóm thực đơn',
+              data: chartDataMenu
+            }
+          ].map((chart, index) => (
+            <Card key={index} className='flex flex-col flex-1 min-w-[200px]'>
+              <CardHeader className='items-center pb-0'>
+                <CardTitle>{chart.title}</CardTitle>
+                <CardDescription>{chart.description}</CardDescription>
+              </CardHeader>
+              <CardContent className='flex-1 pb-0'>
+                <ChartContainer config={chartConfig} className='mx-auto aspect-square max-h-[250px]'>
+                  <PieChart>
+                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                    <Pie data={chart.data} dataKey='value' nameKey='name' innerRadius={60} />
+                    <ChartLegend
+                      content={chart.data?.map((entry, index) => (
+                        <ChartLegendContent key={index} nameKey={entry.name} color={entry.fill} />
+                      ))}
+                      className='-translate-y-2 flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center'
+                    />
+                  </PieChart>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </>

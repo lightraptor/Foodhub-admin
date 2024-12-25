@@ -33,15 +33,15 @@ export default function CategoryTable({
   fetchData
 }: CategoryTableProps) {
   return (
-    <div className='container mx-auto py-5'>
+    <div className='container mx-auto p-5'>
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className='w-[200px]'>Category Name</TableHead>
-            <TableHead>Code</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead className='text-center'>Inactive</TableHead>
-            <TableHead className='text-right'>Thao tác</TableHead>
+            <TableHead>Tên danh mục</TableHead>
+            <TableHead>Mã</TableHead>
+            <TableHead>Mô tả</TableHead>
+            <TableHead>Trạng thái</TableHead>
+            <TableHead>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -51,10 +51,10 @@ export default function CategoryTable({
                 <TableCell className='font-medium'>{category.name}</TableCell>
                 <TableCell>{category.code}</TableCell>
                 <TableCell>{category.description}</TableCell>
-                <TableCell className='text-center'>
+                <TableCell>
                   <Switch checked={category.inactive} />
                 </TableCell>
-                <TableCell className='text-right'>
+                <TableCell>
                   <EditCategoryButton category={category} fetchData={fetchData} />
                   <DeleteCategoryButton category={category} fetchData={fetchData} />
                 </TableCell>

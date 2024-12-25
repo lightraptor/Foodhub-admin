@@ -45,7 +45,7 @@ export const TablePage = () => {
   if (loading) return <p className='text-center text-lg'>Loading...</p>
   return (
     <>
-      <p className='text-2xl font-semibold mx-10 text-center my-5'>Table list</p>
+      <p className='text-2xl font-semibold mx-10 text-center my-5'>Quản lý bàn ăn</p>
       <div className='flex justify-end mx-10 mb-5'>
         <AddTable fetchData={fetchData} />
       </div>

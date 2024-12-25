@@ -84,9 +84,7 @@ export function EditMenuButton({ menu, fetchData }: EditMenuButtonProps) {
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='menuName' className='text-right'>
-                Tên Menu
-              </Label>
+              <Label htmlFor='menuName'>Tên Menu</Label>
               <Input
                 id='menuName'
                 value={editedMenu.MenuName}
@@ -95,9 +93,7 @@ export function EditMenuButton({ menu, fetchData }: EditMenuButtonProps) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='description' className='text-right'>
-                Mô tả
-              </Label>
+              <Label htmlFor='description'>Mô tả</Label>
               <Input
                 id='description'
                 value={editedMenu.description}
@@ -106,9 +102,7 @@ export function EditMenuButton({ menu, fetchData }: EditMenuButtonProps) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='sortOrder' className='text-right'>
-                Thứ tự
-              </Label>
+              <Label htmlFor='sortOrder'>Thứ tự</Label>
               <Input
                 id='sortOrder'
                 type='number'
@@ -118,18 +112,16 @@ export function EditMenuButton({ menu, fetchData }: EditMenuButtonProps) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='imageFile' className='text-right'>
-                Hình ảnh
-              </Label>
+              <Label htmlFor='imageFile'>Hình ảnh</Label>
               <Input id='imageFile' type='file' accept='image/*' onChange={handleFileChange} className='col-span-3' />
             </div>
-            <div className='flex items-center space-x-2'>
+            <div className='grid grid-cols-4 items-center space-x-2'>
+              <Label htmlFor='inactive'>Trạng thái</Label>
               <Switch
                 id='inactive'
                 checked={editedMenu.inactive}
                 onCheckedChange={(checked) => setEditedMenu({ ...editedMenu, inactive: checked })}
               />
-              <Label htmlFor='inactive'>Inactive</Label>
             </div>
           </div>
           <DialogFooter>

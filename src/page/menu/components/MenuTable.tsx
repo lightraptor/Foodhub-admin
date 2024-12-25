@@ -28,15 +28,15 @@ export default function MenuTable({
 }: MenuTableProps) {
   return (
     <div className='container mx-auto py-10'>
-      <Table className='mx-1'>
+      <Table className='py-2'>
         <TableHeader>
           <TableRow>
-            <TableHead>Image</TableHead>
-            <TableHead className='w-[200px]'>Menu Name</TableHead>
-            <TableHead>Sort Order</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead className='text-center'>Inactive</TableHead>
-            <TableHead className='text-right'>Actions</TableHead>
+            <TableHead>Hình ảnh</TableHead>
+            <TableHead className='w-[200px]'>Tên thực đơn</TableHead>
+            <TableHead>Độ ưu tiên</TableHead>
+            <TableHead>Mô tả</TableHead>
+            <TableHead className='text-center'>Trạng thái</TableHead>
+            <TableHead className='text-right'>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

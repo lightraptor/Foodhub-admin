@@ -31,20 +31,22 @@ export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder
       <CardContent className='p-6'>
         <div className='flex justify-between items-center mb-4'>
           {order.orderStatus === 'Pending' && (
-            <Badge className='text-[#facc15] border-[#facc15]'>{order.orderStatus}</Badge>
+            <Badge className='text-[#facc15] border-[#facc15] bg-white hover:bg-white'>{order.orderStatus}</Badge>
           )}
           {order.orderStatus === 'Processing' && (
-            <Badge className='text-[#22c55e] border-[#22c55e]'>{order.orderStatus}</Badge>
+            <Badge className='text-[#22c55e] border-[#22c55e] bg-white hover:bg-white'>{order.orderStatus}</Badge>
           )}
           {order.orderStatus === 'Complete' && (
-            <Badge className='text-[#3b82f6] border-[#3b82f6]'>{order.orderStatus}</Badge>
+            <Badge className='text-[#3b82f6] border-[#3b82f6] bg-white hover:bg-white'>{order.orderStatus}</Badge>
           )}
-          {order.orderStatus === 'Completed' && <Badge className='text-[#3b82f6] border-[#3b82f6]'>Complete</Badge>}
+          {order.orderStatus === 'Completed' && (
+            <Badge className='text-[#3b82f6] border-[#3b82f6] bg-white hover:bg-white'>Complete</Badge>
+          )}
           {order.orderStatus === 'Cancel' && (
-            <Badge className='text-[#ef4444] border-[#ef4444]'>{order.orderStatus}</Badge>
+            <Badge className='text-[#ef4444] border-[#ef4444] bg-white hover:bg-white'>{order.orderStatus}</Badge>
           )}
           {order.orderStatus === 'Fail' && (
-            <Badge className='text-[#f8b4b4] border-[#f8b4b4]'>{order.orderStatus}</Badge>
+            <Badge className='text-[#f8b4b4] border-[#f8b4b4] bg-white hover:bg-white'>{order.orderStatus}</Badge>
           )}
           <span className='text-sm text-gray-500'>ID: {order.id.slice(0, 8)}...</span>
         </div>

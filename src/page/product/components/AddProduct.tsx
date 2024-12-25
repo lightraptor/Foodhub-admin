@@ -128,12 +128,12 @@ const AddProduct = ({ fetchData }: { fetchData: () => void }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='text-white bg-black'>Add</Button>
+        <Button className='text-white mr-3'>Thêm sản phẩm</Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[800px] max-h-[90vh] overflow-y-auto'>
         <DialogHeader>
-          <DialogTitle>Chỉnh sửa Product</DialogTitle>
-          <DialogDescription>Điền thông tin để chỉnh sửa Product. Nhấn Lưu khi hoàn tất.</DialogDescription>
+          <DialogTitle>Thêm sản phẩm</DialogTitle>
+          <DialogDescription>Điền thông tin để thêm sản phẩm. Nhấn Lưu khi hoàn tất.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
@@ -192,7 +192,7 @@ const AddProduct = ({ fetchData }: { fetchData: () => void }) => {
                   />
                 </div>
                 <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label className='text-left'>Category</Label>
+                  <Label className='text-left'>Danh mục</Label>
                   <Select onValueChange={(e) => setCategoryId(e)}>
                     <SelectTrigger className='w-full col-span-3'>
                       <SelectValue placeholder='Select Category' />
@@ -207,7 +207,7 @@ const AddProduct = ({ fetchData }: { fetchData: () => void }) => {
                   </Select>
                 </div>
                 <div className='grid grid-cols-4 items-center gap-4'>
-                  <Label className='text-left'>Menu</Label>
+                  <Label className='text-left'>Thực đơn</Label>
                   <Select onValueChange={(e) => setMenuId(e)}>
                     <SelectTrigger className='w-full col-span-3'>
                       <SelectValue placeholder='Select Menu' />
@@ -223,7 +223,7 @@ const AddProduct = ({ fetchData }: { fetchData: () => void }) => {
                 </div>
                 <div className='grid grid-cols-4 items-center gap-4'>
                   <Label htmlFor='file' className='text-left'>
-                    Thumbnail
+                    Hình đại diện
                   </Label>
                   <Input
                     id='file'
@@ -273,8 +273,8 @@ const AddProduct = ({ fetchData }: { fetchData: () => void }) => {
 
             {/* Switch Inactive */}
             <div className='flex items-center space-x-2 mt-4'>
+              <Label htmlFor='inactive'>Trạng thái</Label>
               <Switch id='inactive' checked={inactive} onCheckedChange={setInactive} />
-              <Label htmlFor='inactive'>Inactive</Label>
             </div>
           </div>
 

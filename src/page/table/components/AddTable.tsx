@@ -65,25 +65,21 @@ export default function AddTable({ fetchData }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='text-white bg-black'>Add Table</Button>
+        <Button className='text-white'>Thêm mới bàn</Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Thêm mới Table</DialogTitle>
-          <DialogDescription>Điền thông tin để thêm mới table. Nhấn Lưu khi hoàn tất.</DialogDescription>
+          <DialogTitle>Thêm mới bàn</DialogTitle>
+          <DialogDescription>Điền thông tin để thêm mới bàn ăn. Nhấn Lưu khi hoàn tất.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='name' className='text-right'>
-                Tên bàn
-              </Label>
+              <Label htmlFor='name'>Tên bàn</Label>
               <Input id='name' value={name} onChange={(e) => setName(e.target.value)} className='col-span-3' />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='maxCapacity' className='text-right'>
-                Số người
-              </Label>
+              <Label htmlFor='maxCapacity'>Số người</Label>
               <Input
                 type='number'
                 id='maxCapacity'
@@ -93,9 +89,7 @@ export default function AddTable({ fetchData }: Props) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='areaName' className='text-right'>
-                Khu vực
-              </Label>
+              <Label htmlFor='areaName'>Khu vực</Label>
               <Input
                 id='areaName'
                 value={areaName}

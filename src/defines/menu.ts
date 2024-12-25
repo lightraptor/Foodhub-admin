@@ -12,17 +12,17 @@ import {
 } from 'lucide-react'
 
 export const AUTHENTICATION_MENUS = {
-  Home: { path: '/', label: 'Home', icon: Home },
-  Booking: { path: '/booking', label: 'Booking', icon: ListOrderedIcon },
-  Order: { path: '/order', label: 'Order', icon: ShoppingCart },
-  Coupon: { path: '/coupon', label: 'Coupon', icon: TicketPercent },
-  Category: { path: '/category', label: 'Category', icon: LayoutGrid },
-  Menu: { path: '/menu', label: 'Menu', icon: SquareMenu },
-  Product: { path: '/product', label: 'Product', icon: ShoppingBasket },
-  Table: { path: '/table', label: 'Table', icon: Utensils },
-  Users: { path: '/users', label: 'Users', icon: Users },
-  Merchant: { path: '/merchant', label: 'Merchant', icon: SettingsIcon },
-  Payment: { path: '/payment', label: 'Payment', icon: ShoppingBasket }
+  Home: { path: '/', label: 'Trang chủ', icon: Home },
+  Booking: { path: '/booking', label: 'Đặt bàn', icon: ListOrderedIcon },
+  Order: { path: '/order', label: 'Đơn hàng', icon: ShoppingCart },
+  Coupon: { path: '/coupon', label: 'Mã giảm giá', icon: TicketPercent },
+  Category: { path: '/category', label: 'Danh mục', icon: LayoutGrid },
+  Menu: { path: '/menu', label: 'Thực đơn', icon: SquareMenu },
+  Product: { path: '/product', label: 'Sản phẩm', icon: ShoppingBasket },
+  Table: { path: '/table', label: 'Danh sách bàn', icon: Utensils },
+  Users: { path: '/users', label: 'Thành viên', icon: Users },
+  Merchant: { path: '/merchant', label: 'Cấu hình thanh toán', icon: SettingsIcon },
+  Payment: { path: '/payment', label: 'Danh sách thanh toán', icon: ShoppingBasket }
 }
 
 export const UN_AUTHENTICATION_MENUS = {

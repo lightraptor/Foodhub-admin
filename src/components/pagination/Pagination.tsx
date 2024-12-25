@@ -30,7 +30,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       {/* Select Page Size */}
       <div className='flex items-center'>
         <label htmlFor='pageSize' className='mr-2 text-sm font-medium'>
-          Items per page:
+          Dữ liệu mỗi trang:
         </label>
         <Select onValueChange={handlePageSizeChange}>
           <SelectTrigger className='w-[100px]'>
@@ -49,7 +49,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       {/* Total Items Display */}
       <div className='text-sm text-gray-600'>
         <span>
-          Total records: <strong>{totalItems}</strong>
+          Tổng số dữ liệu: <strong>{totalItems}</strong>
         </span>
       </div>
 
@@ -61,7 +61,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           disabled={currentPage === 1}
           className='px-3 py-1 text-sm font-medium text-[#fff] bg-[#3b82f6] rounded hover:bg-[#2563eb] disabled:bg-[#d1d5db] disabled:cursor-not-allowed'
         >
-          Previous
+          Trang trước
         </button>
 
         {/* Page Buttons */}
@@ -83,7 +83,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           disabled={currentPage === totalPages}
           className='px-3 py-1 text-sm font-medium text-[#fff] bg-[#3b82f6] rounded hover:bg-[#2563eb] disabled:bg-[#d1d5db] disabled:cursor-not-allowed'
         >
-          Next
+          Trang kế
         </button>
       </div>
     </div>

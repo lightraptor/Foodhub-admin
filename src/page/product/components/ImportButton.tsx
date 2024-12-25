@@ -55,15 +55,15 @@ const ImportButton: React.FC<ImportButtonProps> = (props) => {
   return (
     <div className='flex items-center justify-center'>
       {/* Nút import */}
-      <Button onClick={handleOpenDialog} className='bg-blue-500 text-white'>
-        Import
+      <Button onClick={handleOpenDialog} className='bg-blue-500 text-white mr-3'>
+        Nhập bằng Excel
       </Button>
 
       {/* Dialog */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Upload File</DialogTitle>
+            <DialogTitle>Nhập dữ liệu bằng excel</DialogTitle>
           </DialogHeader>
           <div className='flex flex-col gap-4'>
             <input
@@ -75,10 +75,10 @@ const ImportButton: React.FC<ImportButtonProps> = (props) => {
           </div>
           <DialogFooter>
             <Button onClick={handleEnterClick} className='bg-[#0765ff] hover:bg-[#0765ff]/90 text-[#fff]'>
-              Enter
+              Nhập
             </Button>
             <Button onClick={handleCloseDialog} variant='secondary'>
-              Cancel
+              Hủy
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -28,6 +28,7 @@ interface BookingCardProps {
   onEdit: (id: string) => void
   onMoreOrder: (id: string) => void
   onCheckin: (booking: BookingItem) => void
+  isHighlight: boolean
   //onDelete: (id: string) => void
 }
 
@@ -40,22 +41,41 @@ export function BookingCard({
   onChangeTable,
   onMoreOrder,
   onEdit,
-  onCheckin
+  onCheckin,
+  isHighlight
   //onDelete
 }: BookingCardProps) {
+  const [highlight, setHighlight] = useState<boolean>(isHighlight)
   const [isOpen, setIsOpen] = useState(false)
   return (
-    <Card className='w-full max-w-md hover:shadow-lg transition-shadow duration-300'>
-      <CardContent className='p-6'>
+    <Card
+      className={`w-full max-w-md hover:shadow-lg transition-shadow duration-300`}
+      onClick={() => setHighlight(false)}
+    >
+      <CardContent className='p-6 relative'>
+        {highlight && (
+          <span className='absolute text-xs rounded-full bg-red-500  text-white py-1 px-2 top-0 right-0'>New</span>
+        )}
+
         <div className='flex justify-between items-center mb-4'>
-          {booking.status === 'Pending' && <Badge className='text-[#facc15] border-[#facc15]'>{booking.status}</Badge>}
-          {booking.status === 'Accept' && <Badge className='text-[#22c55e] border-[#22c55e]'>{booking.status}</Badge>}
-          {booking.status === 'Processing' && (
-            <Badge className='text-[#1fafb7] border-[#1fafb7]'>{booking.status}</Badge>
+          {booking.status === 'Pending' && (
+            <Badge className='text-[#facc15] border-[#facc15] bg-white hover:bg-white'>Chờ xử lý</Badge>
           )}
-          {booking.status === 'Complete' && <Badge className='text-[#3b82f6] border-[#3b82f6]'>{booking.status}</Badge>}
-          {booking.status === 'Cancel' && <Badge className='text-[#ef4444] border-[#ef4444]'>{booking.status}</Badge>}
-          {booking.status === 'Fail' && <Badge className='text-[#f8b4b4] border-[#f8b4b4]'>{booking.status}</Badge>}
+          {booking.status === 'Accept' && (
+            <Badge className='text-[#22c55e] border-[#22c55e] bg-white hover:bg-white'>Chờ nhận bàn</Badge>
+          )}
+          {booking.status === 'Processing' && (
+            <Badge className='text-[#1fafb7] border-[#1fafb7] bg-white hover:bg-white'>Đang phục vụ</Badge>
+          )}
+          {booking.status === 'Complete' && (
+            <Badge className='text-[#3b82f6] border-[#3b82f6] bg-white hover:bg-white'>Hoàn thành</Badge>
+          )}
+          {booking.status === 'Cancel' && (
+            <Badge className='text-[#ef4444] border-[#ef4444] bg-white hover:bg-white'>Đã hủy</Badge>
+          )}
+          {booking.status === 'Fail' && (
+            <Badge className='text-[#f8b4b4] border-[#f8b4b4] bg-white hover:bg-white'>Thất bại</Badge>
+          )}
           <span className='text-sm text-gray-500'>ID: {booking.id.slice(0, 8)}...</span>
         </div>
         <div className='space-y-3'>
@@ -80,11 +100,12 @@ export function BookingCard({
           </div>
           <div className='flex'>
             <MapPinCheckInside className='mr-2 h-5 w-5 text-[#9ca3af]' />
-            {booking.tables.map((table, index) => (
-              <span key={index} className='mr-2'>
-                {table.name}
-              </span>
-            ))}
+            {booking.tables !== null &&
+              booking?.tables.map((table, index) => (
+                <span key={index} className='mr-2'>
+                  {table.name}
+                </span>
+              ))}
           </div>
         </div>
       </CardContent>

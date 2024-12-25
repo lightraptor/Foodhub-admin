@@ -43,10 +43,10 @@ export const CategoryPage = () => {
     setCurrentPage(1) // Reset to page 1
   }
 
-  if (loading) return <p className='text-center text-lg'>Loading...</p>
+  if (loading) return <p className='text-center text-lg'>Đang tải...</p>
   return (
     <>
-      <p className='text-2xl font-semibold mx-10 text-center my-5'>Category</p>
+      <p className='text-2xl font-semibold mx-10 text-center my-5'>Quản lý danh mục</p>
       <div className='flex justify-end mx-10 mb-5'>
         <AddCategoryButton fetchData={fetchData} />
       </div>

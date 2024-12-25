@@ -46,8 +46,8 @@ export const MenuPage = () => {
 
   return (
     <>
-      <p className='text-2xl font-semibold mx-10 text-center my-5'>Menu</p>
-      <div className='flex justify-end mx-10 mb-5'>
+      <p className='text-2xl font-semibold mx-5 text-center my-5'>Quản lý thực đơn</p>
+      <div className='flex justify-end mx-5 mb-5'>
         <AddMenuButton fetchData={fetchData} />
       </div>
       <MenuTable

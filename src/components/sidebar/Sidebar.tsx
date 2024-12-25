@@ -14,13 +14,20 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import connection from '@/constants/signalRConnection'
 import { toast } from 'react-toastify'
+import { BookingContext } from '@/context/BookingContext'
+import { BookingItem } from '@/types'
 
 export function AppSidebar() {
+  const bookingContext = useContext(BookingContext)
+  if (!bookingContext) {
+    throw new Error('BookingContext is not provided')
+  }
   const navigate = useNavigate()
   const { logout } = useAuth()
+  const { addBooking } = bookingContext
   const location = useLocation()
   const [notifications, setNotifications] = useState<any[]>([]) // Danh sách thông báo
   const [hasUnread, setHasUnread] = useState(false) // Trạng thái có thông báo chưa đọc
@@ -42,8 +49,9 @@ export function AppSidebar() {
     startConnection()
 
     // Lắng nghe sự kiện "NotificationBooking"
-    connection.on('NotificationBooking', (data: any) => {
+    connection.on('NotificationBooking', (data: BookingItem) => {
       console.log('Received notification:', data)
+      addBooking(data)
       setNotifications((prev) => [...prev, data]) // Thêm thông báo mới vào danh sách
       setHasUnread(true) // Đánh dấu có thông báo chưa đọc
       toast.success('Có đơn hàng mới', {
@@ -58,6 +66,9 @@ export function AppSidebar() {
     }
   }, [])
 
+  useEffect(() => {
+    localStorage.setItem('Noti', JSON.stringify(notifications))
+  }, [notifications])
   const access_token = localStorage.getItem(STORAGE.ACCESS_TOKEN)
   const username = localStorage.getItem('user')
 
@@ -101,7 +112,7 @@ export function AppSidebar() {
                     style={{ width: '1.5rem', height: '1.5rem', fontWeight: 'bold' }}
                   />
                   <div className='grid flex-1 text-left text-sm leading-tight overflow-hidden'>
-                    <span className='truncate font-semibold'>Dashboard</span>
+                    <span className='truncate font-semibold'>Trang quản trị</span>
                     <span className='truncate text-xs'>Foodhub</span>
                   </div>
                 </SidebarMenuButton>
@@ -118,7 +129,7 @@ export function AppSidebar() {
               {hasUnread && (
                 <span className='absolute text-xs rounded-full bg-red-500 w-[10px] h-[10px] top-0 right-0'></span>
               )}
-              <span className=' ml-2'>Notifications</span>
+              <span className=' ml-2'>Thông báo mới</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem className='mx-auto'></SidebarMenuItem>
@@ -130,7 +141,10 @@ export function AppSidebar() {
                   className={`flex items-center gap-2 ${location.pathname === item.path ? 'bg-[#0765ff] text-[#fff]' : ''} hover:bg-[#0765ff] hover:text-[#fff] duration-300`}
                 >
                   <item.icon className=' h-10 w-10 ml-2' style={{ width: '1.2rem', height: '1.2rem' }} />
-                  <span className='ml-2'>{item.label}</span>
+                  <span className='ml-2'>{item.label}</span>{' '}
+                  {item.label === 'Booking' && item.path !== location.pathname && notifications.length > 0 && (
+                    <div className='p-1 px-3 rounded-full text-xs bg-red-500 text-white'>{notifications.length}</div>
+                  )}
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -150,11 +164,11 @@ export function AppSidebar() {
               <DropdownMenuContent>
                 <DropdownMenuItem>
                   <Settings className='h-4 w-4 mr-2' />
-                  Profile
+                  Thông tin cá nhân
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={logout}>
                   <LogOut className='h-4 w-4 mr-2' />
-                  Logout
+                  Đăng xuất
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

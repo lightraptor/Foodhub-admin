@@ -68,31 +68,25 @@ export default function AddCategoryButton({ fetchData }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='text-white bg-black'>Add</Button>
+        <Button className='text-white'>Thêm danh mục</Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
-          <DialogTitle>Thêm mới Category</DialogTitle>
-          <DialogDescription>Điền thông tin để thêm mới category. Nhấn Lưu khi hoàn tất.</DialogDescription>
+          <DialogTitle>Thêm mới Danh mục</DialogTitle>
+          <DialogDescription>Điền thông tin để thêm mới danh mục. Nhấn Lưu khi hoàn tất.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='name' className='text-right'>
-                Tên
-              </Label>
+              <Label htmlFor='name'>Tên</Label>
               <Input id='name' value={name} onChange={(e) => setName(e.target.value)} className='col-span-3' />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='code' className='text-right'>
-                Mã
-              </Label>
+              <Label htmlFor='code'>Mã</Label>
               <Input id='code' value={code} onChange={(e) => setCode(e.target.value)} className='col-span-3' />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='description' className='text-right'>
-                Mô tả
-              </Label>
+              <Label htmlFor='description'>Mô tả</Label>
               <Input
                 id='description'
                 value={description}
@@ -100,13 +94,13 @@ export default function AddCategoryButton({ fetchData }: Props) {
                 className='col-span-3'
               />
             </div>
-            <div className='flex items-center space-x-2'>
+            <div className='flex items-center space-x-2 gap-8'>
+              <Label htmlFor='inactive'>Trạng thái</Label>
               <Switch id='inactive' checked={inactive} onCheckedChange={setInactive} />
-              <Label htmlFor='inactive'>Inactive</Label>
             </div>
           </div>
           <DialogFooter>
-            <Button type='submit' disabled={loading}>
+            <Button type='submit' className='text-white' disabled={loading}>
               {loading ? 'Đang lưu...' : 'Lưu'}
             </Button>
             {error && <p className='text-red-500 text-center mt-2'>{error}</p>}

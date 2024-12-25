@@ -72,11 +72,11 @@ export const ProductPage = () => {
     setCurrentPage(1) // Reset to page 1
   }
 
-  if (loading) return <p className='text-center text-lg'>Loading...</p>
+  if (loading) return <p className='text-center text-lg'>Đang tải...</p>
 
   return (
     <>
-      <p className='text-2xl font-semibold mx-10 text-center my-5'>Product page</p>
+      <p className='text-2xl font-semibold mx-10 text-center my-5'>Quản lý sản phẩm</p>
       <div className='flex flex-row justify-end'>
         <AddProduct fetchData={fetchData} />
         <ImportButton fetchData={fetchData} />

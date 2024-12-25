@@ -68,7 +68,9 @@ export function DeleteTable({ tableItem, fetchData }: DeleteTableProps) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Xác nhận xóa</DialogTitle>
-            <DialogDescription>Bạn có chắc chắn muốn xóa table "{tableItem.name}"?</DialogDescription>
+            <DialogDescription>
+              Bạn có chắc chắn muốn xóa <span className='font-bold'>{tableItem.name}</span>?
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant='outline' onClick={() => setOpen(false)} disabled={isDeleting}>

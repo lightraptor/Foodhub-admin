@@ -30,7 +30,7 @@ export default function UserTable({
             <TableHead>STT</TableHead>
             <TableHead>Tên tài khoản</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
+            <TableHead>Vai trò</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

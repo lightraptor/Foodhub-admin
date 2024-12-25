@@ -71,19 +71,17 @@ export default function AddMerchantButton({ fetchData }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='text-white bg-black'>Add Merchant</Button>
+        <Button className='text-white'>Thêm mới cấu hình thanh toán</Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[800px]'>
         <DialogHeader>
-          <DialogTitle>Thêm mới Merchant</DialogTitle>
-          <DialogDescription>Điền thông tin để thêm mới merchant. Nhấn Lưu khi hoàn tất.</DialogDescription>
+          <DialogTitle>Thêm mới cấu hình thanh toán</DialogTitle>
+          <DialogDescription>Điền thông tin để thêm mới cấu hình thanh toán. Nhấn Lưu khi hoàn tất.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='merchantName' className='text-right'>
-                Merchant Name
-              </Label>
+              <Label htmlFor='merchantName'>Merchant Name</Label>
               <Input
                 id='merchantName'
                 value={merchantName}
@@ -92,9 +90,7 @@ export default function AddMerchantButton({ fetchData }: Props) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='merchantReturnUrl' className='text-right'>
-                Merchant Return URL
-              </Label>
+              <Label htmlFor='merchantReturnUrl'>Merchant Return URL</Label>
               <Input
                 id='merchantReturnUrl'
                 value={merchantReturnUrl}
@@ -103,9 +99,7 @@ export default function AddMerchantButton({ fetchData }: Props) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='merchantReturnUrl' className='text-right'>
-                Merchant Weblink
-              </Label>
+              <Label htmlFor='merchantReturnUrl'>Merchant Weblink</Label>
               <Input
                 id='merchantWebLink'
                 value={merchantWebLink}

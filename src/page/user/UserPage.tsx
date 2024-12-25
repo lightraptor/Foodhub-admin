@@ -48,7 +48,7 @@ export const UserPage = () => {
 
   return (
     <>
-      <p className='text-2xl font-semibold mx-10 text-center my-5'>User list</p>
+      <p className='text-2xl font-semibold mx-10 text-center my-5'>Quản lý tài khoản</p>
       <div className='flex justify-end mx-10 mb-5'>
         <CreateUser fetchData={fetchData} />
       </div>

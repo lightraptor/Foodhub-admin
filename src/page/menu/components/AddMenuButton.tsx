@@ -87,7 +87,7 @@ export default function AddMenuButton({ fetchData }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className='text-white bg-black'>Add Menu</Button>
+        <Button className='text-white'>Thêm thực đơn</Button>
       </DialogTrigger>
       <DialogContent className='sm:max-w-[425px]'>
         <DialogHeader>
@@ -97,9 +97,7 @@ export default function AddMenuButton({ fetchData }: Props) {
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='menuName' className='text-right'>
-                Tên Menu
-              </Label>
+              <Label htmlFor='menuName'>Tên Menu</Label>
               <Input
                 id='menuName'
                 value={menuName}
@@ -108,9 +106,7 @@ export default function AddMenuButton({ fetchData }: Props) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='description' className='text-right'>
-                Mô tả
-              </Label>
+              <Label htmlFor='description'>Mô tả</Label>
               <Input
                 id='description'
                 value={description}
@@ -119,9 +115,7 @@ export default function AddMenuButton({ fetchData }: Props) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='sortOrder' className='text-right'>
-                Thứ tự
-              </Label>
+              <Label htmlFor='sortOrder'>Thứ tự</Label>
               <Input
                 id='sortOrder'
                 type='number'
@@ -131,14 +125,12 @@ export default function AddMenuButton({ fetchData }: Props) {
               />
             </div>
             <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='imageFile' className='text-right'>
-                Hình ảnh
-              </Label>
+              <Label htmlFor='imageFile'>Hình ảnh</Label>
               <Input id='imageFile' type='file' accept='image/*' onChange={handleFileChange} className='col-span-3' />
             </div>
-            <div className='flex items-center space-x-2'>
+            <div className='grid grid-cols-4 items-center space-x-2'>
+              <Label htmlFor='inactive'>Trạng thái</Label>
               <Switch id='inactive' checked={inactive} onCheckedChange={setInactive} />
-              <Label htmlFor='inactive'>Inactive</Label>
             </div>
           </div>
           <DialogFooter>
