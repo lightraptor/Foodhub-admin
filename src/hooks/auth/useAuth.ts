@@ -25,7 +25,7 @@ export const useAuth = () => {
         dispatch(userActions.setAccessToken(res?.data?.accessToken))
         localStorage.setItem(STORAGE.REFRESH_TOKEN, res?.data?.refreshToken)
         toast.success(res?.data?.message, { autoClose: 3000 })
-        localStorage.setItem('user', decoded?.email)
+        localStorage.setItem('user', decoded?.sub)
         localStorage.setItem('role', decoded?.role)
         setIsLoggedIn(true)
         navigate(ROUTES.Home.path)

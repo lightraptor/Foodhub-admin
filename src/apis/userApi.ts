@@ -55,3 +55,23 @@ export const postUsers = async (payload: UserItem): Promise<ApiResponse<null>> =
     throw error
   }
 }
+
+export const putUnbanUser = async ({ id }: { id: string }): Promise<boolean> => {
+  try {
+    const response: AxiosResponse<boolean> = await instance.put(`/api/user/unban/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}
+
+export const putBanUser = async ({ id }: { id: string }): Promise<boolean> => {
+  try {
+    const response: AxiosResponse<boolean> = await instance.put(`/api/user/ban-user/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching menus:', error)
+    throw error
+  }
+}

@@ -73,7 +73,7 @@ export const Charts = ({ criteria }: ChartProps) => {
         <div className='grid grid-cols-1 md:grid-cols-3 gap-5'>
           <Card>
             <CardHeader>
-              <CardTitle>Tổng người dùng</CardTitle>
+              <CardTitle className='font-normal text-gray-600'>Tổng người dùng</CardTitle>
             </CardHeader>
             <CardContent>
               <p className='text-3xl font-bold'>{data?.totalUsers}</p>
@@ -81,7 +81,7 @@ export const Charts = ({ criteria }: ChartProps) => {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Tổng đơn hàng</CardTitle>
+              <CardTitle className='font-normal text-gray-600'>Tổng đơn hàng</CardTitle>
             </CardHeader>
             <CardContent>
               <p className='text-3xl font-bold'>{data?.totalOrder}</p>
@@ -89,7 +89,7 @@ export const Charts = ({ criteria }: ChartProps) => {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle>Tổng lợi nhuận</CardTitle>
+              <CardTitle className='font-normal text-gray-600'>Tổng lợi nhuận</CardTitle>
             </CardHeader>
             <CardContent>
               <p className='text-3xl font-bold'>{data?.totalRevenueAdmount.toLocaleString()} VND</p>

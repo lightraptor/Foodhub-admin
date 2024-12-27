@@ -2,6 +2,8 @@ import React from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Pagination } from '@/components'
 import { Users } from '@/types'
+import { Button } from '@/components/ui/button'
+import { Ban } from 'lucide-react'
 
 type MenuTableProps = {
   user: Users[]
@@ -31,6 +33,7 @@ export default function UserTable({
             <TableHead>Tên tài khoản</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Vai trò</TableHead>
+            <TableHead>Thao tác</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -40,6 +43,12 @@ export default function UserTable({
               <TableCell>{item.userName}</TableCell>
               <TableCell>{item.email}</TableCell>
               <TableCell>{item.roleName}</TableCell>
+              <TableCell>
+                <Button className='bg-primary'>
+                  <Ban className='w-4 h-4' /> Cấm
+                </Button>
+                <Button className='btn btn-danger ml-1'>Xóa</Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
