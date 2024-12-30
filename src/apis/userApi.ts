@@ -25,6 +25,11 @@ interface UsersResponse {
   totalRecord: number
 }
 
+interface RolesResponse {
+  id: string
+  name: string
+}
+
 export const fetchUsers = async ({
   PageNumber = 1,
   PageSize = 10
@@ -61,7 +66,7 @@ export const putUnbanUser = async ({ id }: { id: string }): Promise<boolean> => 
     const response: AxiosResponse<boolean> = await instance.put(`/api/user/unban/${id}`)
     return response.data
   } catch (error) {
-    console.error('Error fetching menus:', error)
+    console.error('Error fetching:', error)
     throw error
   }
 }
@@ -71,7 +76,35 @@ export const putBanUser = async ({ id }: { id: string }): Promise<boolean> => {
     const response: AxiosResponse<boolean> = await instance.put(`/api/user/ban-user/${id}`)
     return response.data
   } catch (error) {
-    console.error('Error fetching menus:', error)
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+export const getRoles = async (): Promise<ApiResponse<RolesResponse[]>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<RolesResponse[]>> = await instance.get(`/api/user/roles`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+export const postChangeRoles = async ({
+  userId,
+  roleName
+}: {
+  userId: string
+  roleName: string
+}): Promise<ApiResponse<null>> => {
+  try {
+    const response: AxiosResponse<ApiResponse<null>> = await instance.post(
+      `/api/user/change-role?userId=${userId}&roleName=${roleName}`
+    )
+    return response.data
+  } catch (error) {
+    console.error('Error fetching:', error)
     throw error
   }
 }
