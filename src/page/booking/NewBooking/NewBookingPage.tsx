@@ -19,7 +19,7 @@ export default function NewBookingPage() {
       console.log(data)
     } else {
       setSelectedTables([...selectedTables, table])
-      const response = await putTableStatus({ tableId: table.id, status: 'Reverved' })
+      const response = await putTableStatus({ tableId: table.id, status: 'Occupied' })
       const dataFalse = response.data
       console.log(dataFalse)
     }

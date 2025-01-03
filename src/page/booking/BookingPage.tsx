@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import ErrorResult from '@/components/error-result/ErrorResult'
 import { Button } from '@/components/ui/button'
 import { BookingContext } from '@/context'
-import { fetchOrderStaff } from '@/apis/orderApi'
+import { fetchOrderStaff, postOrderStaff } from '@/apis/orderApi'
 
 export const BookingPage = () => {
   const [bookingList, setBookingList] = useState<BookingItem[]>([])
@@ -65,6 +65,27 @@ export const BookingPage = () => {
   const handleEdit = (booking: BookingItem) => {
     setSelectedBooking(booking)
     setDialogOpen(true)
+  }
+
+  const handleCheckin = async (booking: BookingItem) => {
+    try {
+      const response = await changeStatusBooking({ bookingId: booking.id, status: 'Processing' })
+      if (response.success) {
+        const makeOrderId = await postOrderStaff({ BookingId: booking.id })
+        const orderData = await makeOrderId.data
+        console.log(orderData)
+        const tableIds = booking.tables.map((table) => table.tableId)
+        for (const tableId of tableIds) {
+          await putTableStatus({ tableId, status: 'Occupied' })
+        }
+        toast.success('Booking accepted successfully', { autoClose: 2000 })
+        fetchData()
+      } else {
+        throw new Error('Failed to accept booking')
+      }
+    } catch (error) {
+      console.error('Error accepting booking:', error)
+    }
   }
 
   const handleChangeStatus = async (booking: BookingItem, status: string, tableStatus: string | null = null) => {
@@ -150,7 +171,7 @@ export const BookingPage = () => {
                 onAccept={() => handleChangeStatus(booking, 'Accept', 'Reserved')}
                 onComplete={() => handleChangeStatus(booking, 'Complete', 'Free')}
                 onCancel={() => handleChangeStatus(booking, 'Cancel', 'Free')}
-                onCheckin={() => handleChangeStatus(booking, 'Processing', 'Occupied')}
+                onCheckin={() => handleCheckin(booking)}
                 onViewDetails={() => handleViewDetails(booking)}
                 onChangeTable={() => handleChangeTable(booking.id)}
                 onEdit={() => handleEdit(booking)}
