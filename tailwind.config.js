@@ -23,6 +23,7 @@ export default {
         full: '9999px'
       },
       colors: {
+        inherit: 'inherit',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

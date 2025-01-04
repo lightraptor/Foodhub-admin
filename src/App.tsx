@@ -4,18 +4,18 @@ import { Provider } from 'react-redux'
 import { store } from '@/store'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { AuthProvider, BookingProvider } from './context'
+import { AuthProvider, NotiProvider } from './context'
 
 function App() {
   return (
     <>
       <AuthProvider>
-        <BookingProvider>
+        <NotiProvider>
           <Provider store={store}>
             <MainRouter />
             <ToastContainer />
           </Provider>
-        </BookingProvider>
+        </NotiProvider>
       </AuthProvider>
     </>
   )

@@ -27,6 +27,7 @@ export default function TableList({ onSelectTable, selectedTables }: Props) {
       }
       const data = response.data
       setTables(data?.items || [])
+      console.log(data?.items)
       setTotalItems(data?.totalRecord || undefined)
     } catch (err) {
       console.error('Error fetching menu:', err)
@@ -69,25 +70,25 @@ export default function TableList({ onSelectTable, selectedTables }: Props) {
                 <h3 className='text-lg font-semibold'>{table.name}</h3>
                 <span
                   className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    table.isAvailable ? 'bg-green-200 text-green-800' : 'bg-red-200 text-red-800'
+                    table.isAvailable ? ' text-green-800' : 'bg-red-200 text-red-800'
                   }`}
                 >
                   {table.status === 'Có thể đặt bàn' && (
                     <Badge
-                      className={`text-[#22c55e] border-[#22c55e] ${selectedTables.some((t) => t.id === table.id) ? `text-[#fff] border-[#fff]` : ''}`}
+                      className={`text-[#22c55e] border-[#22c55e] bg-inherit ${selectedTables.some((t) => t.id === table.id) ? `text-[#fff] border-[#fff]` : ''}`}
                     >
                       {table.status}
                     </Badge>
                   )}
                   {table.status === 'Bàn đã được khách đặt trước' && (
-                    <Badge className='text-[#3b82f6] border-[#3b82f6] hover:text-[#fff] hover:border-[#fff]'>
-                      {table.status}
-                    </Badge>
+                    <Badge className='text-[#a5a5a5] border-[#a5a5a5] bg-inherit'>{table.status}</Badge>
                   )}
-                  {table.status === 'Bàn đăng có khách ngồi' && (
-                    <Badge className='text-[#ef4444] border-[#ef4444]'>{table.status}</Badge>
+                  {table.status === 'Bàn đang có khách ngồi' && (
+                    <Badge className='text-[#ef4444] border-[#ef4444] bg-inherit'>{table.status}</Badge>
                   )}
-                  {table.status === 'Khác' && <Badge className='text-[#f8b4b4] border-[#f8b4b4]'>{table.status}</Badge>}
+                  {table.status === 'Khác' && (
+                    <Badge className='text-[#f8b4b4] border-[#f8b4b4] bg-inherit'>{table.status}</Badge>
+                  )}
                 </span>
               </div>
               <div className='space-y-1'>

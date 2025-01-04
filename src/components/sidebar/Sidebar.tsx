@@ -1,3 +1,4 @@
+import { BookingItem, OrderItem } from '@/types'
 import {
   Sidebar,
   SidebarContent,
@@ -17,33 +18,31 @@ import { useAuth } from '@/hooks'
 import { useContext, useEffect, useState } from 'react'
 import connection from '@/constants/signalRConnection'
 import { toast } from 'react-toastify'
-import { BookingContext } from '@/context/BookingContext'
-import { BookingItem } from '@/types'
+import { NotiContext } from '@/context/NotiContext'
 
 export function AppSidebar() {
-  const bookingContext = useContext(BookingContext)
-  if (!bookingContext) {
-    throw new Error('BookingContext is not provided')
+  const notiContext = useContext(NotiContext)
+  if (!notiContext) {
+    throw new Error('NotiContext is not provided')
   }
+  const { addBooking, addOrder } = notiContext
   const navigate = useNavigate()
   const { logout } = useAuth()
-  const { addBooking } = bookingContext
   const location = useLocation()
-  const [notifications, setNotifications] = useState<any[]>([]) // Danh sách thông báo
-  const [hasUnread, setHasUnread] = useState(false) // Trạng thái có thông báo chưa đọc
-  console.log(hasUnread)
-  const [isNotificationDialogOpen, setIsNotificationDialogOpen] = useState(false) // Trạng thái mở dialog thông báo
 
+  const [notifications, setNotifications] = useState<any[]>([]) // Danh sách thông báo cho booking
+  const [orderNotifications, setOrderNotifications] = useState<any[]>([]) // Danh sách thông báo cho order
+  const [hasUnread, setHasUnread] = useState(false) // Trạng thái có thông báo chưa đọc
+  const [isNotificationDialogOpen, setIsNotificationDialogOpen] = useState(false) // Trạng thái mở dialog thông báo
+  console.log(hasUnread)
   useEffect(() => {
-    // Kết nối đến SignalR
-    console.log('before signalR')
     const startConnection = async () => {
       try {
         await connection.start()
         console.log('SignalR connected!')
       } catch (error) {
         console.error('Error connecting to SignalR:', error)
-        setTimeout(startConnection, 5000) // Thử kết nối lại nếu thất bại
+        setTimeout(startConnection, 5000)
       }
     }
 
@@ -51,29 +50,37 @@ export function AppSidebar() {
 
     // Lắng nghe sự kiện "NotificationBooking"
     connection.on('NotificationBooking', (data: BookingItem) => {
-      console.log('Received notification:', data)
+      console.log('Received booking notification:', data)
       addBooking(data)
-      setNotifications((prev) => [...prev, data]) // Thêm thông báo mới vào danh sách
-      setHasUnread(true) // Đánh dấu có thông báo chưa đọc
-      toast.success('Có đơn hàng mới', {
-        autoClose: 5000
-      })
+      setNotifications((prev) => [...prev, data])
+      setHasUnread(true)
+      toast.success('Có đơn đặt bàn mới', { autoClose: 5000 })
     })
 
-    // Cleanup khi component bị unmount
+    // Lắng nghe sự kiện "NotificationOrder"
+    connection.on('NotificationOrder', (data: OrderItem) => {
+      console.log('Received order notification:', data)
+      addOrder(data)
+      setOrderNotifications((prev) => [...prev, data])
+      setHasUnread(true)
+      toast.success('Có đơn hàng mới', { autoClose: 5000 })
+    })
+
     return () => {
       connection.off('NotificationBooking')
+      connection.off('NotificationOrder')
       connection.stop()
     }
   }, [])
 
   useEffect(() => {
     localStorage.setItem('Noti', JSON.stringify(notifications))
-  }, [notifications])
+    localStorage.setItem('OrderNoti', JSON.stringify(orderNotifications))
+  }, [notifications, orderNotifications])
 
   useEffect(() => {
-    if (location.pathname === ROUTES.Booking.path) {
-      setHasUnread(false) // Đánh dấu đã đọc khi ở trang Booking
+    if (location.pathname === ROUTES.Booking.path || location.pathname === ROUTES.Order.path) {
+      setHasUnread(false)
     }
   }, [location.pathname])
 
@@ -85,18 +92,18 @@ export function AppSidebar() {
     const unStayInAuth = Object.values(UN_AUTHENTICATION_ROUTES).some((route) => route.path === path)
 
     if (access_token && unStayInAuth) {
-      navigate(ROUTES.Home.path) // Điều hướng về Home nếu không cần login
+      navigate(ROUTES.Home.path)
       return
     }
     if (!access_token && stayInAuth) {
-      navigate(ROUTES.Login.path) // Điều hướng về Login nếu yêu cầu login
+      navigate(ROUTES.Login.path)
       return
     }
-    navigate(path) // Điều hướng đến path nếu hợp lệ
+    navigate(path)
   }
 
   const closeNotificationDialog = () => {
-    setIsNotificationDialogOpen(false) // Đóng dialog thông báo
+    setIsNotificationDialogOpen(false)
   }
 
   return (
@@ -126,8 +133,6 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
-          <SidebarMenuItem className='p-2'></SidebarMenuItem>
-          <SidebarMenuItem className='mx-auto'></SidebarMenuItem>
           {Object.entries(AUTHENTICATION_MENUS).map(([key, item]) => (
             <SidebarMenuItem key={key} className='p-2'>
               <SidebarMenuButton asChild tooltip={item.label} size='lg'>
@@ -135,10 +140,15 @@ export function AppSidebar() {
                   onClick={() => handleNavigation(item.path)}
                   className={`flex items-center gap-2 ${location.pathname === item.path ? 'bg-[#0765ff] text-[#fff]' : ''} hover:bg-[#0765ff] hover:text-[#fff] duration-300`}
                 >
-                  <item.icon className=' h-10 w-10 ml-2' style={{ width: '1.2rem', height: '1.2rem' }} />
-                  <span className='ml-2'>{item.label}</span>{' '}
+                  <item.icon className='h-10 w-10 ml-2' style={{ width: '1.2rem', height: '1.2rem' }} />
+                  <span className='ml-2'>{item.label}</span>
                   {item.label === 'Đặt bàn' && notifications.length > 0 && location.pathname !== item.path && (
                     <div className='p-1 px-3 rounded-full text-xs bg-red-500 text-white'>{notifications.length}</div>
+                  )}
+                  {item.label === 'Đơn hàng' && orderNotifications.length > 0 && location.pathname !== item.path && (
+                    <div className='p-1 px-3 rounded-full text-xs bg-red-500 text-white'>
+                      {orderNotifications.length}
+                    </div>
                   )}
                 </a>
               </SidebarMenuButton>
@@ -180,24 +190,41 @@ export function AppSidebar() {
             <DialogClose />
           </DialogHeader>
           <div className='flex flex-col gap-2'>
-            {notifications.length === 0 ? (
+            {notifications.length === 0 && orderNotifications.length === 0 ? (
               <p className='text-gray-500'>Không có thông báo nào.</p>
             ) : (
-              notifications.map((notification, index) => (
-                <div key={index} className='p-2 border rounded-lg shadow-sm' onClick={() => navigate(`/booking`)}>
-                  <p className='text-base my-3'>Nhận Booking từ {notification.customerName}</p>
-                  <div className='flex gap-3'>
-                    <span className='text-sm text-gray-400'>
-                      <span className='font-semibold text-black'>Thời gian checkin:</span>{' '}
-                      {new Date(notification.checkinTime).toLocaleString('vi-VN') || 'Không xác định'}
-                    </span>
-                    <span className='text-sm text-gray-400'>
-                      <span className='font-semibold text-black'>Số lượng:</span>{' '}
-                      {notification.peopleCount || 'Không xác định'}
-                    </span>
+              <>
+                {notifications.map((notification, index) => (
+                  <div key={index} className='p-2 border rounded-lg shadow-sm' onClick={() => navigate(`/booking`)}>
+                    <p className='text-base my-3'>Nhận Booking từ {notification.customerName}</p>
+                    <div className='flex gap-3'>
+                      <span className='text-sm text-gray-400'>
+                        <span className='font-semibold text-black'>Thời gian checkin:</span>{' '}
+                        {new Date(notification.checkinTime).toLocaleString('vi-VN') || 'Không xác định'}
+                      </span>
+                      <span className='text-sm text-gray-400'>
+                        <span className='font-semibold text-black'>Số lượng:</span>{' '}
+                        {notification.peopleCount || 'Không xác định'}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))
+                ))}
+                {orderNotifications.map((notification, index) => (
+                  <div key={index} className='p-2 border rounded-lg shadow-sm' onClick={() => navigate(`/order`)}>
+                    <p className='text-base my-3'>Nhận Order từ {notification.customerName}</p>
+                    <div className='flex gap-3'>
+                      <span className='text-sm text-gray-400'>
+                        <span className='font-semibold text-black'>Thời gian đặt hàng:</span>{' '}
+                        {new Date(notification.orderTime).toLocaleString('vi-VN') || 'Không xác định'}
+                      </span>
+                      <span className='text-sm text-gray-400'>
+                        <span className='font-semibold text-black'>Tổng giá:</span>{' '}
+                        {notification.totalPrice || 'Không xác định'}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </>
             )}
           </div>
         </DialogContent>

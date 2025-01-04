@@ -8,7 +8,7 @@ import { EditBookingDialog } from './components'
 import { toast } from 'react-toastify'
 import ErrorResult from '@/components/error-result/ErrorResult'
 import { Button } from '@/components/ui/button'
-import { BookingContext } from '@/context'
+import { NotiContext } from '@/context'
 import { fetchOrderStaff, postOrderStaff } from '@/apis/orderApi'
 
 export const BookingPage = () => {
@@ -21,13 +21,13 @@ export const BookingPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [mergedBookings, setMergedBookings] = useState<BookingItem[]>([])
 
-  const bookingContext = useContext(BookingContext)
+  const notiContext = useContext(NotiContext)
 
-  if (!bookingContext) {
+  if (!notiContext) {
     throw new Error('BookingContext is not provided')
   }
 
-  const { bookings } = bookingContext
+  const { bookings } = notiContext
   const navigate = useNavigate()
 
   const fetchData = async (page = currentPage, size = pageSize) => {
