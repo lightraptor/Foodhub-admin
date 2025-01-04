@@ -87,15 +87,19 @@ export const OrderPage = () => {
       <h2 className='text-2xl text-center font-bold mb-6 text-gray-800'>Danh sách đơn hàng</h2>
       {mergedOrders.length > 0 ? (
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-          {mergedOrders.map((order) => (
-            <OrderCard
-              key={order.id}
-              order={order}
-              onViewDetails={handleViewDetails}
-              onUpdateStatus={handleUpdateStatus}
-              onPaymentOrder={handlePaymentOrder}
-            />
-          ))}
+          {mergedOrders.map((order) => {
+            const isHighlighted = orders.some((b) => b.id === order.id)
+            return (
+              <OrderCard
+                key={order.id}
+                order={order}
+                onViewDetails={handleViewDetails}
+                onUpdateStatus={handleUpdateStatus}
+                onPaymentOrder={handlePaymentOrder}
+                isHighlight={isHighlighted}
+              />
+            )
+          })}
         </div>
       ) : (
         <div className='flex flex-col'>

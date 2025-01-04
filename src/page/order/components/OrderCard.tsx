@@ -16,19 +16,28 @@ import {
 } from 'lucide-react'
 import { OrderItem } from '@/types'
 import { useNavigate } from 'react-router'
+import { useState } from 'react'
 
 interface OrderCardProps {
   order: OrderItem
   onViewDetails: (id: string) => void
   onUpdateStatus: (id: string, status: string) => void
   onPaymentOrder: (id: string) => void
+  isHighlight: boolean
 }
 
-export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder }: OrderCardProps) {
+export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder, isHighlight }: OrderCardProps) {
+  const [highlight, setHighlight] = useState<boolean>(isHighlight)
   const navigate = useNavigate()
   return (
-    <Card className='w-full max-w-md hover:shadow-lg transition-shadow duration-300'>
-      <CardContent className='p-6'>
+    <Card
+      className='w-full max-w-md hover:shadow-lg transition-shadow duration-300'
+      onClick={() => setHighlight(false)}
+    >
+      <CardContent className='relative p-6'>
+        {highlight && (
+          <span className='absolute text-xs rounded-full bg-red-500  text-white py-1 px-2 top-0 right-0'>New</span>
+        )}
         <div className='flex justify-between items-center mb-4'>
           {order.orderStatus === 'Pending' && (
             <Badge className='text-[#facc15] border-[#facc15] bg-white hover:bg-white'>Chờ xử lý</Badge>
