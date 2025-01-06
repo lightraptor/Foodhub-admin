@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -16,6 +16,7 @@ import { toast } from 'react-toastify'
 import { updateMenu } from '@/apis'
 import { Menu } from '@/types'
 import { Edit } from 'lucide-react'
+import { ButtonInputFile } from '@/components/button-input-file/ButtonInputFile'
 
 interface EditMenuButtonProps {
   menu: Menu
@@ -27,6 +28,8 @@ export function EditMenuButton({ menu, fetchData }: EditMenuButtonProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [File, setFile] = useState<File | null>(null)
+  const [previewImage, setPreviewImage] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [editedMenu, setEditedMenu] = useState({
     Id: menu.id,
     MenuName: menu.menuName,
@@ -36,9 +39,20 @@ export function EditMenuButton({ menu, fetchData }: EditMenuButtonProps) {
     imageUrl: menu.imageUrl
   })
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null
+  const handleFileSelect = (file: File) => {
     setFile(file)
+    if (file) {
+      const imageUrl = URL.createObjectURL(file)
+      setPreviewImage(imageUrl)
+    }
+  }
+
+  const handleRemoveImage = () => {
+    setFile(null)
+    setPreviewImage(null) // Xóa preview
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '' // Xóa tên file trong input
+    }
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -111,9 +125,42 @@ export function EditMenuButton({ menu, fetchData }: EditMenuButtonProps) {
                 className='col-span-3'
               />
             </div>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='imageFile'>Hình ảnh</Label>
-              <Input id='imageFile' type='file' accept='image/*' onChange={handleFileChange} className='col-span-3' />
+            <div className='flex flex-row gap-4'>
+              <Label htmlFor='imageFile' className='col-span-1'>
+                Hình ảnh
+              </Label>
+              <div className=' view-img flex flex-col'>
+                <ButtonInputFile onFileSelect={handleFileSelect} buttonText='Thay thế hình' />
+                {previewImage ? (
+                  <div className='w-full flex justify-center items-center mt-6'>
+                    <div className='relative group w-full max-w-xs'>
+                      <img src={previewImage} alt='Preview' className='w-full h-auto max-w-xs rounded border' />
+                      <button
+                        onClick={handleRemoveImage}
+                        className='absolute top-2 right-2 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity'
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className='w-full flex justify-center items-center mt-6'>
+                    <div className='relative group w-full max-w-xs'>
+                      {editedMenu.imageUrl !== '' || editedMenu.imageUrl === null ? (
+                        <img
+                          src={editedMenu.imageUrl}
+                          alt='Preview'
+                          className='w-full h-auto max-w-xs rounded border'
+                        />
+                      ) : (
+                        <>
+                          <p>hình đại diện hiện trống</p>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
             <div className='grid grid-cols-4 items-center space-x-2'>
               <Label htmlFor='inactive'>Trạng thái</Label>

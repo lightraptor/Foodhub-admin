@@ -1,5 +1,5 @@
-import { useAuth } from '@/hooks'
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
+// import { useAuth } from '@/hooks'
+import { createContext, useContext, useState, ReactNode } from 'react'
 
 interface AuthContextType {
   isLoggedIn: boolean
@@ -14,11 +14,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return !!localStorage.getItem('accessToken')
   })
 
-  const { checkAndRefreshToken } = useAuth()
+  // const { checkAndRefreshToken } = useAuth()
 
-  useEffect(() => {
-    checkAndRefreshToken()
-  }, [checkAndRefreshToken])
+  // useEffect(() => {
+  //   checkAndRefreshToken()
+  // }, [checkAndRefreshToken])
 
   return <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>{children}</AuthContext.Provider>
 }
