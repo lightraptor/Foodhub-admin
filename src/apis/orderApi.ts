@@ -110,18 +110,18 @@ export const postOrderStaff = async ({ BookingId }: { BookingId: string }): Prom
 
 export const postOrderDetail = async ({
   orderId,
-  productId,
-  quantity
+  products
 }: {
   orderId: string
-  productId: string
-  quantity: number
+  products: {
+    productId: string
+    quantity: number
+  }[]
 }): Promise<ApiResponse<OrderItem>> => {
   try {
     const response: AxiosResponse<ApiResponse<OrderItem>> = await instance.post(`/api/order/staff/order-detail`, {
       orderId,
-      productId,
-      quantity
+      products
     })
     return response.data
   } catch (error) {

@@ -98,22 +98,21 @@ export const NewOrderPage = () => {
   }
 
   const handleSave = async (items: SelectedItems[]) => {
-    try {
-      const responses = await Promise.all(
-        items.map((item) =>
-          postOrderDetail({
-            orderId: id ?? '',
-            productId: item.id,
-            quantity: item.quantity
-          })
-        )
-      )
-
-      const failedItems = responses.filter((response) => !response.success)
-      if (failedItems.length > 0) {
-        console.error('Some items failed to save:', failedItems)
-        throw new Error(`${failedItems.length} items failed to save.`)
+    const payload = items.map((item) => {
+      return {
+        productId: item.id,
+        quantity: item.quantity
       }
+    })
+    try {
+      const responses = await postOrderDetail({
+        orderId: id ?? '',
+        products: payload
+      })
+      if (!responses.success) {
+        throw new Error('Failed to save order detail')
+      }
+      console.log(responses)
       setSelectedItems([])
       fetchData()
     } catch (error) {
