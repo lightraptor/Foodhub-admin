@@ -55,6 +55,26 @@ export const useAuth = () => {
     }
   }
 
+  const checkAndRefreshToken = async () => {
+    const accessToken = localStorage.getItem(STORAGE.ACCESS_TOKEN)
+    if (accessToken) {
+      const decoded: any = jwtDecode(accessToken)
+      const currentTime = Math.floor(Date.now() / 1000)
+      if (decoded.exp < currentTime) {
+        // Token đã hết hạn, gọi API refresh token
+        try {
+          const res = await AuthenApis.doRefreshAccessToken()
+          const newAccessToken = res.data.accessToken
+          localStorage.setItem(STORAGE.ACCESS_TOKEN, newAccessToken)
+          api.setToken(newAccessToken)
+        } catch (error) {
+          console.error('Error refreshing token:', error)
+          logout()
+        }
+      }
+    }
+  }
+
   const logout = () => {
     api.removeToken()
     localStorage.removeItem(STORAGE.ACCESS_TOKEN)
@@ -68,6 +88,7 @@ export const useAuth = () => {
   return {
     login,
     signup,
-    logout
+    logout,
+    checkAndRefreshToken
   }
 }

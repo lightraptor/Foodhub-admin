@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { useAuth } from '@/hooks'
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
 
 interface AuthContextType {
   isLoggedIn: boolean
@@ -12,6 +13,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Kiểm tra trạng thái đăng nhập từ localStorage
     return !!localStorage.getItem('accessToken')
   })
+
+  const { checkAndRefreshToken } = useAuth()
+
+  useEffect(() => {
+    checkAndRefreshToken()
+  }, [checkAndRefreshToken])
 
   return <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>{children}</AuthContext.Provider>
 }
