@@ -20,6 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch'
 import { Edit } from 'lucide-react'
 import { toast } from 'react-toastify'
+import { ButtonInputFile } from '@/components/button-input-file/ButtonInputFile'
 
 export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetchData: () => void }) => {
   const [open, setOpen] = useState(false)
@@ -73,10 +74,10 @@ export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetc
       fetchCategories()
       fetchMenus()
     }
+    if (open == false && previewImage != null) setPreviewImage(null)
   }, [open])
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+  const handleFileSelect = (file: File) => {
     setEditedProduct({ ...editedProduct, file: file as File | null })
     if (file) {
       const imageUrl = URL.createObjectURL(file)
@@ -93,10 +94,6 @@ export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetc
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    if (!editedProduct.file) {
-      setError('Hãy chọn một hình ảnh!')
-      return
-    }
     const payload = {
       id: product.id,
       code: editedProduct.code,
@@ -257,35 +254,46 @@ export const EditProduct = ({ product, fetchData }: { product: ProductItem; fetc
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className='grid grid-cols-4 items-center gap-4'>
-                      <Label htmlFor='file' className='text-left'>
-                        Hình đại diện
-                      </Label>
-                      <Input
-                        id='file'
-                        type='file'
-                        accept='image/*'
-                        ref={fileInputRef}
-                        onChange={handleFileChange}
-                        className='col-span-3'
-                      />
-                    </div>
                   </div>
                 </div>
                 {/* Phần preview ảnh */}
-                {previewImage && (
-                  <div className='w-full flex justify-center items-center mt-6'>
-                    <div className='relative group w-full max-w-xs'>
-                      <img src={previewImage} alt='Preview' className='w-full h-auto max-w-xs rounded border' />
-                      <button
-                        onClick={handleRemoveImage}
-                        className='absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity'
-                      >
-                        ✕
-                      </button>
-                    </div>
+                <div className='flex md:flex-row flex-col gap-4'>
+                  <Label htmlFor='file' className='text-left'>
+                    Hình đại diện
+                  </Label>
+                  <div className=' view-img flex flex-col'>
+                    <ButtonInputFile onFileSelect={handleFileSelect} buttonText='Thay thế hình' />
+                    {previewImage ? (
+                      <div className='w-full flex justify-center items-center mt-6'>
+                        <div className='relative group w-full max-w-xs'>
+                          <img src={previewImage} alt='Preview' className='w-full h-auto max-w-xs rounded border' />
+                          <button
+                            onClick={handleRemoveImage}
+                            className='absolute top-2 right-2 bg-red-500 text-white p-1 w-5 h-5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity'
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className='w-full flex justify-center items-center mt-6'>
+                        <div className='relative group w-full max-w-xs'>
+                          {product.thumbnail !== '' || product.thumbnail === null ? (
+                            <img
+                              src={product.thumbnail}
+                              alt='Preview'
+                              className='w-full h-auto max-w-xs rounded border'
+                            />
+                          ) : (
+                            <>
+                              <p>hình đại diện hiện trống</p>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
                 {/* Phần mô tả nằm dưới */}
                 <div className='grid grid-cols-4 items-center gap-4 mt-4'>
                   <Label htmlFor='description' className='text-left'>

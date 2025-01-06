@@ -45,7 +45,7 @@ interface ProductPost {
   description: string
   price: number
   sellingPrice: number
-  file: File
+  file?: File
   unitName: string
   inactive: boolean
   menuId: string
@@ -59,7 +59,7 @@ interface ProductPut {
   description: string
   price: number
   sellingPrice: number
-  file: File
+  file: File | null
   unitName: string
   inactive: boolean
   menuId: string

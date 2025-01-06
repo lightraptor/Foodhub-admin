@@ -86,11 +86,19 @@ const AddProduct = ({ fetchData }: { fetchData: () => void }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    if (!file) {
-      setError('Hãy chọn một hình ảnh!')
-      return
+
+    const newCategory = {
+      name,
+      code,
+      description,
+      price,
+      sellingPrice,
+      unitName,
+      file: file || undefined,
+      categoryId,
+      menuId,
+      inactive
     }
-    const newCategory = { name, code, description, price, sellingPrice, unitName, file, categoryId, menuId, inactive }
 
     // Xử lý logic thêm mới category ở đây
     try {
