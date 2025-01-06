@@ -70,6 +70,9 @@ export function BookingCard({
           {booking.status === 'Complete' && (
             <Badge className='text-[#3b82f6] border-[#3b82f6] bg-white hover:bg-white'>Hoàn thành</Badge>
           )}
+          {booking.status === 'Completed' && (
+            <Badge className='text-[#3b82f6] border-[#3b82f6] bg-white hover:bg-white'>Hoàn thành</Badge>
+          )}
           {booking.status === 'Cancel' && (
             <Badge className='text-[#ef4444] border-[#ef4444] bg-white hover:bg-white'>Đã hủy</Badge>
           )}
