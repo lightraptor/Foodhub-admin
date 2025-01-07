@@ -132,7 +132,10 @@ export default function OrderSummary({
             </Button>
           )}
           <OrderPayment orderItems={orderItems} />
-          <Button className='ml-2 border-[#0765ff] text-[#0765ff]' onClick={() => window.history.back()}>
+          <Button
+            className='ml-2 border-[#0765ff] border hover:bg-white bg-white text-[#0765ff]'
+            onClick={() => window.history.back()}
+          >
             Quay lại
           </Button>
         </div>

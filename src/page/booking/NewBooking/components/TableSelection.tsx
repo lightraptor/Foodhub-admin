@@ -75,20 +75,22 @@ export default function TableSelection({ onSelectTable, selectedTables }: Props)
                 >
                   {table.status === 'Có thể đặt bàn' && (
                     <Badge
-                      className={`text-[#22c55e] border-[#22c55e] ${selectedTables.some((t) => t.id === table.id) ? `text-[#fff] border-[#fff]` : ''}`}
+                      className={`text-[#22c55e] border-[#22c55e] bg-inherit ${selectedTables.some((t) => t.id === table.id) ? `text-[#fff] border-[#fff]` : ''}`}
                     >
                       {table.status}
                     </Badge>
                   )}
                   {table.status === 'Bàn đã được khách đặt trước' && (
-                    <Badge className='text-[#3b82f6] border-[#3b82f6] hover:text-[#fff] hover:border-[#fff]'>
+                    <Badge className='text-[#3b82f6] border-[#3b82f6] bg-inherit hover:text-[#fff] hover:border-[#fff]'>
                       {table.status}
                     </Badge>
                   )}
                   {table.status === 'Bàn đang có khách ngồi' && (
-                    <Badge className='text-[#ef4444] border-[#ef4444]'>{table.status}</Badge>
+                    <Badge className='text-[#ef4444] border-[#ef4444] bg-inherit'>{table.status}</Badge>
                   )}
-                  {table.status === 'Khác' && <Badge className='text-[#f8b4b4] border-[#f8b4b4]'>{table.status}</Badge>}
+                  {table.status === 'Khác' && (
+                    <Badge className='text-[#f8b4b4] border-[#f8b4b4] bg-inherit'>{table.status}</Badge>
+                  )}
                 </span>
               </div>
               <div className='space-y-1'>
