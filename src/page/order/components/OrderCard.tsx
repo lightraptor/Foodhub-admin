@@ -1,4 +1,3 @@
-import { useContext, useState } from 'react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -11,13 +10,13 @@ import {
   Calendar,
   ShoppingCart,
   CircleDollarSign,
-  Check,
   CircleCheckBig,
   CircleX
 } from 'lucide-react'
 import { OrderItem } from '@/types'
-import { NotiContext } from '@/context' // Assumes OrderContext is defined similarly to NotiContext
 import { useNavigate } from 'react-router'
+import { useContext, useState } from 'react'
+import { NotiContext } from '@/context'
 
 interface OrderCardProps {
   order: OrderItem
@@ -27,15 +26,14 @@ interface OrderCardProps {
   isHighlight: boolean
 }
 
-export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder, isHighlight }: OrderCardProps) {
+export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder }: OrderCardProps) {
+  const [highlight, setHighlight] = useState<boolean>(order.isHighlight || false)
   const navigate = useNavigate()
-  const [highlight, setHighlight] = useState<boolean>(isHighlight)
   const notiContext = useContext(NotiContext)
 
   if (!notiContext) {
-    throw new Error('OrderContext is not provided')
+    throw new Error('BookingContext is not provided')
   }
-
   const { setOrders } = notiContext
 
   return (
@@ -43,12 +41,13 @@ export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder
       className='w-full max-w-md hover:shadow-lg transition-shadow duration-300'
       onClick={() => {
         setHighlight(false)
+        console.log(highlight)
         setOrders((prev) => prev.map((ord) => (ord.id === order.id ? { ...ord, isHighlight: false } : ord)))
       }}
     >
       <CardContent className='relative p-6'>
         {highlight && (
-          <span className='absolute text-xs rounded-full bg-red-500 text-white py-1 px-2 top-0 right-0'>New</span>
+          <span className='absolute text-xs rounded-full bg-red-500  text-white py-1 px-2 top-0 right-0'>New</span>
         )}
         <div className='flex justify-between items-center mb-4'>
           {order.orderStatus === 'Pending' && (
@@ -107,10 +106,10 @@ export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder
             <DropdownMenuContent align='end'>
               {order.orderStatus === 'Processing' && (
                 <>
-                  <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Complete')}>
+                  {/* <DropdownMenuItem onClick={() => onUpdateStatus(order.id, 'Complete')}>
                     <Check className='mr-1 h-5 w-5' />
                     Hoàn thành đơn hàng
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                   <DropdownMenuItem onClick={() => onPaymentOrder(order.id)}>
                     <CircleDollarSign className='mr-1 h-5 w-5' /> Thanh toán đơn hàng
                   </DropdownMenuItem>
