@@ -5,6 +5,7 @@ import { OrderCard } from './components/OrderCard'
 import { Pagination } from '@/components'
 import { useNavigate } from 'react-router'
 import { NotiContext } from '@/context'
+import { toast } from 'react-toastify'
 import ErrorResult from '@/components/error-result/ErrorResult'
 
 export const OrderPage = () => {
@@ -19,7 +20,7 @@ export const OrderPage = () => {
   const notiContext = useContext(NotiContext)
 
   if (!notiContext) {
-    throw new Error('BookingContext is not provided')
+    throw new Error('NotiContext is not provided')
   }
 
   const { orders } = notiContext
@@ -27,21 +28,25 @@ export const OrderPage = () => {
   const fetchData = async (page = currentPage, size = pageSize) => {
     try {
       setLoading(true)
-
       const response = await fetchPagingOrder({ PageNumber: page, PageSize: size })
       if (!response.success) {
-        throw new Error('Failed to fetch menu')
+        setOrderList([])
+        throw new Error('Failed to fetch orders')
       }
       const data = response.data
-      console.log(data)
       setOrderList(data?.items || [])
       setTotalItems(data?.totalRecord || undefined)
     } catch (err) {
-      console.error('Error fetching menu:', err)
+      console.error('Error fetching orders:', err)
+      toast.error('Lỗi tải danh sách đơn hàng')
     } finally {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchData()
+  }, [currentPage, pageSize])
 
   useEffect(() => {
     const updatedOrders = [...orders.filter((order) => !orderList.some((item) => item.id === order.id)), ...orderList]
@@ -49,27 +54,27 @@ export const OrderPage = () => {
   }, [orders, orderList])
 
   const handleViewDetails = (id: string) => {
-    console.log(`Viewing details for order: ${id}`)
-    // Implement view details logic here
     navigate(`/order/${id}`)
   }
 
   const handleUpdateStatus = async (id: string, newStatus: string) => {
-    console.log(`Updating status for order: ${id} to ${newStatus}`)
-    // Implement update status logic here
-    const response = await changeStatusOrder({ id, status: newStatus })
-    if (response.success) {
-      fetchData()
+    try {
+      const response = await changeStatusOrder({ id, status: newStatus })
+      if (response.success) {
+        toast.success(`Cập nhật trạng thái đơn hàng thành công`)
+        fetchData()
+      } else {
+        throw new Error('Failed to update order status')
+      }
+    } catch (err) {
+      console.error('Error updating order status:', err)
+      toast.error('Lỗi cập nhật trạng thái đơn hàng')
     }
   }
 
   const handlePaymentOrder = (id: string) => {
     navigate(`/new-order/${id}`)
   }
-
-  useEffect(() => {
-    fetchData()
-  }, [currentPage, pageSize])
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -80,7 +85,7 @@ export const OrderPage = () => {
     setCurrentPage(1) // Reset to page 1
   }
 
-  if (loading) return <p className='text-center text-lg'>Loading...</p>
+  if (loading) return <p className='text-center text-lg'>Đang tải...</p>
 
   return (
     <div className='container mx-auto p-4'>
@@ -93,9 +98,9 @@ export const OrderPage = () => {
               <OrderCard
                 key={order.id}
                 order={order}
-                onViewDetails={handleViewDetails}
-                onUpdateStatus={handleUpdateStatus}
-                onPaymentOrder={handlePaymentOrder}
+                onViewDetails={() => handleViewDetails(order.id)}
+                onUpdateStatus={(newStatus) => handleUpdateStatus(order.id, newStatus)}
+                onPaymentOrder={() => handlePaymentOrder(order.id)}
                 isHighlight={isHighlighted}
               />
             )

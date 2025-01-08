@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -17,6 +17,7 @@ import {
   ShoppingCart
 } from 'lucide-react'
 import { BookingItem } from '@/types'
+import { NotiContext } from '@/context'
 
 interface BookingCardProps {
   booking: BookingItem
@@ -41,16 +42,26 @@ export function BookingCard({
   onChangeTable,
   onMoreOrder,
   onEdit,
-  onCheckin,
-  isHighlight
+  onCheckin
   //onDelete
 }: BookingCardProps) {
-  const [highlight, setHighlight] = useState<boolean>(isHighlight)
   const [isOpen, setIsOpen] = useState(false)
+  const [highlight, setHighlight] = useState<boolean>(booking.isHighlight || false)
+  const notiContext = useContext(NotiContext)
+
+  if (!notiContext) {
+    throw new Error('BookingContext is not provided')
+  }
+  const { setBookings } = notiContext
+
   return (
     <Card
       className={`w-full max-w-md hover:shadow-lg transition-shadow duration-300`}
-      onClick={() => setHighlight(false)}
+      onClick={() => {
+        setHighlight(false)
+        console.log(highlight)
+        setBookings((prev) => prev.map((book) => (book.id === booking.id ? { ...book, isHighlight: false } : book)))
+      }}
     >
       <CardContent className='p-6 relative'>
         {highlight && (

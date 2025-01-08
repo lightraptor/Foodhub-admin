@@ -78,6 +78,7 @@ export type OrderItem = {
   discountAmount: number
   totalAmount: number
   orderDetails: OrderDetailItem[]
+  isHighlight?: boolean
 }
 
 export type OrderDetailItem = {

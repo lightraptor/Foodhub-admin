@@ -1,3 +1,4 @@
+import { useContext, useState } from 'react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -15,8 +16,8 @@ import {
   CircleX
 } from 'lucide-react'
 import { OrderItem } from '@/types'
+import { NotiContext } from '@/context' // Assumes OrderContext is defined similarly to NotiContext
 import { useNavigate } from 'react-router'
-import { useState } from 'react'
 
 interface OrderCardProps {
   order: OrderItem
@@ -27,16 +28,27 @@ interface OrderCardProps {
 }
 
 export function OrderCard({ order, onViewDetails, onUpdateStatus, onPaymentOrder, isHighlight }: OrderCardProps) {
-  const [highlight, setHighlight] = useState<boolean>(isHighlight)
   const navigate = useNavigate()
+  const [highlight, setHighlight] = useState<boolean>(isHighlight)
+  const notiContext = useContext(NotiContext)
+
+  if (!notiContext) {
+    throw new Error('OrderContext is not provided')
+  }
+
+  const { setOrders } = notiContext
+
   return (
     <Card
       className='w-full max-w-md hover:shadow-lg transition-shadow duration-300'
-      onClick={() => setHighlight(false)}
+      onClick={() => {
+        setHighlight(false)
+        setOrders((prev) => prev.map((ord) => (ord.id === order.id ? { ...ord, isHighlight: false } : ord)))
+      }}
     >
       <CardContent className='relative p-6'>
         {highlight && (
-          <span className='absolute text-xs rounded-full bg-red-500  text-white py-1 px-2 top-0 right-0'>New</span>
+          <span className='absolute text-xs rounded-full bg-red-500 text-white py-1 px-2 top-0 right-0'>New</span>
         )}
         <div className='flex justify-between items-center mb-4'>
           {order.orderStatus === 'Pending' && (

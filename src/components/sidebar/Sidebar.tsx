@@ -12,7 +12,6 @@ import {
 import { AUTHENTICATION_ROUTES, AUTHENTICATION_MENUS, ROUTES, STORAGE, UN_AUTHENTICATION_ROUTES } from '@/defines'
 import { LayoutDashboard, LogOut, Settings, User } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks'
 import { useContext, useEffect, useState } from 'react'
@@ -25,23 +24,29 @@ export function AppSidebar() {
   if (!notiContext) {
     throw new Error('NotiContext is not provided')
   }
-  const { addBooking, addOrder } = notiContext
+  const { setBookings, setOrders } = notiContext
   const navigate = useNavigate()
   const { logout } = useAuth()
   const location = useLocation()
 
   const [notifications, setNotifications] = useState<any[]>([]) // Danh sách thông báo cho booking
   const [orderNotifications, setOrderNotifications] = useState<any[]>([]) // Danh sách thông báo cho order
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hasUnread, setHasUnread] = useState(false) // Trạng thái có thông báo chưa đọc
-  const [isNotificationDialogOpen, setIsNotificationDialogOpen] = useState(false) // Trạng thái mở dialog thông báo
-  console.log(hasUnread)
+  //const [isNotificationDialogOpen, setIsNotificationDialogOpen] = useState(false) // Trạng thái mở dialog thông báo
   useEffect(() => {
     const startConnection = async () => {
+      if (connection.state === 'Connected') {
+        console.log('SignalR is already connected')
+        return
+      }
       try {
         await connection.start()
         console.log('SignalR connected!')
+        // disable
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (error) {
-        console.error('Error connecting to SignalR:', error)
+        //console.error('Error connecting to SignalR:', error)
         setTimeout(startConnection, 5000)
       }
     }
@@ -51,18 +56,18 @@ export function AppSidebar() {
     // Lắng nghe sự kiện "NotificationBooking"
     connection.on('NotificationBooking', (data: BookingItem) => {
       console.log('Received booking notification:', data)
-      addBooking(data)
+      const newData = { ...data, isHighlight: true }
+      setBookings((prev) => [newData, ...prev])
       setNotifications((prev) => [...prev, data])
-      setHasUnread(true)
       toast.success('Có đơn đặt bàn mới', { autoClose: 5000 })
     })
 
     // Lắng nghe sự kiện "NotificationOrder"
     connection.on('NotificationOrder', (data: OrderItem) => {
       console.log('Received order notification:', data)
-      addOrder(data)
+      const newData = { ...data, isHighlight: true }
+      setOrders((prev) => [newData, ...prev])
       setOrderNotifications((prev) => [...prev, data])
-      setHasUnread(true)
       toast.success('Có đơn hàng mới', { autoClose: 5000 })
     })
 
@@ -100,10 +105,6 @@ export function AppSidebar() {
       return
     }
     navigate(path)
-  }
-
-  const closeNotificationDialog = () => {
-    setIsNotificationDialogOpen(false)
   }
 
   return (
@@ -183,52 +184,6 @@ export function AppSidebar() {
       <SidebarRail />
 
       {/* Dialog hiển thị thông báo */}
-      <Dialog open={isNotificationDialogOpen} onOpenChange={closeNotificationDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Thông báo</DialogTitle>
-            <DialogClose />
-          </DialogHeader>
-          <div className='flex flex-col gap-2'>
-            {notifications.length === 0 && orderNotifications.length === 0 ? (
-              <p className='text-gray-500'>Không có thông báo nào.</p>
-            ) : (
-              <>
-                {notifications.map((notification, index) => (
-                  <div key={index} className='p-2 border rounded-lg shadow-sm' onClick={() => navigate(`/booking`)}>
-                    <p className='text-base my-3'>Nhận Booking từ {notification.customerName}</p>
-                    <div className='flex gap-3'>
-                      <span className='text-sm text-gray-400'>
-                        <span className='font-semibold text-black'>Thời gian checkin:</span>{' '}
-                        {new Date(notification.checkinTime).toLocaleString('vi-VN') || 'Không xác định'}
-                      </span>
-                      <span className='text-sm text-gray-400'>
-                        <span className='font-semibold text-black'>Số lượng:</span>{' '}
-                        {notification.peopleCount || 'Không xác định'}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-                {orderNotifications.map((notification, index) => (
-                  <div key={index} className='p-2 border rounded-lg shadow-sm' onClick={() => navigate(`/order`)}>
-                    <p className='text-base my-3'>Nhận Order từ {notification.customerName}</p>
-                    <div className='flex gap-3'>
-                      <span className='text-sm text-gray-400'>
-                        <span className='font-semibold text-black'>Thời gian đặt hàng:</span>{' '}
-                        {new Date(notification.orderTime).toLocaleString('vi-VN') || 'Không xác định'}
-                      </span>
-                      <span className='text-sm text-gray-400'>
-                        <span className='font-semibold text-black'>Tổng giá:</span>{' '}
-                        {notification.totalPrice || 'Không xác định'}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </Sidebar>
   )
 }
