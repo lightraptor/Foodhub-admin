@@ -2,7 +2,6 @@ import {
   Home,
   LayoutGrid,
   ListOrderedIcon,
-  SettingsIcon,
   ShoppingBasket,
   ShoppingCart,
   SquareMenu,
@@ -21,7 +20,6 @@ export const AUTHENTICATION_MENUS = {
   Product: { path: '/product', label: 'Sản phẩm', icon: ShoppingBasket },
   Table: { path: '/table', label: 'Danh sách bàn', icon: Utensils },
   Users: { path: '/users', label: 'Thành viên', icon: Users },
-  Merchant: { path: '/merchant', label: 'Cấu hình thanh toán', icon: SettingsIcon },
   Payment: { path: '/payment', label: 'Danh sách thanh toán', icon: ShoppingBasket }
 }
 
